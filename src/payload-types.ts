@@ -16,6 +16,8 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    services: Service;
+    'tech-stacks': TechStack;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -32,6 +34,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    'tech-stacks': TechStacksSelect<false> | TechStacksSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -297,9 +301,29 @@ export interface Media {
 export interface Category {
   id: string;
   title: string;
+  type: 'blog' | 'service' | 'portfolio' | 'tutorial' | 'skill';
+  /**
+   * Brief description of this category
+   */
+  description?: string | null;
+  /**
+   * Icon to represent this category (SVG or small image)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Featured image for category pages
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Should this category be highlighted in navigation menus?
+   */
+  isHighlighted?: boolean | null;
+  /**
+   * Parent category, if this is a sub-category
+   */
+  parent?: (string | null) | Category;
   slug?: string | null;
   slugLock?: boolean | null;
-  parent?: (string | null) | Category;
   breadcrumbs?:
     | {
         doc?: (string | null) | Category;
@@ -672,6 +696,102 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  title: string;
+  /**
+   * Icon representing this service
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Main image for this service
+   */
+  featuredImage: string | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Technologies used for this service
+   */
+  techStacks: (string | TechStack)[];
+  /**
+   * Key features of this service
+   */
+  keyFeatures?:
+    | {
+        title: string;
+        description: string;
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Related projects that demonstrate this service
+   */
+  relatedProjects?: (string | Post)[] | null;
+  /**
+   * The service category this belongs to
+   */
+  category: string | Category;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Should this service be highlighted on the homepage?
+   */
+  isHighlighted?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Technology stacks used across different services
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tech-stacks".
+ */
+export interface TechStack {
+  id: string;
+  name: string;
+  description?: string | null;
+  /**
+   * Icon representing this technology (SVG preferred)
+   */
+  icon?: (string | null) | Media;
+  category: 'frontend' | 'backend' | 'mobile' | 'devops' | 'database' | 'ml-ai' | 'other';
+  /**
+   * Show in featured technology sections
+   */
+  featured?: boolean | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -861,6 +981,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: string | Service;
+      } | null)
+    | ({
+        relationTo: 'tech-stacks';
+        value: string | TechStack;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1189,9 +1317,14 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  type?: T;
+  description?: T;
+  icon?: T;
+  featuredImage?: T;
+  isHighlighted?: T;
+  parent?: T;
   slug?: T;
   slugLock?: T;
-  parent?: T;
   breadcrumbs?:
     | T
     | {
@@ -1218,6 +1351,56 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  icon?: T;
+  featuredImage?: T;
+  content?: T;
+  techStacks?: T;
+  keyFeatures?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  relatedProjects?: T;
+  category?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  isHighlighted?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tech-stacks_select".
+ */
+export interface TechStacksSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
+  category?: T;
+  featured?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1592,6 +1775,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: string | Service;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

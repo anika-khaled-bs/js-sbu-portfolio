@@ -16,6 +16,9 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateTeam } from './hooks/revalidateTeam'
+import { formatTeamDisplayName } from './hooks/formatTeamDisplayName'
+import { generateTeamSlug } from './hooks/generateTeamSlug'
+import { cleanupTeamReferences } from './hooks/cleanupTeamReferences'
 
 import {
   MetaDescriptionField,
@@ -305,6 +308,13 @@ export const Team: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
+    beforeChange: [
+      formatTeamDisplayName, 
+      generateTeamSlug
+    ],
+    beforeDelete: [
+      cleanupTeamReferences
+    ],
     afterChange: [revalidateTeam],
     afterDelete: [revalidateDelete],
   },

@@ -16,6 +16,9 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateService } from './hooks/revalidateService'
+import { formatServiceTitle } from './hooks/formatServiceTitle'
+import { generateServiceSlug } from './hooks/generateServiceSlug'
+import { generateMetaDescription } from './hooks/generateMetaDescription'
 
 import {
   MetaDescriptionField,
@@ -237,6 +240,11 @@ export const Services: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
+    beforeChange: [
+      formatServiceTitle,
+      generateServiceSlug,
+      generateMetaDescription
+    ],
     afterChange: [revalidateService],
     afterDelete: [revalidateDelete],
   },

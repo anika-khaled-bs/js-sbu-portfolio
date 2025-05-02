@@ -5,6 +5,8 @@ import { anyone } from '../../access/anyone'
 import { slugField } from '@/fields/slug'
 import { checkReferencesBeforeDelete } from './hooks/checkReferencesBeforeDelete'
 import { revalidateTechStack, revalidateDelete } from './hooks/revalidateTechStack'
+import { formatTechStackName } from './hooks/formatTechStackName'
+import { generateTechStackSlug } from './hooks/generateTechStackSlug'
 
 export const TechStacks: CollectionConfig = {
   slug: 'tech-stacks',
@@ -20,6 +22,10 @@ export const TechStacks: CollectionConfig = {
     description: 'Technology stacks used across different services',
   },
   hooks: {
+    beforeChange: [
+      formatTechStackName,
+      generateTechStackSlug
+    ],
     beforeDelete: [checkReferencesBeforeDelete],
     afterChange: [revalidateTechStack],
     afterDelete: [revalidateDelete],

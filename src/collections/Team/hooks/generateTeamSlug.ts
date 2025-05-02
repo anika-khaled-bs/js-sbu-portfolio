@@ -17,7 +17,7 @@ export const generateTeamSlug: CollectionBeforeChangeHook = async ({
 
   // Generate new slug for new documents or when name changes
   if (
-    operation === 'create' || 
+    operation === 'create' ||
     (operation === 'update' && data.name && originalDoc.name !== data.name)
   ) {
     // Use name for the slug

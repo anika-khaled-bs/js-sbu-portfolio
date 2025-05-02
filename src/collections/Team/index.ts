@@ -308,13 +308,8 @@ export const Team: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
-    beforeChange: [
-      formatTeamDisplayName, 
-      generateTeamSlug
-    ],
-    beforeDelete: [
-      cleanupTeamReferences
-    ],
+    beforeChange: [formatTeamDisplayName, generateTeamSlug],
+    beforeDelete: [cleanupTeamReferences],
     afterChange: [revalidateTeam],
     afterDelete: [revalidateDelete],
   },

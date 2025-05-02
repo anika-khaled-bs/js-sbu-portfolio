@@ -240,11 +240,7 @@ export const Services: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
-    beforeChange: [
-      formatServiceTitle,
-      generateServiceSlug,
-      generateMetaDescription
-    ],
+    beforeChange: [formatServiceTitle, generateServiceSlug, generateMetaDescription],
     afterChange: [revalidateService],
     afterDelete: [revalidateDelete],
   },

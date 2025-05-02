@@ -17,7 +17,7 @@ export const generateServiceSlug: CollectionBeforeChangeHook = async ({
 
   // Generate new slug for new documents or when title changes
   if (
-    operation === 'create' || 
+    operation === 'create' ||
     (operation === 'update' && data.title && originalDoc.title !== data.title)
   ) {
     // Use title for the slug

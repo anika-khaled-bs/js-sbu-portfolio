@@ -1,8 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
+import { formatCategoryTitle } from './hooks/formatCategoryTitle'
+import { generateCategorySlug } from './hooks/generateCategorySlug'
+import { validateCategoryHierarchy } from './hooks/validateCategoryHierarchy'
+import { buildCategoryBreadcrumbs } from './hooks/buildCategoryBreadcrumbs'
+import { revalidateCategory, revalidateDelete } from './hooks/revalidateCategory'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -14,6 +19,14 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Content',
+    defaultColumns: ['title', 'type', 'parent', 'updatedAt'],
+  },
+  hooks: {
+    beforeChange: [formatCategoryTitle, validateCategoryHierarchy, generateCategorySlug],
+    afterRead: [buildCategoryBreadcrumbs],
+    afterChange: [revalidateCategory],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {
@@ -28,6 +41,7 @@ export const Categories: CollectionConfig = {
         { label: 'Blog Category', value: 'blog' },
         { label: 'Service Category', value: 'service' },
         { label: 'Portfolio Category', value: 'portfolio' },
+        { label: 'Team Category', value: 'team' },
         { label: 'Tutorial Category', value: 'tutorial' },
         { label: 'Skill Category', value: 'skill' },
       ],

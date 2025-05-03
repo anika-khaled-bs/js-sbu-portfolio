@@ -303,7 +303,7 @@ export interface Media {
 export interface Category {
   id: string;
   title: string;
-  type: 'blog' | 'service' | 'portfolio' | 'tutorial' | 'skill';
+  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
   /**
    * Brief description of this category
    */

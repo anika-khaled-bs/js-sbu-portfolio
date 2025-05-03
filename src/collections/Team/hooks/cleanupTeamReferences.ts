@@ -13,7 +13,9 @@ export const cleanupTeamReferences: CollectionBeforeDeleteHook = async ({
     const projectsWithTeamMember = await payload.find({
       collection: 'posts', // Will update to 'portfolio' when that collection exists
       where: {
-        'teamMembers.contains': id,
+        teamMembers: {
+          contains: id,
+        },
       },
       depth: 0,
       limit: 100,
@@ -38,7 +40,11 @@ export const cleanupTeamReferences: CollectionBeforeDeleteHook = async ({
     }
   } catch (error) {
     // Log the error but don't block the deletion
-    payload.logger.error(`Error cleaning up team member references: ${error.message}`)
+    if (error instanceof Error) {
+      payload.logger.error(`Error cleaning up team member references: ${error.message}`)
+    } else {
+      payload.logger.error('Unknown error cleaning up team member references')
+    }
   }
 
   return id

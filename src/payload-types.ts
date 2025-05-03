@@ -18,6 +18,7 @@ export interface Config {
     users: User;
     services: Service;
     'tech-stacks': TechStack;
+    team: Team;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -36,6 +37,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     'tech-stacks': TechStacksSelect<false> | TechStacksSelect<true>;
+    team: TeamSelect<false> | TeamSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -792,6 +794,113 @@ export interface TechStack {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: string;
+  name: string;
+  /**
+   * Job title or role within the organization
+   */
+  role: string;
+  /**
+   * Professional headshot or profile image
+   */
+  profileImage: string | Media;
+  /**
+   * Brief bio (1-2 sentences) for team listings
+   */
+  shortBio: string;
+  /**
+   * Full biography for individual team member page
+   */
+  fullBio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Work email address (optional)
+   */
+  email?: string | null;
+  /**
+   * Work phone number (optional)
+   */
+  phone?: string | null;
+  /**
+   * Social media profiles (optional)
+   */
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'github' | 'twitter' | 'website' | 'other';
+        url: string;
+        /**
+         * Display text (optional)
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Department or team category
+   */
+  departmentCategory: string | Category;
+  /**
+   * Areas of expertise or specialization
+   */
+  expertise?:
+    | {
+        area: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Technical skills and proficiencies
+   */
+  techSkills?: (string | TechStack)[] | null;
+  /**
+   * Projects the team member has contributed to
+   */
+  projects?: (string | Post)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Controls the display order on team listings (lower numbers appear first)
+   */
+  displayOrder?: number | null;
+  /**
+   * Featured team members appear on the home page and in highlighted sections
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Designates this person as part of the leadership team
+   */
+  isLeadership?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -989,6 +1098,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tech-stacks';
         value: string | TechStack;
+      } | null)
+    | ({
+        relationTo: 'team';
+        value: string | Team;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1404,6 +1517,52 @@ export interface TechStacksSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team_select".
+ */
+export interface TeamSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  profileImage?: T;
+  shortBio?: T;
+  fullBio?: T;
+  email?: T;
+  phone?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  departmentCategory?: T;
+  expertise?:
+    | T
+    | {
+        area?: T;
+        id?: T;
+      };
+  techSkills?: T;
+  projects?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  displayOrder?: T;
+  isFeatured?: T;
+  isLeadership?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1779,6 +1938,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'services';
           value: string | Service;
+        } | null)
+      | ({
+          relationTo: 'team';
+          value: string | Team;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

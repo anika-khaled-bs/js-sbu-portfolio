@@ -22,7 +22,8 @@ export const TechStacks: CollectionConfig = {
     description: 'Technology stacks used across different services',
   },
   hooks: {
-    beforeChange: [formatTechStackName, generateTechStackSlug],
+    // beforeChange: [formatTechStackName, generateTechStackSlug],
+    beforeChange: [generateTechStackSlug],
     beforeDelete: [checkReferencesBeforeDelete],
     afterChange: [revalidateTechStack],
     afterDelete: [revalidateDelete],

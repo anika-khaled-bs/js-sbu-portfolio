@@ -20,6 +20,7 @@ export interface Config {
     'tech-stacks': TechStack;
     team: Team;
     testimonials: Testimonial;
+    portfolio: Portfolio;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -40,6 +41,7 @@ export interface Config {
     'tech-stacks': TechStacksSelect<false> | TechStacksSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -996,6 +998,95 @@ export interface Testimonial {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio".
+ */
+export interface Portfolio {
+  id: string;
+  title: string;
+  /**
+   * Main image for this portfolio item
+   */
+  featuredImage: string | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * The client for this project
+   */
+  client: string;
+  /**
+   * URL to live project (if available)
+   */
+  projectURL?: string | null;
+  /**
+   * When the project was completed
+   */
+  completionDate?: string | null;
+  /**
+   * Technologies used in this project
+   */
+  techStacks: (string | TechStack)[];
+  /**
+   * Additional images showcasing the project
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Key features of this project
+   */
+  keyFeatures?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Services that were part of this project
+   */
+  relatedServices?: (string | Service)[] | null;
+  /**
+   * The portfolio category this belongs to
+   */
+  category: string | Category;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Should this project be featured on the homepage?
+   */
+  isFeatured?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1201,6 +1292,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: string | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'portfolio';
+        value: string | Portfolio;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1700,6 +1795,49 @@ export interface TestimonialsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio_select".
+ */
+export interface PortfolioSelect<T extends boolean = true> {
+  title?: T;
+  featuredImage?: T;
+  content?: T;
+  client?: T;
+  projectURL?: T;
+  completionDate?: T;
+  techStacks?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  keyFeatures?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  relatedServices?: T;
+  category?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  isFeatured?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -2079,6 +2217,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'team';
           value: string | Team;
+        } | null)
+      | ({
+          relationTo: 'portfolio';
+          value: string | Portfolio;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

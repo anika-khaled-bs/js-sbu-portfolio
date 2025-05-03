@@ -14,6 +14,7 @@ import { Users } from './collections/Users'
 import { Services } from './collections/Services'
 import { TechStacks } from './collections/TechStacks'
 import { Team } from './collections/Team'
+import { Testimonials } from './collections/Testimonials'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -67,7 +68,7 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   // database-adapter-config-end
-  collections: [Pages, Posts, Media, Categories, Users, Services, TechStacks, Team],
+  collections: [Pages, Posts, Media, Categories, Users, Services, TechStacks, Team, Testimonials],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

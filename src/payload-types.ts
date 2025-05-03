@@ -19,6 +19,7 @@ export interface Config {
     services: Service;
     'tech-stacks': TechStack;
     team: Team;
+    testimonials: Testimonial;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -38,6 +39,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     'tech-stacks': TechStacksSelect<false> | TechStacksSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -901,6 +903,99 @@ export interface Team {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  /**
+   * The testimonial content from your client or customer
+   */
+  testimonial: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Name of the person giving the testimonial
+   */
+  clientName?: string | null;
+  /**
+   * Job title or role of the person
+   */
+  clientTitle?: string | null;
+  /**
+   * Company or organization name
+   */
+  clientCompany?: string | null;
+  /**
+   * Rating given by the client
+   */
+  rating: '5' | '4' | '3' | '2' | '1';
+  /**
+   * Photo or avatar of the client (optional)
+   */
+  clientImage?: (string | null) | Media;
+  /**
+   * Client company's logo (optional)
+   */
+  clientLogo?: (string | null) | Media;
+  /**
+   * Optional images of the project being referred to
+   */
+  projectImages?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Services this testimonial relates to
+   */
+  relatedServices?: (string | Service)[] | null;
+  /**
+   * Projects this testimonial relates to
+   */
+  relatedProjects?: (string | Post)[] | null;
+  /**
+   * Technologies used in the project
+   */
+  relatedTechStacks?: (string | TechStack)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Feature this testimonial on the homepage
+   */
+  featured?: boolean | null;
+  /**
+   * When was the project completed
+   */
+  projectDate?: string | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1102,6 +1197,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'team';
         value: string | Team;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: string | Testimonial;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1554,6 +1653,44 @@ export interface TeamSelect<T extends boolean = true> {
   displayOrder?: T;
   isFeatured?: T;
   isLeadership?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  testimonial?: T;
+  clientName?: T;
+  clientTitle?: T;
+  clientCompany?: T;
+  rating?: T;
+  clientImage?: T;
+  clientLogo?: T;
+  projectImages?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  relatedServices?: T;
+  relatedProjects?: T;
+  relatedTechStacks?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  featured?: T;
+  projectDate?: T;
   publishedAt?: T;
   slug?: T;
   slugLock?: T;

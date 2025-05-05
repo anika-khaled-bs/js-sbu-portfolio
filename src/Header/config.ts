@@ -16,6 +16,16 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
         }),
+        {
+          name: 'subMenuItems',
+          label: 'Submenu Items',
+          type: 'array',
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+        },
       ],
       maxRows: 6,
       admin: {

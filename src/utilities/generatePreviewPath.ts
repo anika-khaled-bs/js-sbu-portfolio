@@ -1,6 +1,14 @@
 import { PayloadRequest } from 'payload'
 
-type CollectionSlug = 'posts' | 'pages' | 'team' | 'services' | 'tech-stacks' | 'testimonials'
+type CollectionSlug =
+  | 'posts'
+  | 'pages'
+  | 'team'
+  | 'services'
+  | 'tech-stacks'
+  | 'testimonials'
+  | 'portfolio'
+  | 'faqs'
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
@@ -9,6 +17,8 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   services: '/services',
   'tech-stacks': '/tech-stacks',
   testimonials: '/testimonials',
+  portfolio: '/portfolio',
+  faqs: '/faqs',
 }
 
 type Props = {

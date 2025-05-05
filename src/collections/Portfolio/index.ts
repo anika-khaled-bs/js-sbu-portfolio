@@ -15,9 +15,9 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { revalidateDelete, revalidateService } from './hooks/revalidateService'
-import { formatServiceTitle } from './hooks/formatServiceTitle'
-import { generateServiceSlug } from './hooks/generateServiceSlug'
+import { revalidateDelete, revalidatePortfolio } from './hooks/revalidatePortfolio'
+import { formatPortfolioTitle } from './hooks/formatPortfolioTitle'
+import { generatePortfolioSlug } from './hooks/generatePortfolioSlug'
 import { generateMetaDescription } from './hooks/generateMetaDescription'
 
 import {
@@ -29,8 +29,8 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
 
-export const Services: CollectionConfig = {
-  slug: 'services',
+export const Portfolio: CollectionConfig = {
+  slug: 'portfolio',
   access: {
     create: authenticated,
     delete: authenticated,
@@ -47,15 +47,16 @@ export const Services: CollectionConfig = {
     },
     featuredImage: true,
     techStacks: true,
+    client: true,
   },
   admin: {
-    defaultColumns: ['title', 'category', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'client', 'category', 'slug', 'updatedAt'],
     group: 'Content',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'services',
+          collection: 'portfolio',
           req,
         })
 
@@ -65,7 +66,7 @@ export const Services: CollectionConfig = {
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'services',
+        collection: 'portfolio',
         req,
       }),
     useAsTitle: 'title',
@@ -82,20 +83,12 @@ export const Services: CollectionConfig = {
         {
           fields: [
             {
-              name: 'icon',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Icon representing this service',
-              },
-            },
-            {
               name: 'featuredImage',
               type: 'upload',
               relationTo: 'media',
               required: true,
               admin: {
-                description: 'Main image for this service',
+                description: 'Main image for this portfolio item',
               },
             },
             {
@@ -122,20 +115,64 @@ export const Services: CollectionConfig = {
         {
           fields: [
             {
+              name: 'client',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'The client for this project',
+              },
+            },
+            {
+              name: 'projectURL',
+              type: 'text',
+              admin: {
+                description: 'URL to live project (if available)',
+              },
+            },
+            {
+              name: 'completionDate',
+              type: 'date',
+              admin: {
+                description: 'When the project was completed',
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+              },
+            },
+            {
               name: 'techStacks',
               type: 'relationship',
               relationTo: 'tech-stacks',
               hasMany: true,
               required: true,
               admin: {
-                description: 'Technologies used for this service',
+                description: 'Technologies used in this project',
               },
+            },
+            {
+              name: 'gallery',
+              type: 'array',
+              admin: {
+                description: 'Additional images showcasing the project',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'caption',
+                  type: 'text',
+                },
+              ],
             },
             {
               name: 'keyFeatures',
               type: 'array',
               admin: {
-                description: 'Key features of this service',
+                description: 'Key features of this project',
               },
               fields: [
                 {
@@ -148,20 +185,15 @@ export const Services: CollectionConfig = {
                   type: 'textarea',
                   required: true,
                 },
-                {
-                  name: 'icon',
-                  type: 'upload',
-                  relationTo: 'media',
-                },
               ],
             },
             {
-              name: 'relatedProjects',
+              name: 'relatedServices',
               type: 'relationship',
-              relationTo: 'posts', // Will update to 'portfolio' when that collection is created
+              relationTo: 'services',
               hasMany: true,
               admin: {
-                description: 'Related projects that demonstrate this service',
+                description: 'Services that were part of this project',
               },
             },
             {
@@ -171,11 +203,11 @@ export const Services: CollectionConfig = {
               required: true,
               filterOptions: {
                 type: {
-                  equals: 'service',
+                  equals: 'portfolio',
                 },
               },
               admin: {
-                description: 'The service category this belongs to',
+                description: 'The portfolio category this belongs to',
                 position: 'sidebar',
               },
             },
@@ -208,12 +240,12 @@ export const Services: CollectionConfig = {
       ],
     },
     {
-      name: 'isHighlighted',
+      name: 'isFeatured',
       type: 'checkbox',
-      label: 'Featured Service',
+      label: 'Featured Project',
       defaultValue: false,
       admin: {
-        description: 'Should this service be highlighted on the homepage?',
+        description: 'Should this project be featured on the homepage?',
         position: 'sidebar',
       },
     },
@@ -240,8 +272,8 @@ export const Services: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
-    beforeChange: [formatServiceTitle, generateServiceSlug, generateMetaDescription],
-    afterChange: [revalidateService],
+    beforeChange: [formatPortfolioTitle, generatePortfolioSlug, generateMetaDescription],
+    afterChange: [revalidatePortfolio],
     afterDelete: [revalidateDelete],
   },
   // versions: {

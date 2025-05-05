@@ -16,13 +16,15 @@ export const TechStacks: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+
   admin: {
     useAsTitle: 'name',
     group: 'Content',
     description: 'Technology stacks used across different services',
   },
   hooks: {
-    beforeChange: [formatTechStackName, generateTechStackSlug],
+    // beforeChange: [formatTechStackName, generateTechStackSlug],
+    // beforeChange: [generateTechStackSlug],
     beforeDelete: [checkReferencesBeforeDelete],
     afterChange: [revalidateTechStack],
     afterDelete: [revalidateDelete],
@@ -32,6 +34,7 @@ export const TechStacks: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      unique: true,
     },
     {
       name: 'description',
@@ -72,7 +75,7 @@ export const TechStacks: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    ...slugField(),
+    ...slugField('name'),
   ],
   timestamps: true,
 }

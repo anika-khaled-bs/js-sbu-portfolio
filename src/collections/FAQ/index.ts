@@ -15,9 +15,9 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { revalidateDelete, revalidateService } from './hooks/revalidateService'
-import { formatServiceTitle } from './hooks/formatServiceTitle'
-import { generateServiceSlug } from './hooks/generateServiceSlug'
+import { revalidateDelete, revalidateFAQ } from './hooks/revalidateFAQ'
+import { formatFAQTitle } from './hooks/formatFAQTitle'
+import { generateFAQSlug } from './hooks/generateFAQSlug'
 import { generateMetaDescription } from './hooks/generateMetaDescription'
 
 import {
@@ -29,8 +29,8 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
 
-export const Services: CollectionConfig = {
-  slug: 'services',
+export const FAQ: CollectionConfig = {
+  slug: 'faqs',
   access: {
     create: authenticated,
     delete: authenticated,
@@ -38,24 +38,22 @@ export const Services: CollectionConfig = {
     update: authenticated,
   },
   defaultPopulate: {
-    title: true,
+    question: true,
     slug: true,
     category: true,
     meta: {
       image: true,
       description: true,
     },
-    featuredImage: true,
-    techStacks: true,
   },
   admin: {
-    defaultColumns: ['title', 'category', 'slug', 'updatedAt'],
+    defaultColumns: ['question', 'category', 'slug', 'updatedAt'],
     group: 'Content',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'services',
+          collection: 'faqs',
           req,
         })
 
@@ -65,14 +63,14 @@ export const Services: CollectionConfig = {
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'services',
+        collection: 'faqs',
         req,
       }),
-    useAsTitle: 'title',
+    useAsTitle: 'question',
   },
   fields: [
     {
-      name: 'title',
+      name: 'question',
       type: 'text',
       required: true,
     },
@@ -82,30 +80,13 @@ export const Services: CollectionConfig = {
         {
           fields: [
             {
-              name: 'icon',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Icon representing this service',
-              },
-            },
-            {
-              name: 'featuredImage',
-              type: 'upload',
-              relationTo: 'media',
-              required: true,
-              admin: {
-                description: 'Main image for this service',
-              },
-            },
-            {
-              name: 'content',
+              name: 'answer',
               type: 'richText',
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
                     ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
                     BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
@@ -113,7 +94,7 @@ export const Services: CollectionConfig = {
                   ]
                 },
               }),
-              label: false,
+              label: 'Answer',
               required: true,
             },
           ],
@@ -122,46 +103,28 @@ export const Services: CollectionConfig = {
         {
           fields: [
             {
-              name: 'techStacks',
+              name: 'relatedServices',
               type: 'relationship',
-              relationTo: 'tech-stacks',
+              relationTo: 'services',
               hasMany: true,
-              required: true,
               admin: {
-                description: 'Technologies used for this service',
+                description: 'Services related to this FAQ',
               },
             },
             {
-              name: 'keyFeatures',
-              type: 'array',
-              admin: {
-                description: 'Key features of this service',
-              },
-              fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'description',
-                  type: 'textarea',
-                  required: true,
-                },
-                {
-                  name: 'icon',
-                  type: 'upload',
-                  relationTo: 'media',
-                },
-              ],
-            },
-            {
-              name: 'relatedProjects',
+              name: 'relatedFAQs',
               type: 'relationship',
-              relationTo: 'posts', // Will update to 'portfolio' when that collection is created
+              relationTo: 'faqs',
               hasMany: true,
+              filterOptions: ({ id }) => {
+                return {
+                  id: {
+                    not_in: [id],
+                  },
+                }
+              },
               admin: {
-                description: 'Related projects that demonstrate this service',
+                description: 'Other FAQs that relate to this one',
               },
             },
             {
@@ -171,16 +134,16 @@ export const Services: CollectionConfig = {
               required: true,
               filterOptions: {
                 type: {
-                  equals: 'service',
+                  equals: 'faq',
                 },
               },
               admin: {
-                description: 'The service category this belongs to',
+                description: 'The FAQ category this belongs to',
                 position: 'sidebar',
               },
             },
           ],
-          label: 'Details',
+          label: 'Relationships',
         },
         {
           name: 'meta',
@@ -208,12 +171,12 @@ export const Services: CollectionConfig = {
       ],
     },
     {
-      name: 'isHighlighted',
+      name: 'isFeatured',
       type: 'checkbox',
-      label: 'Featured Service',
+      label: 'Featured FAQ',
       defaultValue: false,
       admin: {
-        description: 'Should this service be highlighted on the homepage?',
+        description: 'Should this FAQ be highlighted on the homepage?',
         position: 'sidebar',
       },
     },
@@ -240,8 +203,8 @@ export const Services: CollectionConfig = {
     ...slugField(),
   ],
   hooks: {
-    beforeChange: [formatServiceTitle, generateServiceSlug, generateMetaDescription],
-    afterChange: [revalidateService],
+    beforeChange: [formatFAQTitle, generateFAQSlug, generateMetaDescription],
+    afterChange: [revalidateFAQ],
     afterDelete: [revalidateDelete],
   },
   // versions: {

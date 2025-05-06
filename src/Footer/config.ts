@@ -10,21 +10,94 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
+      name: 'quickLinks',
       type: 'array',
+      label: 'Quick Links',
       fields: [
         link({
           appearances: false,
           required: true,
         }),
       ],
-      maxRows: 6,
+      maxRows: 10,
       admin: {
         initCollapsed: true,
         components: {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
       },
+    },
+    {
+      name: 'serviceCategories',
+      type: 'relationship',
+      label: 'Service Categories',
+      relationTo: 'categories',
+      hasMany: true,
+      filterOptions: {
+        type: {
+          equals: 'service',
+        },
+      },
+      admin: {
+        description: 'Select service categories to display in the footer',
+        condition: () => true,
+      },
+    },
+    {
+      name: 'featuredTechStacks',
+      type: 'relationship',
+      label: 'Featured Tech Stacks',
+      relationTo: 'tech-stacks',
+      hasMany: true,
+      admin: {
+        description: 'Select technology stacks to feature in the footer',
+      },
+    },
+    {
+      name: 'showAllTechCategories',
+      type: 'checkbox',
+      label: 'Show All Tech Categories',
+      defaultValue: true,
+      admin: {
+        description:
+          'If checked, all technology stack categories will be shown grouped in the footer',
+      },
+    },
+    {
+      name: 'socialLinks',
+      type: 'group',
+      label: 'Follow Us',
+      fields: [
+        {
+          name: 'linkedin',
+          type: 'text',
+          label: 'LinkedIn URL',
+        },
+        {
+          name: 'github',
+          type: 'text',
+          label: 'GitHub URL',
+        },
+      ],
+    },
+    {
+      name: 'subscription',
+      type: 'group',
+      label: 'Subscription',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Subscription Title',
+          defaultValue: 'Subscribe to our newsletter',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          label: 'Subscription Description',
+          defaultValue: 'Get the latest updates and news delivered to your inbox',
+        },
+      ],
     },
   ],
   hooks: {

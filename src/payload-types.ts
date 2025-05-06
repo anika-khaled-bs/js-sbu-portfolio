@@ -2280,7 +2280,7 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  quickLinks?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -2300,6 +2300,26 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Select service categories to display in the footer
+   */
+  serviceCategories?: (string | Category)[] | null;
+  /**
+   * Select technology stacks to feature in the footer
+   */
+  featuredTechStacks?: (string | TechStack)[] | null;
+  /**
+   * If checked, all technology stack categories will be shown grouped in the footer
+   */
+  showAllTechCategories?: boolean | null;
+  socialLinks?: {
+    linkedin?: string | null;
+    github?: string | null;
+  };
+  subscription?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2346,7 +2366,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  quickLinks?:
     | T
     | {
         link?:
@@ -2359,6 +2379,21 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  serviceCategories?: T;
+  featuredTechStacks?: T;
+  showAllTechCategories?: T;
+  socialLinks?:
+    | T
+    | {
+        linkedin?: T;
+        github?: T;
+      };
+  subscription?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   updatedAt?: T;
   createdAt?: T;

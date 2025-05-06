@@ -6,7 +6,7 @@ import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules'
 import { cn } from '@/utilities/ui'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { HeroSlider as HeroSliderType } from '@/payload-types'
+import { HeroSlider as HeroSliderType, Media } from '@/payload-types'
 
 // Import Swiper styles
 import 'swiper/scss'
@@ -69,7 +69,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ sliders, className }) => {
           <SwiperSlide key={slider.id}>
             <div
               className="relative w-full h-full flex items-center justify-start px-6 md:px-16 lg:px-24 bg-cover bg-center before:absolute before:inset-0 before:bg-black/40 before:z-0"
-              style={{ backgroundImage: `url(${slider.backgroundImage.url})` }}
+              style={{ backgroundImage: `url(${(slider.backgroundImage as Media).url})` }}
             >
               <div className="relative z-10 max-w-3xl">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 animate-fade-in">

@@ -78,6 +78,7 @@ export interface Config {
     testimonials: Testimonial;
     portfolio: Portfolio;
     faqs: Faq;
+    'hero-sliders': HeroSlider;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -100,6 +101,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
+    'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1193,6 +1195,41 @@ export interface Faq {
   createdAt: string;
 }
 /**
+ * Hero sliders for landing pages and sections
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-sliders".
+ */
+export interface HeroSlider {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Text to display on the call-to-action button
+   */
+  buttonText?: string | null;
+  /**
+   * URL to navigate to when the button is clicked
+   */
+  buttonUrl?: string | null;
+  /**
+   * Background image for this hero slider (recommended: 1920x1080)
+   */
+  backgroundImage: string | Media;
+  /**
+   * Whether this slider is currently active
+   */
+  active?: boolean | null;
+  /**
+   * Order in which this slider appears (lower numbers appear first)
+   */
+  sortOrder?: number | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1407,6 +1444,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'faqs';
         value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'hero-sliders';
+        value: string | HeroSlider;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1962,6 +2003,23 @@ export interface FaqsSelect<T extends boolean = true> {
       };
   isFeatured?: T;
   publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-sliders_select".
+ */
+export interface HeroSlidersSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  buttonText?: T;
+  buttonUrl?: T;
+  backgroundImage?: T;
+  active?: T;
+  sortOrder?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

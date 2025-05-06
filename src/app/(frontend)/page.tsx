@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import HeroSlider from '@/components/Home/HeroSliders'
 import '@/components/Home/HeroSliders/index.scss'
+import ClientLogoSlider from '@/components/Home/TrustedBySection'
 
 // export default PageTemplate
 
@@ -12,7 +13,7 @@ import '@/components/Home/HeroSliders/index.scss'
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
-  const sliders = await payload.find({
+  const heroBannerSliders = await payload.find({
     collection: 'hero-sliders',
     depth: 1,
     limit: 12,
@@ -25,11 +26,21 @@ export default async function Page() {
     // },
   })
 
-  console.log('sliders', sliders)
+  const clientTestimonials = await payload.find({
+    collection: 'testimonials',
+    depth: 2, // Increase depth to properly resolve media relations
+    limit: 20,
+    where: {
+      clientLogo: {
+        not_equals: null, // Only fetch testimonials with logos
+      },
+    },
+  })
 
   return (
-    <div className="min-h-screen">
-      <HeroSlider sliders={sliders.docs} />
+    <div>
+      <HeroSlider sliders={heroBannerSliders.docs} />
+      <ClientLogoSlider clientTestimonials={clientTestimonials} />
     </div>
   )
 }

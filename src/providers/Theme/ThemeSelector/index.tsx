@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import React, { useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
 
 import type { Theme } from './types'
 
@@ -15,10 +16,10 @@ import { useTheme } from '..'
 import { themeLocalStorageKey } from './types'
 
 export const ThemeSelector: React.FC = () => {
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const [value, setValue] = useState('')
 
-  const onThemeChange = (themeToSet: Theme & 'auto') => {
+  const onThemeChange = (themeToSet: Theme | 'auto') => {
     if (themeToSet === 'auto') {
       setTheme(null)
       setValue('auto')
@@ -34,18 +35,26 @@ export const ThemeSelector: React.FC = () => {
   }, [])
 
   return (
-    <Select onValueChange={onThemeChange} value={value}>
-      <SelectTrigger
-        aria-label="Select a theme"
-        className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none"
+    <>
+      <button
+        className="p-2 rounded-full bg-secondary text-secondary-foreground"
+        onClick={() => onThemeChange(theme === 'light' ? 'dark' : 'light')}
       >
-        <SelectValue placeholder="Theme" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="auto">Auto</SelectItem>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-      </SelectContent>
-    </Select>
+        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+      </button>
+    </>
+    // <Select onValueChange={onThemeChange} value={value}>
+    //   <SelectTrigger
+    //     aria-label="Select a theme"
+    //     className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none"
+    //   >
+    //     <SelectValue placeholder="Theme" />
+    //   </SelectTrigger>
+    //   <SelectContent>
+    //     <SelectItem value="auto">Auto</SelectItem>
+    //     <SelectItem value="light">Light</SelectItem>
+    //     <SelectItem value="dark">Dark</SelectItem>
+    //   </SelectContent>
+    // </Select>
   )
 }

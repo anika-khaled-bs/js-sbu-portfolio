@@ -293,10 +293,10 @@ export const Testimonials: CollectionConfig = {
   },
   // Removed unsupported 'indexes' property. Handle indexing in the database configuration if needed.
   // Enable versioning with limits for performance
-  versions: {
-    drafts: {
-      autosave: true,
-    },
-    maxPerDoc: 10, // Limit versions to save DB space
-  },
+  // versions: {
+  //   drafts: {
+  //     autosave: true,
+  //   },
+  //   maxPerDoc: 10, // Limit versions to save DB space
+  // },
 }

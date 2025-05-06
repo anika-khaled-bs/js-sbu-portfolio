@@ -15,14 +15,35 @@ export const Header: GlobalConfig = {
       fields: [
         link({
           appearances: false,
+          required: false, // Making link optional
         }),
+        {
+          name: 'subMenuItems',
+          label: 'Submenu Items',
+          type: 'array',
+          fields: [
+            link({
+              appearances: false,
+              required: true,
+            }),
+          ],
+        },
       ],
-      maxRows: 6,
       admin: {
         initCollapsed: true,
         components: {
           RowLabel: '@/Header/RowLabel#RowLabel',
         },
+      },
+    },
+    {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Logo',
+      required: true,
+      admin: {
+        description: 'Site Logo',
       },
     },
   ],

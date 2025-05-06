@@ -23,7 +23,7 @@ export const Categories: CollectionConfig = {
     defaultColumns: ['title', 'type', 'parent', 'updatedAt'],
   },
   hooks: {
-    beforeChange: [formatCategoryTitle, validateCategoryHierarchy, generateCategorySlug],
+    beforeChange: [validateCategoryHierarchy, generateCategorySlug],
     afterRead: [buildCategoryBreadcrumbs],
     afterChange: [revalidateCategory],
     afterDelete: [revalidateDelete],

@@ -1,0 +1,169 @@
+.footer {
+  background-color: #f8f9fa;
+  padding: 3rem 0 1.5rem;
+  color: #333;
+  border-top: 1px solid #e9ecef;
+  margin-top: auto; /* Push footer to bottom when using flexbox layout */
+}
+
+.wrap {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.column h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #0156d1;
+}
+
+.column h6 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.column p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  color: #555;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0156d1;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+}
+
+.navItems {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navItems li a {
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.navItems li a:hover {
+  color: #0156d1;
+}
+
+.socialLinks {
+  margin-top: 1rem;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.socialIcons a {
+  color: #555;
+  transition: color 0.2s;
+}
+
+.socialIcons a:hover {
+  color: #0156d1;
+}
+
+.techStacks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.techCategory {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.subscription {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.subscriptionForm {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.subscriptionForm input {
+  flex-grow: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.subscriptionForm button {
+  background-color: #0156d1;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.subscriptionForm button:hover {
+  background-color: #0043a0;
+}
+
+.subscriptionForm button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.copyRight {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .column:not(:first-child) {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1.5rem;
+  }
+}

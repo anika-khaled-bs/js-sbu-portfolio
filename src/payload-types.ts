@@ -829,7 +829,6 @@ export interface Service {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * Technology stacks used across different services
@@ -960,7 +959,6 @@ export interface Team {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1053,7 +1051,6 @@ export interface Testimonial {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1142,7 +1139,6 @@ export interface Portfolio {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1195,7 +1191,6 @@ export interface Faq {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1808,7 +1803,6 @@ export interface ServicesSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1869,7 +1863,6 @@ export interface TeamSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1907,7 +1900,6 @@ export interface TestimonialsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1950,7 +1942,6 @@ export interface PortfolioSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1975,7 +1966,6 @@ export interface FaqsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2254,9 +2244,33 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        subMenuItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: string | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Site Logo
+   */
+  logo: string | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2266,7 +2280,11 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  /**
+   * Upload a logo to display in the footer
+   */
+  logo?: (string | null) | Media;
+  quickLinks?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -2286,6 +2304,38 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Select service categories to display in the footer
+   */
+  serviceCategories?: (string | Category)[] | null;
+  /**
+   * Select technology stacks to feature in the footer
+   */
+  featuredTechStacks?: (string | TechStack)[] | null;
+  /**
+   * If checked, all technology stack categories will be shown grouped in the footer
+   */
+  showAllTechCategories?: boolean | null;
+  socialLinks?: {
+    linkedin?: string | null;
+    github?: string | null;
+  };
+  /**
+   * Text to display in the copyright section of the footer
+   */
+  copyrightText: string;
+  /**
+   * Name to display in the footer, besides the logo
+   */
+  name?: string | null;
+  /**
+   * A short description
+   */
+  description?: string | null;
+  subscription?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2306,8 +2356,23 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        subMenuItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
         id?: T;
       };
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2317,7 +2382,8 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  logo?: T;
+  quickLinks?:
     | T
     | {
         link?:
@@ -2330,6 +2396,24 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  serviceCategories?: T;
+  featuredTechStacks?: T;
+  showAllTechCategories?: T;
+  socialLinks?:
+    | T
+    | {
+        linkedin?: T;
+        github?: T;
+      };
+  copyrightText?: T;
+  name?: T;
+  description?: T;
+  subscription?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2351,22 +2435,6 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
-        } | null)
-      | ({
-          relationTo: 'services';
-          value: string | Service;
-        } | null)
-      | ({
-          relationTo: 'team';
-          value: string | Team;
-        } | null)
-      | ({
-          relationTo: 'portfolio';
-          value: string | Portfolio;
-        } | null)
-      | ({
-          relationTo: 'faqs';
-          value: string | Faq;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

@@ -82,7 +82,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
           {/* Left side with brand name */}
           <div className="flex items-center">
             <Link href="/" className="font-bold text-xl">
-              <Logo loading="eager" priority="high" className="invert dark:invert-0" />
+              <Logo
+                loading="eager"
+                priority="high"
+                // className="invert dark:invert-0"
+                src={data.logo.url}
+                alt={data.logo.alt}
+              />
             </Link>
           </div>
 

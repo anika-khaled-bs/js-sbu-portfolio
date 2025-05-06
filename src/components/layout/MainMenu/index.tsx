@@ -1,14 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { Logo } from '@/components/Logo/Logo'
-import { cn } from '@/utilities/ui'
-import { MenuLink } from './MenuLink'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { Header, Media } from '@/payload-types'
+import { MobileMenu } from './MobileMenu'
+import { DesktopMenu } from './DesktopMenu'
 
 interface MainMenuProps {
   data: Header
@@ -32,55 +31,23 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
               <Logo
                 loading="eager"
                 priority="high"
-                // className="invert dark:invert-0"
                 src={(data.logo as Media).url!}
                 alt={(data.logo as Media).alt!}
               />
-              {/* <p>Javascript SBU</p> */}
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-10">
-              {data?.navItems?.map((item) => (
-                <div key={item.id} className="relative group">
-                  {item?.subMenuItems?.length! > 0 ? (
-                    <>
-                      <button
-                        onClick={() => toggleDropdown(item.link.label)}
-                        className="nav-link flex items-center gap-1"
-                      >
-                        {item.link.label}
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      {openDropdown === item.link.label && (
-                        <div className="absolute top-full left-0 w-56 mt-1 bg-popover text-popover-foreground rounded-md shadow-md overflow-hidden z-50 animate-fade-in">
-                          <div className="py-1">
-                            {item?.subMenuItems?.map((subItem) => (
-                              <Link
-                                key={subItem.link.label}
-                                href={subItem.link.url!}
-                                className="block px-4 py-2 text-sm hover:bg-muted"
-                                onClick={() => setOpenDropdown(null)}
-                              >
-                                {subItem.link.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <Link href={item.link.url!} className="nav-link">
-                      {item.link.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
+            <DesktopMenu
+              data={data}
+              openDropdown={openDropdown}
+              toggleDropdown={toggleDropdown}
+              setOpenDropdown={setOpenDropdown}
+            />
           </div>
 
           <div className="flex items-center gap-4">
-            {/* <ThemeToggle /> */}
+            {/* Theme Selector */}
+
             <ThemeSelector />
 
             {/* Mobile menu button */}
@@ -94,49 +61,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
         </nav>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden animate-fade-in">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background border-b">
-              {data?.navItems?.map((item) => (
-                <div key={item.id}>
-                  {item?.subMenuItems?.length! ? (
-                    <>
-                      <button
-                        onClick={() => toggleDropdown(item.link.label)}
-                        className="w-full text-left flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-                      >
-                        {item.link.label}
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      {openDropdown === item.link.label && (
-                        <div className="pl-4 space-y-1 animate-fade-in">
-                          {item?.subMenuItems?.map((subItem) => (
-                            <Link
-                              key={subItem.id}
-                              href={subItem.link.url!}
-                              className="block px-3 py-2 rounded-md text-sm text-foreground hover:bg-muted"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {subItem.link.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <Link
-                      href={item.link.url!}
-                      className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.link.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <MobileMenu
+          data={data}
+          isOpen={mobileMenuOpen}
+          openDropdown={openDropdown}
+          toggleDropdown={toggleDropdown}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
       </header>
     </>
   )

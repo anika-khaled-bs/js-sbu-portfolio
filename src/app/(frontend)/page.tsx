@@ -6,7 +6,7 @@
 
 const Home = () => {
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <h1>Home</h1>
       <p>Welcome to the home page!</p>
     </div>

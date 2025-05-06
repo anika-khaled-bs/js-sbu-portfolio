@@ -2,8 +2,8 @@
 
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import HeroSlider from '@/components/HeroSliders'
-import '@/components/HeroSliders/index.scss'
+import HeroSlider from '@/components/Home/HeroSliders'
+import '@/components/Home/HeroSliders/index.scss'
 
 // export default PageTemplate
 

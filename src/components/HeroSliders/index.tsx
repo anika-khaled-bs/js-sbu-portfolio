@@ -71,7 +71,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ sliders, className }) => {
               className="relative w-full h-full flex items-center justify-start px-6 md:px-16 lg:px-24 bg-cover bg-center before:absolute before:inset-0 before:bg-black/40 before:z-0"
               style={{ backgroundImage: `url(${(slider.backgroundImage as Media).url})` }}
             >
-              <div className="relative z-10 max-w-3xl">
+              <div className="container relative z-10">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 animate-fade-in">
                   {slider.title}
                 </h1>

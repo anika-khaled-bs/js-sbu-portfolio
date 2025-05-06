@@ -8,7 +8,7 @@ import { Logo } from '@/components/Logo/Logo'
 import { cn } from '@/utilities/ui'
 import { MenuLink } from './MenuLink'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
-import { Header } from '@/payload-types'
+import { Header, Media } from '@/payload-types'
 
 interface MainMenuProps {
   data: Header
@@ -86,8 +86,8 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
                 loading="eager"
                 priority="high"
                 // className="invert dark:invert-0"
-                src={data.logo.url}
-                alt={data.logo.alt}
+                src={(data.logo as Media).url!}
+                alt={(data.logo as Media).alt!}
               />
             </Link>
           </div>

@@ -17,6 +17,7 @@ import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Portfolio } from './collections/Portfolio'
 import { FAQ } from './collections/FAQ'
+import { HeroSliders } from './collections/HeroSliders'
 
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -83,6 +84,7 @@ export default buildConfig({
     Testimonials,
     Portfolio,
     FAQ,
+    HeroSliders,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

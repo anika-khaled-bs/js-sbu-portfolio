@@ -2267,6 +2267,10 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Site Logo
+   */
+  logo: string | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2332,6 +2336,7 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

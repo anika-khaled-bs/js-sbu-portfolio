@@ -56,6 +56,23 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        accent: 'var(--color-accent)',
+        neutral: 'var(--color-neutral)',
+        background: 'var(--background)',
+        backgroundAlt: 'var(--background-alt)',
+        text: {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+        },
+        border: 'var(--border-color)',
+        link: 'var(--link-color)',
+        button: {
+          bg: 'var(--btn-bg)',
+          text: 'var(--btn-text)',
+        },
+
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',

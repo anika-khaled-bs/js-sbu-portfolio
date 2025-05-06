@@ -81,6 +81,25 @@ export const Footer: GlobalConfig = {
       ],
     },
     {
+      name: 'copyrightText',
+      type: 'text',
+      label: 'Copyright Text',
+      defaultValue: '© 2025 JS-SBU. All rights reserved.',
+      required: true,
+      admin: {
+        description: 'Text to display in the copyright section of the footer',
+      },
+    },
+    {
+      name: 'description',
+      type: 'text',
+      label: 'Footer Description',
+      admin: {
+        description:
+          'A short description about the site development details to display in the footer',
+      },
+    },
+    {
       name: 'subscription',
       type: 'group',
       label: 'Subscription',

@@ -2316,6 +2316,14 @@ export interface Footer {
     linkedin?: string | null;
     github?: string | null;
   };
+  /**
+   * Text to display in the copyright section of the footer
+   */
+  copyrightText: string;
+  /**
+   * A short description about the site development details to display in the footer
+   */
+  description?: string | null;
   subscription?: {
     title?: string | null;
     description?: string | null;
@@ -2389,6 +2397,8 @@ export interface FooterSelect<T extends boolean = true> {
         linkedin?: T;
         github?: T;
       };
+  copyrightText?: T;
+  description?: T;
   subscription?:
     | T
     | {

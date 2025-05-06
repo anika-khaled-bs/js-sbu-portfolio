@@ -24,7 +24,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-bg backdrop-blur-sm border-b">
+      <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur-sm border-b">
         <nav className="container flex h-20 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center space-x-2">

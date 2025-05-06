@@ -2280,6 +2280,10 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  /**
+   * Upload a logo to display in the footer
+   */
+  logo?: (string | null) | Media;
   quickLinks?:
     | {
         link: {
@@ -2321,7 +2325,11 @@ export interface Footer {
    */
   copyrightText: string;
   /**
-   * A short description about the site development details to display in the footer
+   * Name to display in the footer, besides the logo
+   */
+  name?: string | null;
+  /**
+   * A short description
    */
   description?: string | null;
   subscription?: {
@@ -2374,6 +2382,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
   quickLinks?:
     | T
     | {
@@ -2398,6 +2407,7 @@ export interface FooterSelect<T extends boolean = true> {
         github?: T;
       };
   copyrightText?: T;
+  name?: T;
   description?: T;
   subscription?:
     | T

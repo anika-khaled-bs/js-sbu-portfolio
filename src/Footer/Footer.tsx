@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Footer, TechStack } from '@/payload-types'
 import { Gutter } from '@/components/Gutter'
 import { CMSLink } from '@/components/Link'
@@ -19,6 +20,8 @@ export const FooterComponent: React.FC<{
     subscription,
     copyrightText,
     description,
+    logo,
+    name,
   } = footer
 
   const groupedTechStacks = React.useMemo(() => {
@@ -43,11 +46,21 @@ export const FooterComponent: React.FC<{
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
           {/* Logo and Description */}
           <div>
-            <Link href="/" className="text-2xl font-bold  mb-2 inline-block text-primary">
-              Aura Studio
+            <Link href="/" className="mb-4 flex items-center gap-3">
+              {logo && typeof logo === 'object' && (
+                <Image
+                  src={logo.url!}
+                  alt="Footer Logo"
+                  width={150}
+                  height={40}
+                  className="max-h-10 w-auto"
+                />
+              )}
+              <span className="text-xl font-bold text-primary">{name || 'Javascript SBU'}</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
-              Creating innovative digital experiences for forward-thinking brands and businesses.
+              {description ||
+                'We are a team of passionate developers dedicated to building high-quality web applications and services.'}
             </p>
             {socialLinks && (
               <div>
@@ -159,12 +172,7 @@ export const FooterComponent: React.FC<{
                   if (typeof tech === 'string') return null
                   return (
                     <li key={tech.id || i}>
-                      <Link
-                        href={`/tech-stacks${tech.slug ? `/${tech.slug}` : ''}`}
-                        className="hover:underline"
-                      >
-                        {tech.name}
-                      </Link>
+                      <p className="text-muted-foreground">{tech.name}</p>
                     </li>
                   )
                 })}
@@ -204,9 +212,8 @@ export const FooterComponent: React.FC<{
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-12 border-t border-gray-700 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-2">
+        <div className="mt-12 border-t border-border pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-center gap-2">
           <p>{copyrightText}</p>
-          <p>{description || 'Built with React, Next.js, and Payload CMS'}</p>
         </div>
       </Gutter>
     </footer>

@@ -10,6 +10,15 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Footer Logo',
+      admin: {
+        description: 'Upload a logo to display in the footer',
+      },
+    },
+    {
       name: 'quickLinks',
       type: 'array',
       label: 'Quick Links',
@@ -91,12 +100,19 @@ export const Footer: GlobalConfig = {
       },
     },
     {
+      name: 'name',
+      type: 'text',
+      label: 'Name',
+      admin: {
+        description: 'Name to display in the footer, besides the logo',
+      },
+    },
+    {
       name: 'description',
       type: 'text',
       label: 'Footer Description',
       admin: {
-        description:
-          'A short description about the site development details to display in the footer',
+        description: 'A short description',
       },
     },
     {

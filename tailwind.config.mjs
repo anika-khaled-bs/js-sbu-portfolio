@@ -60,7 +60,7 @@ const config = {
         secondary: 'var(--color-secondary)',
         accent: 'var(--color-accent)',
         neutral: 'var(--color-neutral)',
-        background: 'var(--background)',
+        bg: 'var(--bg)',
         backgroundAlt: 'var(--background-alt)',
         text: {
           primary: 'var(--text-primary)',
@@ -112,7 +112,8 @@ const config = {
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
-        sans: ['var(--font-geist-sans)'],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Montserrat', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

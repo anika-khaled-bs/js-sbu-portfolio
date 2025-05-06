@@ -22,12 +22,16 @@
     --color-white: #ffffff;
     --color-black: #000000;
 
+    /* Font Variables */
+    --font-inter: 'Inter', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+
     /* Light Theme Text */
     --text-primary: #1a1a1a;
     --text-secondary: #4f5a66;
 
     /* Light Theme Backgrounds */
-    --background: #ffffff;
+    --bg: #ffffff;
     --background-alt: #f9fafc;
 
     /* Light Theme Border */
@@ -81,7 +85,7 @@
     --text-secondary: #cbd5e1;
 
     /* Dark Theme Backgrounds */
-    --background: #0f172a;
+    --bg: #0f172a;
     --background-alt: #1e293b;
 
     /* Dark Theme Border */

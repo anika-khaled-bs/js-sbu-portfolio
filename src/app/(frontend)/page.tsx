@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import HeroSlider from '@/components/Home/HeroSliders'
 import '@/components/Home/HeroSliders/index.scss'
 import ClientLogoSlider from '@/components/Home/TrustedBySection'
+import FeaturedServices from '@/components/Home/ServicesSection'
 
 // export default PageTemplate
 
@@ -37,10 +38,18 @@ export default async function Page() {
     },
   })
 
+  const services = await payload.find({
+    collection: 'services',
+    depth: 1,
+    limit: 12,
+  })
+  console.log('services', services)
+
   return (
     <div>
       <HeroSlider sliders={heroBannerSliders.docs} />
       <ClientLogoSlider clientTestimonials={clientTestimonials} />
+      <FeaturedServices services={services.docs} />
     </div>
   )
 }

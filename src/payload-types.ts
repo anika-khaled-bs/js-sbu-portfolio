@@ -1083,7 +1083,7 @@ export interface Portfolio {
   /**
    * The client for this project
    */
-  client: string;
+  client?: (string | null) | Testimonial;
   /**
    * URL to live project (if available)
    */
@@ -1117,13 +1117,17 @@ export interface Portfolio {
       }[]
     | null;
   /**
+   * Other portfolio projects that relate to this one
+   */
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
    * Services that were part of this project
    */
   relatedServices?: (string | Service)[] | null;
   /**
    * The portfolio category this belongs to
    */
-  category: string | Category;
+  category?: (string | null) | Category;
   meta?: {
     title?: string | null;
     /**
@@ -1968,6 +1972,7 @@ export interface PortfolioSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  relatedProjects?: T;
   relatedServices?: T;
   category?: T;
   meta?:

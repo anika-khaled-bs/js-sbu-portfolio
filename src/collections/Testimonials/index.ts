@@ -48,7 +48,7 @@ export const Testimonials: CollectionConfig = {
     // Selective field population for performance
   },
   admin: {
-    useAsTitle: 'clientName',
+    useAsTitle: 'clientCompany',
     defaultColumns: ['clientName', 'clientCompany', 'rating', 'featured', 'updatedAt'],
     group: 'Content',
     preview: (doc, { req }) => {

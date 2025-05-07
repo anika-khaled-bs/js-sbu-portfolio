@@ -1,5 +1,4 @@
-import { Category, Media, Portfolio } from '@/payload-types'
-import Link from 'next/link'
+import { Category, Media, Portfolio, Service } from '@/payload-types'
 import { Card } from '@/components/Card'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/Button'
@@ -32,7 +31,16 @@ const FeaturedWorks = ({ featuredProjects }: FeaturedWorksProps) => {
                 category={(project?.category as Category)?.title! ?? null}
                 imageUrl={(project.featuredImage as Media).url!}
                 otherInfo={
-                  <RichText data={project?.content} enableGutter={false} className="m-0 p-0" />
+                  <RichText
+                    data={project?.content}
+                    enableGutter={false}
+                    className="m-0 p-0 text-sm text-muted-foreground"
+                  />
+                  // <div className="flex flex-wrap gap-2">
+                  //   {project?.relatedServices?.map((service: Service) => {
+                  //     return <p className="text-muted-foreground text-xs">{service.title}</p>
+                  //   })}
+                  // </div>
                 }
               />
             ))}

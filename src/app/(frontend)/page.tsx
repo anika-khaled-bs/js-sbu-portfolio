@@ -73,8 +73,8 @@ export default async function Page() {
     <div>
       <HeroSlider sliders={heroBannerSliders.docs} />
       <ClientLogoSlider clientTestimonials={clientTestimonials} />
-      <FeaturedWorks featuredProjects={featuredProjects.docs} />
       <FeaturedServices services={services.docs} />
+      <FeaturedWorks featuredProjects={featuredProjects.docs} />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import HeroSlider from '@/components/Home/HeroSliders'
 import '@/components/Home/HeroSliders/index.scss'
 import ClientLogoSlider from '@/components/Home/TrustedBySection'
 import FeaturedWorks from '@/components/Home/FeaturedProjects'
+import FeaturedServices from '@/components/Home/ServicesSection'
 
 // export default PageTemplate
 
@@ -61,12 +62,19 @@ export default async function Page() {
     //   meta: true,
     // },
   })
+  const services = await payload.find({
+    collection: 'services',
+    depth: 1,
+    limit: 12,
+  })
+  console.log('services', services)
 
   return (
     <div>
       <HeroSlider sliders={heroBannerSliders.docs} />
       <ClientLogoSlider clientTestimonials={clientTestimonials} />
       <FeaturedWorks featuredProjects={featuredProjects.docs} />
+      <FeaturedServices services={services.docs} />
     </div>
   )
 }

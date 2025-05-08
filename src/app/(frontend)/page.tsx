@@ -7,6 +7,7 @@ import '@/components/Home/HeroSliders/index.scss'
 import ClientLogoSlider from '@/components/Home/TrustedBySection'
 import FeaturedWorks from '@/components/Home/FeaturedProjects'
 import FeaturedServices from '@/components/Home/ServicesSection'
+import AboutUsComponent from '@/components/Home/AboutUsSection'
 
 // export default PageTemplate
 
@@ -20,12 +21,6 @@ export default async function Page() {
     depth: 1,
     limit: 12,
     overrideAccess: false,
-    // select: {
-    //   title: true,
-    //   slug: true,
-    //   categories: true,
-    //   meta: true,
-    // },
   })
 
   const clientTestimonials = await payload.find({
@@ -55,19 +50,23 @@ export default async function Page() {
         equals: true, // Only fetch featured testimonials
       },
     },
-    // select: {
-    //   title: true,
-    //   slug: true,
-    //   categories: true,
-    //   meta: true,
-    // },
   })
+
   const services = await payload.find({
     collection: 'services',
     depth: 1,
     limit: 12,
   })
-  console.log('services', services)
+
+  const aboutUs = await payload.find({
+    collection: 'about',
+    select: {
+      hero: true,
+      heading: true,
+      subHeading: true,
+    },
+  })
+  console.log('🚀 ~ Page ~ aboutUs:', aboutUs)
 
   return (
     <div>
@@ -75,6 +74,7 @@ export default async function Page() {
       <ClientLogoSlider clientTestimonials={clientTestimonials} />
       <FeaturedServices services={services.docs} />
       <FeaturedWorks featuredProjects={featuredProjects.docs} />
+      <AboutUsComponent aboutUs={aboutUs.docs[0]} />
     </div>
   )
 }

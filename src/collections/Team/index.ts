@@ -305,7 +305,7 @@ export const Team: CollectionConfig = {
         ],
       },
     },
-    ...slugField(),
+    ...slugField('name'),
   ],
   hooks: {
     beforeChange: [formatTeamDisplayName, generateTeamSlug],

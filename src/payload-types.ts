@@ -452,6 +452,11 @@ export interface Service {
    * Main image for this service
    */
   featuredImage: string | Media;
+  shortDescription: string;
+  /**
+   * Technologies used for this service
+   */
+  techStacks: (string | TechStack)[];
   content: {
     root: {
       type: string;
@@ -467,10 +472,6 @@ export interface Service {
     };
     [k: string]: unknown;
   };
-  /**
-   * Technologies used for this service
-   */
-  techStacks: (string | TechStack)[];
   /**
    * Key features of this service
    */
@@ -1710,8 +1711,9 @@ export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   icon?: T;
   featuredImage?: T;
-  content?: T;
+  shortDescription?: T;
   techStacks?: T;
+  content?: T;
   keyFeatures?:
     | T
     | {

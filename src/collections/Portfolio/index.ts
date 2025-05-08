@@ -1,11 +1,19 @@
 import type { CollectionConfig } from 'payload'
 
 import {
+  AlignFeature,
   BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   HorizontalRuleFeature,
   InlineToolbarFeature,
+  LinkFeature,
+  UnderlineFeature,
+  BoldFeature,
+  ItalicFeature,
+  SubscriptFeature,
+  SuperscriptFeature,
+  UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -103,6 +111,14 @@ export const Portfolio: CollectionConfig = {
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
+                    AlignFeature(),
+                    LinkFeature(),
+                    UnderlineFeature(),
+                    BoldFeature(),
+                    ItalicFeature(),
+                    SubscriptFeature(),
+                    SuperscriptFeature(),
+                    UploadFeature(),
                   ]
                 },
               }),
@@ -116,8 +132,10 @@ export const Portfolio: CollectionConfig = {
           fields: [
             {
               name: 'client',
-              type: 'text',
-              required: true,
+              // required: true,
+              type: 'relationship',
+              relationTo: 'testimonials',
+
               admin: {
                 description: 'The client for this project',
               },
@@ -188,6 +206,23 @@ export const Portfolio: CollectionConfig = {
               ],
             },
             {
+              name: 'relatedProjects',
+              type: 'relationship',
+              relationTo: 'portfolio',
+              hasMany: true,
+              admin: {
+                description: 'Other portfolio projects that relate to this one',
+                // condition: (data) => Boolean(data?.id),
+              },
+              filterOptions: ({ id }) => {
+                return {
+                  id: {
+                    not_equals: id,
+                  },
+                }
+              },
+            },
+            {
               name: 'relatedServices',
               type: 'relationship',
               relationTo: 'services',
@@ -200,7 +235,7 @@ export const Portfolio: CollectionConfig = {
               name: 'category',
               type: 'relationship',
               relationTo: 'categories',
-              required: true,
+              // required: true,
               filterOptions: {
                 type: {
                   equals: 'portfolio',

@@ -16,13 +16,14 @@ const ClientLogoSlider = ({ clientTestimonials }: ClientSliderProps) => {
             <p className="text-sm font-medium text-primary mb-2">Trusted By</p>
             <p className="text-4xl font-semibold">Industry Leaders</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+          <div className="flex flex-wrap justify-center gap-8">
             {clientTestimonials?.docs?.map((client) => (
-              <ClientLogo
-                key={client.id}
-                name={client?.clientCompany!}
-                logo={(client.clientLogo as Media).url!}
-              />
+              <div className="w-5/12 md:w-[30%] lg:w-[15%] flex justify-center" key={client.id}>
+                <ClientLogo
+                  name={client?.clientCompany!}
+                  logo={(client.clientLogo as Media).url!}
+                />
+              </div>
             ))}
           </div>
         </div>

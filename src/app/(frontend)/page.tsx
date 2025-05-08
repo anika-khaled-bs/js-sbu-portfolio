@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import HeroSlider from '@/components/Home/HeroSliders'
 import '@/components/Home/HeroSliders/index.scss'
 import ClientLogoSlider from '@/components/Home/TrustedBySection'
+import FeaturedWorks from '@/components/Home/FeaturedProjects'
 import FeaturedServices from '@/components/Home/ServicesSection'
 
 // export default PageTemplate
@@ -30,14 +31,37 @@ export default async function Page() {
   const clientTestimonials = await payload.find({
     collection: 'testimonials',
     depth: 2, // Increase depth to properly resolve media relations
-    limit: 20,
+    limit: 6,
+    select: {
+      clientCompany: true,
+      clientLogo: true, // Include clientLogo in the selection
+    },
     where: {
       clientLogo: {
         not_equals: null, // Only fetch testimonials with logos
       },
+      featured: {
+        equals: true, // Only fetch featured testimonials
+      },
     },
   })
 
+  const featuredProjects = await payload.find({
+    collection: 'portfolio',
+    depth: 1,
+    limit: 3,
+    where: {
+      isFeatured: {
+        equals: true, // Only fetch featured testimonials
+      },
+    },
+    // select: {
+    //   title: true,
+    //   slug: true,
+    //   categories: true,
+    //   meta: true,
+    // },
+  })
   const services = await payload.find({
     collection: 'services',
     depth: 1,
@@ -50,6 +74,7 @@ export default async function Page() {
       <HeroSlider sliders={heroBannerSliders.docs} />
       <ClientLogoSlider clientTestimonials={clientTestimonials} />
       <FeaturedServices services={services.docs} />
+      <FeaturedWorks featuredProjects={featuredProjects.docs} />
     </div>
   )
 }

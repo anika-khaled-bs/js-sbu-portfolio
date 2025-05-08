@@ -20,6 +20,12 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -67,23 +73,52 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
+          fields: [
+            hero,
+            {
+              name: 'heading',
+              type: 'text',
+            },
+            {
+              name: 'subHeading',
+              type: 'text',
+            },
+          ],
           label: 'Hero',
         },
         {
+          label: 'Content',
           fields: [
             {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
-              required: true,
-              admin: {
-                initCollapsed: true,
-              },
+              name: 'pageContent',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                  ]
+                },
+              }),
             },
           ],
-          label: 'Content',
         },
+        // {
+        //   fields: [
+        //     {
+        //       name: 'layout',
+        //       type: 'blocks',
+        //       blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+        //       required: true,
+        //       admin: {
+        //         initCollapsed: true,
+        //       },
+        //     },
+        //   ],
+        //   label: 'Content',
+        // },
         {
           name: 'meta',
           label: 'SEO',

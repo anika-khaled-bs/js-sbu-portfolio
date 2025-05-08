@@ -4,10 +4,10 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import HeroSlider from '@/components/Home/HeroSliders'
 import '@/components/Home/HeroSliders/index.scss'
-import ClientLogoSlider from '@/components/Home/TrustedBySection'
+import ClientLogoSlider from '@/components/TrustedBySection'
 import FeaturedWorks from '@/components/Home/FeaturedProjects'
 import FeaturedServices from '@/components/Home/ServicesSection'
-import AboutUsComponent from '@/components/Home/AboutUsSection'
+import AboutUsHomeComponent from '@/components/Home/AboutUsSection'
 
 // export default PageTemplate
 
@@ -66,15 +66,14 @@ export default async function Page() {
       subHeading: true,
     },
   })
-  console.log('🚀 ~ Page ~ aboutUs:', aboutUs)
 
   return (
     <div>
       <HeroSlider sliders={heroBannerSliders.docs} />
-      <ClientLogoSlider clientTestimonials={clientTestimonials} />
+      <ClientLogoSlider clientTestimonials={clientTestimonials?.docs!} />
       <FeaturedServices services={services.docs} />
       <FeaturedWorks featuredProjects={featuredProjects.docs} />
-      <AboutUsComponent aboutUs={aboutUs.docs[0]} />
+      <AboutUsHomeComponent aboutUs={aboutUs.docs[0]!} />
     </div>
   )
 }

@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import React from 'react'
-import { inter, montserrat } from '../fonts'
+import { montserrat } from '../fonts'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
@@ -21,11 +19,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html
-      className={cn(GeistSans.variable, GeistMono.variable, inter.variable, montserrat.variable)}
-      lang="en"
-      suppressHydrationWarning
-    >
+    <html className={cn(montserrat.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />

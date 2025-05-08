@@ -3,21 +3,28 @@ import { PaginatedDocs } from 'payload'
 import { ClientLogo } from './ClientLogo'
 
 interface ClientSliderProps {
-  clientTestimonials: PaginatedDocs<Partial<Testimonial>>
+  clientTestimonials: Partial<Testimonial>[]
   className?: string
+  title?: string
+  subTitle?: string
 }
 
-const ClientLogoSlider = ({ clientTestimonials }: ClientSliderProps) => {
+const ClientLogoSlider = ({
+  clientTestimonials,
+  title = 'Trusted By',
+  subTitle = 'Industry Leaders and Innovators',
+}: ClientSliderProps) => {
+  console.log('🚀 ~ ClientLogoSlider ~ clientTestimonials:', clientTestimonials)
   return (
     <>
       <section className="section bg-muted py-16 min-h-[50vh]">
         <div className="container">
           <div className="mb-12 text-center">
-            <p className="text-sm font-medium text-primary mb-2">Trusted By</p>
-            <p className="text-4xl font-semibold">Industry Leaders</p>
+            <p className="text-sm font-medium text-primary mb-2">{title}</p>
+            <p className="text-4xl font-semibold">{subTitle}</p>
           </div>
           <div className="flex flex-wrap justify-center gap-8">
-            {clientTestimonials?.docs?.map((client) => (
+            {clientTestimonials?.map((client) => (
               <div className="w-5/12 md:w-[30%] lg:w-[15%] flex justify-center" key={client.id}>
                 <ClientLogo
                   name={client?.clientCompany!}

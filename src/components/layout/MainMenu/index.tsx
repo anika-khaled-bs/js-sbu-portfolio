@@ -14,7 +14,6 @@ interface MainMenuProps {
 }
 
 export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
-  console.log('🚀 ~ data:', data)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 

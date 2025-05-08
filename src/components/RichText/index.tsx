@@ -68,9 +68,9 @@ export default function RichText(props: Props) {
       converters={jsxConverters}
       className={cn(
         {
-          'container ': enableGutter,
+          // 'container ': enableGutter,
           'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert ': enableProse,
+          'leading-5 prose md:prose-md dark:prose-invert ': enableProse,
         },
         className,
       )}

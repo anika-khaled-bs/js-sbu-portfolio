@@ -24,17 +24,18 @@ export const revalidateTestimonial: CollectionAfterChangeHook = ({
 
     // Revalidate the homepage which might feature testimonials
     revalidatePath('/')
+    revalidatePath('/about')
 
     // Revalidate service pages that might display related testimonials
-    if (doc.relatedServices?.length) {
-      // Only revalidate relevant service pages, not all
-      doc.relatedServices.forEach((service) => {
-        const serviceId = typeof service === 'object' ? service.id : service
-        if (serviceId) {
-          revalidatePath(`/services/${serviceId}`)
-        }
-      })
-    }
+    // if (doc.relatedServices?.length) {
+    //   // Only revalidate relevant service pages, not all
+    //   doc.relatedServices.forEach((service) => {
+    //     const serviceId = typeof service === 'object' ? service.id : service
+    //     if (serviceId) {
+    //       revalidatePath(`/services/${serviceId}`)
+    //     }
+    //   })
+    // }
 
     // Tag-based revalidation for components that might render testimonials
     revalidateTag('testimonials')

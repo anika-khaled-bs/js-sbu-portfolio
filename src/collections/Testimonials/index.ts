@@ -40,6 +40,7 @@ export const Testimonials: CollectionConfig = {
   defaultPopulate: {
     clientName: true,
     clientCompany: true,
+    ClientLogo: true,
     clientTitle: true,
     rating: true,
     testimonial: true,
@@ -49,7 +50,14 @@ export const Testimonials: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'clientCompany',
-    defaultColumns: ['clientName', 'clientCompany', 'rating', 'featured', 'updatedAt'],
+    defaultColumns: [
+      'clientName',
+      'clientCompany',
+      // 'clientLogo',
+      'rating',
+      'featured',
+      'updatedAt',
+    ],
     group: 'Content',
     preview: (doc, { req }) => {
       return generatePreviewPath({

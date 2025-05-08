@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { Header } from '@/payload-types'
+import { CMSLink } from '@/components/Link'
 
 interface MobileMenuProps {
   data: Header
@@ -36,30 +37,29 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 {openDropdown === item.link.label && (
                   <div className="pl-4 space-y-1 animate-fade-in">
                     {item?.subMenuItems?.map((subItem) => (
-                      <Link
+                      <CMSLink
                         key={subItem.id}
-                        href={subItem.link.url!}
+                        {...subItem.link}
+                        appearance="ghost"
                         className="block px-3 py-2 rounded-md text-sm text-foreground hover:bg-muted"
                         onClick={() => {
                           setMobileMenuOpen(false)
                         }}
-                      >
-                        {subItem.link.label}
-                      </Link>
+                      />
                     ))}
                   </div>
                 )}
               </>
             ) : (
-              <Link
-                href={item.link.url!}
-                className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
+              <CMSLink
+                key={item.id}
+                {...item.link}
+                appearance="ghost"
+                className="block px-3 py-2 rounded-md text-sm text-foreground hover:bg-muted"
                 onClick={() => {
                   setMobileMenuOpen(false)
                 }}
-              >
-                {item.link.label}
-              </Link>
+              />
             )}
           </div>
         ))}

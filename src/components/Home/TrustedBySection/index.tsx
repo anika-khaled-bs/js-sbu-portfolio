@@ -10,7 +10,7 @@ interface ClientSliderProps {
 const ClientLogoSlider = ({ clientTestimonials }: ClientSliderProps) => {
   return (
     <>
-      <section className="section bg-muted mb-6 py-16 min-h-[50vh]">
+      <section className="section bg-muted py-16 min-h-[50vh]">
         <div className="container">
           <div className="mb-12 text-center">
             <p className="text-sm font-medium text-primary mb-2">Trusted By</p>

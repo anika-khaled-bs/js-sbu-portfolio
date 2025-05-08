@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { Header } from '@/payload-types'
+import { CMSLink } from '@/components/Link'
 
 interface DesktopMenuProps {
   data: Header
@@ -55,22 +56,19 @@ export const DesktopMenu: React.FC<DesktopMenuProps> = ({
                 <div className="absolute top-full left-0 w-56 bg-popover text-popover-foreground rounded-md shadow-md overflow-hidden z-50 animate-fade-in">
                   <div className="py-1">
                     {item?.subMenuItems?.map((subItem) => (
-                      <Link
-                        key={subItem.link.label}
-                        href={subItem.link.url!}
-                        className="block px-4 py-2 text-sm hover:bg-muted"
-                      >
-                        {subItem.link.label}
-                      </Link>
+                      <CMSLink
+                        key={subItem.id}
+                        {...subItem.link}
+                        appearance="ghost"
+                        className="block px-4 text-sm hover:bg-muted m-0"
+                      />
                     ))}
                   </div>
                 </div>
               )}
             </>
           ) : (
-            <Link href={item.link.url!} className="nav-link">
-              {item.link.label}
-            </Link>
+            <CMSLink {...item.link} appearance="ghost" />
           )}
         </div>
       ))}

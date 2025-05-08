@@ -16,7 +16,7 @@ const AboutUsComponent = ({ aboutUs }: AboutUsProps) => {
         <Introduction aboutUs={aboutUs} />
       </div>
       <OurValues aboutUs={aboutUs} />
-      {/* <ClientLogoSlider clientTestimonials={aboutUs.featuredTestimonials! as Testimonial[]} /> */}
+      <ClientLogoSlider clientTestimonials={aboutUs.featuredTestimonials! as Testimonial[]} />
     </>
   )
 }

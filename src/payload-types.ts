@@ -703,7 +703,7 @@ export interface Testimonial {
   /**
    * Projects this testimonial relates to
    */
-  relatedProjects?: (string | Post)[] | null;
+  relatedProjects?: (string | Portfolio)[] | null;
   /**
    * Technologies used in the project
    */

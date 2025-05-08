@@ -40,7 +40,7 @@ export const Testimonials: CollectionConfig = {
   defaultPopulate: {
     clientName: true,
     clientCompany: true,
-    ClientLogo: true,
+    clientLogo: true,
     clientTitle: true,
     rating: true,
     testimonial: true,
@@ -209,7 +209,7 @@ export const Testimonials: CollectionConfig = {
             {
               name: 'relatedProjects',
               type: 'relationship',
-              relationTo: 'posts', // Will update to 'portfolio' when that collection exists
+              relationTo: 'portfolio', // Will update to 'portfolio' when that collection exists
               hasMany: true,
               admin: {
                 description: 'Projects this testimonial relates to',

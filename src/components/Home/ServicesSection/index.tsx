@@ -25,7 +25,7 @@ const FeaturedServices = ({ services }: ServiceProps) => {
               <ServiceCard
                 key={service.id}
                 title={service.title}
-                description={<RichText data={service.content} enableGutter={false} />}
+                description={service.shortDescription}
                 icon={service.icon as Media}
                 slug={service.slug!}
               />

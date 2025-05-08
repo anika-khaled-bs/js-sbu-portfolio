@@ -17,7 +17,7 @@ import Image from 'next/image'
 export interface ServiceCardProps {
   title: string
 
-  description: string | React.ReactNode
+  description: string
 
   icon: string | Media | null
 

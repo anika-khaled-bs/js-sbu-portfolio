@@ -1,5 +1,4 @@
 import { Media, Testimonial } from '@/payload-types'
-import { PaginatedDocs } from 'payload'
 import { ClientLogo } from './ClientLogo'
 
 interface ClientSliderProps {
@@ -14,13 +13,12 @@ const ClientLogoSlider = ({
   title = 'Trusted By',
   subTitle = 'Industry Leaders and Innovators',
 }: ClientSliderProps) => {
-  console.log('🚀 ~ ClientLogoSlider ~ clientTestimonials:', clientTestimonials)
   return (
     <>
       <section className="section bg-muted py-16 min-h-[50vh]">
         <div className="container">
           <div className="mb-12 text-center">
-            <p className="text-sm font-medium text-primary mb-2">{title}</p>
+            <p className="font-medium text-primary mb-2">{title}</p>
             <p className="text-4xl font-semibold">{subTitle}</p>
           </div>
           <div className="flex flex-wrap justify-center gap-8">

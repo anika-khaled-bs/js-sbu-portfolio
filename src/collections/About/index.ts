@@ -224,16 +224,56 @@ export const About: CollectionConfig = {
           fields: [
             {
               name: 'mission',
-              type: 'textarea',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
               admin: {
                 description: 'Company mission statement',
               },
             },
             {
+              name: 'missionImage',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Image representing the company mission',
+              },
+            },
+            {
               name: 'vision',
-              type: 'textarea',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
               admin: {
                 description: 'Company vision statement',
+              },
+            },
+            {
+              name: 'visionImage',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Image representing the company vision',
               },
             },
             {
@@ -269,6 +309,7 @@ export const About: CollectionConfig = {
               name: 'featuredTeamMembers',
               type: 'relationship',
               relationTo: 'team',
+              maxRows: 6,
               hasMany: true,
               admin: {
                 description: 'Team members to feature on the about page',

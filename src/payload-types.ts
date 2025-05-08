@@ -984,11 +984,47 @@ export interface About {
   /**
    * Company mission statement
    */
-  mission?: string | null;
+  mission?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Image representing the company mission
+   */
+  missionImage?: (string | null) | Media;
   /**
    * Company vision statement
    */
-  vision?: string | null;
+  vision?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Image representing the company vision
+   */
+  visionImage?: (string | null) | Media;
   /**
    * Core company values
    */
@@ -1952,7 +1988,9 @@ export interface AboutSelect<T extends boolean = true> {
   featuredImage?: T;
   content?: T;
   mission?: T;
+  missionImage?: T;
   vision?: T;
+  visionImage?: T;
   values?:
     | T
     | {

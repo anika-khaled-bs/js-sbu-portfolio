@@ -42,6 +42,8 @@ export const Team: CollectionConfig = {
     slug: true,
     role: true,
     profileImage: true,
+    shortBio: true,
+    socialLinks: true,
     meta: {
       image: true,
       description: true,

@@ -9,7 +9,7 @@ interface AboutUsProps {
 
 const Introduction = ({ aboutUs }: AboutUsProps) => {
   return (
-    <div className="mt-16">
+    <div className="mt-16 container">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <Image

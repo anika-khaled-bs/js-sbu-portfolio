@@ -9,7 +9,7 @@ export default async function Page() {
   const aboutUs = await payload.find({
     collection: 'about',
     limit: 1,
-    depth: 8,
+    depth: 3,
   })
 
   return <AboutUsComponent aboutUs={aboutUs.docs[0]!} />

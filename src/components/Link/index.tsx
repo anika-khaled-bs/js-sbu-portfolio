@@ -12,8 +12,10 @@ type CMSLinkType = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'pages' | 'posts'
+    relationTo: 'pages' | 'posts' | 'services'
     value: Page | Post | string | number
+    usePrefix?: boolean
+    prefixValue?: string
   } | null
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
@@ -34,12 +36,20 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
   } = props
 
-  const href =
-    type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
-      : url
+  // Generate href based on conditions
+  let href = url || ''
+
+  if (type === 'reference' && typeof reference?.value === 'object' && reference.value.slug) {
+    // Check if it's a service with the usePrefix flag
+    if (reference.relationTo === 'services' && reference.usePrefix) {
+      // Add the prefix (which could be a domain or path segment) before the services path
+      const prefix = reference.prefixValue || ''
+      href = `${prefix}${prefix.endsWith('/') ? '' : '/'}services/${reference.value.slug}`
+    } else {
+      // Standard path generation for other collection types
+      href = `${reference.relationTo !== 'pages' ? `/${reference.relationTo}` : ''}/${reference.value.slug}`
+    }
+  }
 
   if (!href) return null
 
@@ -49,7 +59,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link href={href || url || ''} {...newTabProps}>
+      <Link href={href} {...newTabProps}>
         {label && label}
         {children && children}
       </Link>
@@ -58,7 +68,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   return (
     <Button asChild className={className} size={size} variant={appearance} onClick={props.onClick}>
-      <Link href={href || url || ''} {...newTabProps}>
+      <Link href={href} {...newTabProps}>
         {label && label}
         {children && children}
       </Link>

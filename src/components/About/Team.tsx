@@ -64,7 +64,10 @@ const TeamCard = ({ member }: { member: Partial<Team> }) => {
   const image = member.profileImage as Media
 
   return (
-    <div className="text-center" key={member.id}>
+    <div
+      className="w-full md:w-[30%] lg:w-[17%] flex flex-col justify-center text-center"
+      key={member.id}
+    >
       <div className="mb-4 relative overflow-hidden rounded-lg aspect-square">
         {image?.url ? (
           <Image
@@ -101,6 +104,7 @@ const TeamCard = ({ member }: { member: Partial<Team> }) => {
 }
 
 const TeamComponent = ({ team, className = '' }: TeamProps) => {
+  console.log('🚀 ~ TeamComponent ~ team:', team)
   return (
     <section className={`section ${className}`} id="team">
       <div className="container py-16">
@@ -111,7 +115,7 @@ const TeamComponent = ({ team, className = '' }: TeamProps) => {
             Meet the talented individuals who make the magic happen at JS SBU.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <div className="flex flex-wrap justify-center gap-8">
           {team.map((member) => (
             <TeamCard key={member.id} member={member} />
           ))}

@@ -8,7 +8,7 @@ interface AboutUsProps {
 
 const MissionVisionComponent = ({ aboutUs }: AboutUsProps) => {
   return (
-    <section className="bg-white py-16 px-4 md:px-10 container">
+    <section id="mission" className="bg-white py-16 px-4 md:px-10 container">
       <div className="mx-auto space-y-20">
         {/* Mission Section */}
         <div className="grid md:grid-cols-2 gap-8 items-center">

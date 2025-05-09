@@ -20,6 +20,7 @@ type LinkType = (options?: {
   disableLabel?: boolean
   overrides?: Partial<GroupField>
   required?: boolean // Added new option to control if fields are required
+  prefix?: string // New option for service prefix
 }) => Field
 
 export const link: LinkType = ({
@@ -81,8 +82,22 @@ export const link: LinkType = ({
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
       label: 'Document to link to',
-      relationTo: ['pages', 'posts'],
+      relationTo: ['pages', 'services'],
       required: required, // Use the required parameter here
+      hooks: {
+        // Add a hook to store information about the collection and prefix
+        beforeChange: [
+          ({ value, siblingData }) => {
+            if (siblingData?.type !== 'reference') return value
+            const collection = siblingData?.reference?.relationTo
+            if (collection === 'services') {
+              value.usePrefix = true
+              value.prefixValue = 'services'
+            }
+            return value
+          },
+        ],
+      },
     },
     {
       name: 'url',

@@ -192,8 +192,8 @@ export interface Page {
                   value: string | Page;
                 } | null)
               | ({
-                  relationTo: 'posts';
-                  value: string | Post;
+                  relationTo: 'services';
+                  value: string | Service;
                 } | null);
             url?: string | null;
             label: string;
@@ -241,12 +241,24 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "services".
  */
-export interface Post {
+export interface Service {
   id: string;
   title: string;
-  heroImage?: (string | null) | Media;
+  /**
+   * Icon representing this service
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Main image for this service
+   */
+  featuredImage: string | Media;
+  shortDescription: string;
+  /**
+   * Technologies used for this service
+   */
+  techStacks: (string | TechStack)[];
   content: {
     root: {
       type: string;
@@ -262,8 +274,25 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (string | Post)[] | null;
-  categories?: (string | Category)[] | null;
+  /**
+   * Key features of this service
+   */
+  keyFeatures?:
+    | {
+        title: string;
+        description: string;
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Related projects that demonstrate this service
+   */
+  relatedProjects?: (string | Post)[] | null;
+  /**
+   * The service category this belongs to
+   */
+  category: string | Category;
   meta?: {
     title?: string | null;
     /**
@@ -272,19 +301,15 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
   };
+  /**
+   * Should this service be highlighted on the homepage?
+   */
+  isHighlighted?: boolean | null;
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -379,6 +404,77 @@ export interface Media {
   };
 }
 /**
+ * Technology stacks used across different services
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tech-stacks".
+ */
+export interface TechStack {
+  id: string;
+  name: string;
+  description?: string | null;
+  /**
+   * Icon representing this technology (SVG preferred)
+   */
+  icon?: (string | null) | Media;
+  category: 'frontend' | 'backend' | 'mobile' | 'devops' | 'database' | 'ml-ai' | 'other';
+  /**
+   * Show in featured technology sections
+   */
+  featured?: boolean | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  heroImage?: (string | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (string | Post)[] | null;
+  categories?: (string | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
@@ -436,102 +532,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services".
- */
-export interface Service {
-  id: string;
-  title: string;
-  /**
-   * Icon representing this service
-   */
-  icon?: (string | null) | Media;
-  /**
-   * Main image for this service
-   */
-  featuredImage: string | Media;
-  shortDescription: string;
-  /**
-   * Technologies used for this service
-   */
-  techStacks: (string | TechStack)[];
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Key features of this service
-   */
-  keyFeatures?:
-    | {
-        title: string;
-        description: string;
-        icon?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Related projects that demonstrate this service
-   */
-  relatedProjects?: (string | Post)[] | null;
-  /**
-   * The service category this belongs to
-   */
-  category: string | Category;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Should this service be highlighted on the homepage?
-   */
-  isHighlighted?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Technology stacks used across different services
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tech-stacks".
- */
-export interface TechStack {
-  id: string;
-  name: string;
-  description?: string | null;
-  /**
-   * Icon representing this technology (SVG preferred)
-   */
-  icon?: (string | null) | Media;
-  category: 'frontend' | 'backend' | 'mobile' | 'devops' | 'database' | 'ml-ai' | 'other';
-  /**
-   * Show in featured technology sections
-   */
-  featured?: boolean | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -945,8 +945,8 @@ export interface About {
                   value: string | Page;
                 } | null)
               | ({
-                  relationTo: 'posts';
-                  value: string | Post;
+                  relationTo: 'services';
+                  value: string | Service;
                 } | null);
             url?: string | null;
             label: string;
@@ -2293,8 +2293,8 @@ export interface Header {
                 value: string | Page;
               } | null)
             | ({
-                relationTo: 'posts';
-                value: string | Post;
+                relationTo: 'services';
+                value: string | Service;
               } | null);
           url?: string | null;
           label: string;
@@ -2310,8 +2310,8 @@ export interface Header {
                       value: string | Page;
                     } | null)
                   | ({
-                      relationTo: 'posts';
-                      value: string | Post;
+                      relationTo: 'services';
+                      value: string | Service;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -2350,8 +2350,8 @@ export interface Footer {
                 value: string | Page;
               } | null)
             | ({
-                relationTo: 'posts';
-                value: string | Post;
+                relationTo: 'services';
+                value: string | Service;
               } | null);
           url?: string | null;
           label: string;

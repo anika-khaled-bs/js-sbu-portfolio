@@ -8,7 +8,6 @@ interface FeaturedWorksProps {
 }
 
 const FeaturedWorks = ({ featuredProjects }: FeaturedWorksProps) => {
-  console.log('🚀 ~ FeaturedWorks ~ featuredProjects:', featuredProjects)
   return (
     <section className="section bg-muted mb-6 py-16 min-h-[50vh]">
       <div className="container">

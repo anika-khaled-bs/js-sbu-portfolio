@@ -58,7 +58,7 @@ export const Testimonials: CollectionConfig = {
       'featured',
       'updatedAt',
     ],
-    group: 'Content',
+    group: 'Collections',
     preview: (doc, { req }) => {
       return generatePreviewPath({
         slug: typeof doc?.slug === 'string' ? doc.slug : '',

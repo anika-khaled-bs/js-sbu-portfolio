@@ -17,7 +17,7 @@ export const HeroSliders: CollectionConfig = {
 
   admin: {
     useAsTitle: 'title',
-    group: 'Content',
+    group: 'Collections',
     description: 'Hero sliders for landing pages and sections',
   },
 

@@ -50,7 +50,7 @@ export const Services: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['title', 'category', 'slug', 'updatedAt'],
-    group: 'Content',
+    group: 'Collections',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({

@@ -19,7 +19,7 @@ export const TechStacks: CollectionConfig = {
 
   admin: {
     useAsTitle: 'name',
-    group: 'Content',
+    group: 'Collections',
     description: 'Technology stacks used across different services',
   },
   hooks: {

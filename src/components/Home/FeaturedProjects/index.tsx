@@ -1,6 +1,5 @@
-import { Category, Media, Portfolio, Service } from '@/payload-types'
+import { Media, Portfolio } from '@/payload-types'
 import { Card } from '@/components/Card'
-import RichText from '@/components/RichText'
 import { Button } from '@/components/Button'
 
 interface FeaturedWorksProps {

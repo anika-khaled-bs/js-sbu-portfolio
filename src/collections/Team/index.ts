@@ -52,7 +52,7 @@ export const Team: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'departmentCategory', 'updatedAt'],
-    group: 'Content',
+    group: 'Collections',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({

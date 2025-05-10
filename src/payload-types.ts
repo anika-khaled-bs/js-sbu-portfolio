@@ -77,7 +77,6 @@ export interface Config {
     team: Team;
     testimonials: Testimonial;
     portfolio: Portfolio;
-    faqs: Faq;
     'hero-sliders': HeroSlider;
     values: Value;
     'contact-details': ContactDetail;
@@ -102,7 +101,6 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
-    faqs: FaqsSelect<false> | FaqsSelect<true>;
     'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
     'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
@@ -953,6 +951,10 @@ export interface Portfolio {
    */
   techStacks: (string | TechStack)[];
   /**
+   * Project logo for this portfolio item
+   */
+  logo: string | Media;
+  /**
    * Additional images showcasing the project
    */
   gallery?:
@@ -990,58 +992,6 @@ export interface Portfolio {
   };
   /**
    * Should this project be featured on the homepage?
-   */
-  isFeatured?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs".
- */
-export interface Faq {
-  id: string;
-  question: string;
-  answer: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Services related to this FAQ
-   */
-  relatedServices?: (string | Service)[] | null;
-  /**
-   * Other FAQs that relate to this one
-   */
-  relatedFAQs?: (string | Faq)[] | null;
-  /**
-   * The FAQ category this belongs to
-   */
-  category: string | Category;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Should this FAQ be highlighted on the homepage?
    */
   isFeatured?: boolean | null;
   publishedAt?: string | null;
@@ -1337,10 +1287,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolio';
         value: string | Portfolio;
-      } | null)
-    | ({
-        relationTo: 'faqs';
-        value: string | Faq;
       } | null)
     | ({
         relationTo: 'hero-sliders';
@@ -1776,6 +1722,7 @@ export interface PortfolioSelect<T extends boolean = true> {
   projectURL?: T;
   completionDate?: T;
   techStacks?: T;
+  logo?: T;
   gallery?:
     | T
     | {
@@ -1792,30 +1739,6 @@ export interface PortfolioSelect<T extends boolean = true> {
       };
   relatedProjects?: T;
   relatedServices?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
-  isFeatured?: T;
-  publishedAt?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs_select".
- */
-export interface FaqsSelect<T extends boolean = true> {
-  question?: T;
-  answer?: T;
-  relatedServices?: T;
-  relatedFAQs?: T;
-  category?: T;
   meta?:
     | T
     | {

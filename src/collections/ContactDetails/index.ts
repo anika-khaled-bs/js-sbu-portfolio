@@ -14,7 +14,7 @@ export const ContactDetails: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['email', 'phone', 'addressLine1', 'isActive', 'updatedAt'],
-    group: 'Content',
+    group: 'Collections',
     useAsTitle: 'email',
   },
   fields: [

@@ -24,12 +24,12 @@ export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute bottom-0 w-full p-4 text-white">
-            <h3 className="text-lg font-semibold ">{title}</h3>
+            <p className="text-xl font-semibold ">{title}</p>
           </div>
         </div>
       </div>
       <div className="p-4 bg-card flex-grow">
-        <h3 className="text-2xl mt-4 mb-2 font-semibold text-black group-hover:text-primary">
+        <h3 className="text-2xl mt-4 mb-2 font-semibold text-black dark:text-white group-hover:text-primary">
           {title}
         </h3>
         {otherInfo}

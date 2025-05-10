@@ -16,7 +16,6 @@ import { TechStacks } from './collections/TechStacks'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Portfolio } from './collections/Portfolio'
-import { FAQ } from './collections/FAQ'
 import { HeroSliders } from './collections/HeroSliders'
 import { ContactDetails } from './collections/ContactDetails'
 
@@ -85,7 +84,6 @@ export default buildConfig({
     Team,
     Testimonials,
     Portfolio,
-    FAQ,
     HeroSliders,
     Values,
     ContactDetails,

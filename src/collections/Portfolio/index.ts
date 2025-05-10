@@ -59,7 +59,7 @@ export const Portfolio: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['title', 'client', 'category', 'slug', 'updatedAt'],
-    group: 'Content',
+    group: 'Collections',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -177,6 +177,15 @@ export const Portfolio: CollectionConfig = {
               },
             },
             {
+              name: 'logo',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+              admin: {
+                description: 'Project logo for this portfolio item',
+              },
+            },
+            {
               name: 'gallery',
               type: 'array',
               admin: {
@@ -219,6 +228,7 @@ export const Portfolio: CollectionConfig = {
               type: 'relationship',
               relationTo: 'portfolio',
               hasMany: true,
+              max: 3,
               admin: {
                 description: 'Other portfolio projects that relate to this one',
                 // condition: (data) => Boolean(data?.id),

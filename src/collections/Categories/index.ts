@@ -18,7 +18,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    group: 'Content',
+    group: 'Collections',
     defaultColumns: ['title', 'type', 'parent', 'updatedAt'],
   },
   hooks: {

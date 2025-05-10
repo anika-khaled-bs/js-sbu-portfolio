@@ -16,7 +16,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   return (
     <div
-      className={`relative ${image ? '' : 'bg-muted'} h-[150px] md:h-[300px] ${className} mt-16 flex flex-col justify-center text-center overflow-hidden`}
+      className={`relative ${image ? '' : 'bg-muted'}  h-[150px] md:h-[300px] ${className} mt-16 flex flex-col justify-center text-center overflow-hidden`}
     >
       {image && (
         <>
@@ -24,7 +24,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           <Image src={image} alt={title} fill className="object-cover" priority />
         </>
       )}
-      <div className={`relative ${image ? 'z-20 text-white' : ''}`}>
+      <div className={`relative max-w-[40%] mx-auto ${image ? 'z-20 text-white' : ''}`}>
         <p className="mb-4 text-3xl md:text-5xl font-bold">{title}</p>
         {description && (
           <p className={`text-lg mb-0 ${image ? 'text-white/80' : 'text-muted-foreground'}`}>

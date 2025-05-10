@@ -58,13 +58,24 @@ export default async function Page() {
     limit: 12,
   })
 
+  const aboutUs = await payload.find({
+    collection: 'pages',
+    depth: 1,
+    limit: 1,
+    where: {
+      type: {
+        equals: 'about',
+      },
+    },
+  })
+
   return (
     <div>
       <HeroSlider sliders={heroBannerSliders.docs} />
       <ClientLogoSlider clientTestimonials={clientTestimonials?.docs!} />
       <FeaturedServices services={services.docs} />
       <FeaturedWorks featuredProjects={featuredProjects.docs} />
-      {/* <AboutUsHomeComponent aboutUs={aboutUs.docs[0]!} /> */}
+      <AboutUsHomeComponent aboutUs={aboutUs.docs[0]!} />
     </div>
   )
 }

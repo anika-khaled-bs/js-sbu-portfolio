@@ -917,6 +917,10 @@ export interface Portfolio {
    * Main image for this portfolio item
    */
   featuredImage: string | Media;
+  /**
+   * Short description of the project
+   */
+  shortDescription: string;
   content: {
     root: {
       type: string;
@@ -1766,6 +1770,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
 export interface PortfolioSelect<T extends boolean = true> {
   title?: T;
   featuredImage?: T;
+  shortDescription?: T;
   content?: T;
   client?: T;
   projectURL?: T;

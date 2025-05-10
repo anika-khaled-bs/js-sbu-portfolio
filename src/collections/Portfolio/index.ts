@@ -100,8 +100,17 @@ export const Portfolio: CollectionConfig = {
               },
             },
             {
+              name: 'shortDescription',
+              type: 'textarea',
+              required: true,
+              admin: {
+                description: 'Short description of the project',
+              },
+            },
+            {
               name: 'content',
               type: 'richText',
+
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -122,7 +131,7 @@ export const Portfolio: CollectionConfig = {
                   ]
                 },
               }),
-              label: false,
+              label: 'Full Description',
               required: true,
             },
           ],

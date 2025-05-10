@@ -4,13 +4,12 @@ import React from 'react'
 
 export interface CardProps {
   title: string
-  category: string
   imageUrl: string
   link: string
   otherInfo?: React.ReactNode | string | number
 }
 
-export function Card({ title, category, imageUrl, link, otherInfo }: CardProps) {
+export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
   return (
     <Link
       href={link}
@@ -25,7 +24,6 @@ export function Card({ title, category, imageUrl, link, otherInfo }: CardProps) 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute bottom-0 w-full p-4 text-white">
-            {category && <p className="text-sm font-medium mb-1">{category}</p>}
             <h3 className="text-lg font-semibold ">{title}</h3>
           </div>
         </div>

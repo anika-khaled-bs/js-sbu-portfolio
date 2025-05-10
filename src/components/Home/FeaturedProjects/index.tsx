@@ -28,14 +28,11 @@ const FeaturedWorks = ({ featuredProjects }: FeaturedWorksProps) => {
                 key={project.id}
                 link={`/portfolio/${project.slug}`}
                 title={project.title}
-                category={(project?.category as Category)?.title! ?? null}
                 imageUrl={(project.featuredImage as Media).url!}
                 otherInfo={
-                  <RichText
-                    data={project?.content}
-                    enableGutter={false}
-                    className="m-0 p-0 text-sm text-muted-foreground"
-                  />
+                  <p className="m-0 p-0 text-sm text-muted-foreground">
+                    {project?.shortDescription!}
+                  </p>
                   // <div className="flex flex-wrap gap-2">
                   //   {project?.relatedServices?.map((service: Service) => {
                   //     return <p className="text-muted-foreground text-xs">{service.title}</p>

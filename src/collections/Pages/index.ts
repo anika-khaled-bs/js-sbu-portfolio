@@ -41,9 +41,10 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    type: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'type', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -148,9 +149,29 @@ export const Pages: CollectionConfig<'pages'> = {
         },
       ],
     },
+
     {
       name: 'publishedAt',
       type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'type',
+      type: 'select',
+      options: [
+        { label: 'Home', value: 'home' },
+        { label: 'About', value: 'about' },
+        { label: 'Service', value: 'service' },
+        { label: 'Skill', value: 'skill' },
+        { label: 'Portfolio', value: 'portfolio' },
+        { label: 'Team', value: 'team' },
+        { label: 'Tutorial', value: 'tutorial' },
+        { label: 'Blog', value: 'blog' },
+        { label: 'Contact', value: 'contact' },
+      ],
+      required: true,
       admin: {
         position: 'sidebar',
       },

@@ -40,11 +40,11 @@ export const Footer: GlobalConfig = {
       name: 'serviceCategories',
       type: 'relationship',
       label: 'Service Categories',
-      relationTo: 'categories',
+      relationTo: 'services',
       hasMany: true,
       filterOptions: {
-        type: {
-          equals: 'service',
+        category: {
+          equals: 'services',
         },
       },
       admin: {

@@ -231,21 +231,6 @@ export const Portfolio: CollectionConfig = {
                 description: 'Services that were part of this project',
               },
             },
-            {
-              name: 'category',
-              type: 'relationship',
-              relationTo: 'categories',
-              // required: true,
-              filterOptions: {
-                type: {
-                  equals: 'portfolio',
-                },
-              },
-              admin: {
-                description: 'The portfolio category this belongs to',
-                position: 'sidebar',
-              },
-            },
           ],
           label: 'Details',
         },

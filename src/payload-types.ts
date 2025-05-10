@@ -233,6 +233,7 @@ export interface Page {
     description?: string | null;
   };
   publishedAt?: string | null;
+  type: 'home' | 'about' | 'service' | 'skill' | 'portfolio' | 'team' | 'tutorial' | 'blog' | 'contact';
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -289,10 +290,6 @@ export interface Service {
    * Related projects that demonstrate this service
    */
   relatedProjects?: (string | Post)[] | null;
-  /**
-   * The service category this belongs to
-   */
-  category: string | Category;
   meta?: {
     title?: string | null;
     /**
@@ -801,10 +798,6 @@ export interface Portfolio {
    * Services that were part of this project
    */
   relatedServices?: (string | Service)[] | null;
-  /**
-   * The portfolio category this belongs to
-   */
-  category?: (string | null) | Category;
   meta?: {
     title?: string | null;
     /**
@@ -1568,6 +1561,7 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  type?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1759,7 +1753,6 @@ export interface ServicesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedProjects?: T;
-  category?: T;
   meta?:
     | T
     | {
@@ -1899,7 +1892,6 @@ export interface PortfolioSelect<T extends boolean = true> {
       };
   relatedProjects?: T;
   relatedServices?: T;
-  category?: T;
   meta?:
     | T
     | {
@@ -2362,7 +2354,7 @@ export interface Footer {
   /**
    * Select service categories to display in the footer
    */
-  serviceCategories?: (string | Category)[] | null;
+  serviceCategories?: (string | Service)[] | null;
   /**
    * Select technology stacks to feature in the footer
    */

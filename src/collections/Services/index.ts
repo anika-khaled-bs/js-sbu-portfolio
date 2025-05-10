@@ -169,21 +169,6 @@ export const Services: CollectionConfig = {
                 description: 'Related projects that demonstrate this service',
               },
             },
-            {
-              name: 'category',
-              type: 'relationship',
-              relationTo: 'categories',
-              required: true,
-              filterOptions: {
-                type: {
-                  equals: 'service',
-                },
-              },
-              admin: {
-                description: 'The service category this belongs to',
-                position: 'sidebar',
-              },
-            },
           ],
           label: 'Details',
         },

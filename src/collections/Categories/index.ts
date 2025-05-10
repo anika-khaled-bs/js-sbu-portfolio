@@ -3,7 +3,6 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { formatCategoryTitle } from './hooks/formatCategoryTitle'
 import { generateCategorySlug } from './hooks/generateCategorySlug'
 import { validateCategoryHierarchy } from './hooks/validateCategoryHierarchy'
 import { buildCategoryBreadcrumbs } from './hooks/buildCategoryBreadcrumbs'
@@ -38,12 +37,12 @@ export const Categories: CollectionConfig = {
       name: 'type',
       type: 'select',
       options: [
-        { label: 'Blog Category', value: 'blog' },
-        { label: 'Service Category', value: 'service' },
-        { label: 'Portfolio Category', value: 'portfolio' },
-        { label: 'Team Category', value: 'team' },
-        { label: 'Tutorial Category', value: 'tutorial' },
-        { label: 'Skill Category', value: 'skill' },
+        { label: 'Blog', value: 'blog' },
+        { label: 'Service', value: 'service' },
+        { label: 'Portfolio', value: 'portfolio' },
+        { label: 'Team', value: 'team' },
+        { label: 'Tutorial', value: 'tutorial' },
+        { label: 'Skill', value: 'skill' },
       ],
       defaultValue: 'blog',
       required: true,

@@ -80,6 +80,7 @@ export interface Config {
     faqs: Faq;
     'hero-sliders': HeroSlider;
     values: Value;
+    'contact-details': ContactDetail;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +105,7 @@ export interface Config {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
+    'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1103,6 +1105,25 @@ export interface Value {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-details".
+ */
+export interface ContactDetail {
+  id: string;
+  email: string;
+  phone: string;
+  time: string;
+  addressLine1: string;
+  addressLine2?: string | null;
+  /**
+   * Is this the active set of contact details to display?
+   */
+  isActive?: boolean | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1324,6 +1345,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'values';
         value: string | Value;
+      } | null)
+    | ({
+        relationTo: 'contact-details';
+        value: string | ContactDetail;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1829,6 +1854,21 @@ export interface ValuesSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-details_select".
+ */
+export interface ContactDetailsSelect<T extends boolean = true> {
+  email?: T;
+  phone?: T;
+  time?: T;
+  addressLine1?: T;
+  addressLine2?: T;
+  isActive?: T;
+  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

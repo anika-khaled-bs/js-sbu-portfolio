@@ -42,11 +42,7 @@ export const Footer: GlobalConfig = {
       label: 'Service Categories',
       relationTo: 'services',
       hasMany: true,
-      filterOptions: {
-        category: {
-          equals: 'services',
-        },
-      },
+
       admin: {
         description: 'Select service categories to display in the footer',
         condition: () => true,

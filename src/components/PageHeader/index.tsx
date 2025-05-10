@@ -1,18 +1,37 @@
 import React from 'react'
+import Image from 'next/image'
 
 interface PageHeaderProps {
   title: string
   description?: string
   className?: string
+  image?: string
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ title, description, className = '' }) => {
+export const PageHeader: React.FC<PageHeaderProps> = ({
+  title,
+  description,
+  className = '',
+  image,
+}) => {
   return (
     <div
-      className={`bg-muted h-[150px] md:h-[300px] ${className} mt-16 flex flex-col justify-center text-center`}
+      className={`relative ${image ? '' : 'bg-muted'} h-[150px] md:h-[300px] ${className} mt-16 flex flex-col justify-center text-center overflow-hidden`}
     >
-      <p className="mb-4 text-3xl md:text-5xl font-bold">{title}</p>
-      {description && <p className="text-muted-foreground text-lg mb-0">{description}</p>}
+      {image && (
+        <>
+          <div className="absolute inset-0 bg-black/60 z-10"></div>
+          <Image src={image} alt={title} fill className="object-cover" priority />
+        </>
+      )}
+      <div className={`relative ${image ? 'z-20 text-white' : ''}`}>
+        <p className="mb-4 text-3xl md:text-5xl font-bold">{title}</p>
+        {description && (
+          <p className={`text-lg mb-0 ${image ? 'text-white/80' : 'text-muted-foreground'}`}>
+            {description}
+          </p>
+        )}
+      </div>
     </div>
   )
 }

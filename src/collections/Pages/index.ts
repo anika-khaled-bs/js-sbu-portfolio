@@ -115,6 +115,17 @@ export const Pages: CollectionConfig<'pages'> = {
             },
           ],
         },
+        {
+          label: 'Form',
+          fields: [
+            {
+              name: 'form',
+              type: 'relationship',
+              relationTo: 'forms',
+              hasMany: false,
+            },
+          ],
+        },
         // {
         //   fields: [
         //     {

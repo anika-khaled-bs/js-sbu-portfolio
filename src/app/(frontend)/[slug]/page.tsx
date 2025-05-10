@@ -8,6 +8,7 @@ import React, { cache } from 'react'
 import { generateMeta } from '@/utilities/generateMeta'
 import SkillSetPage from '@/components/SkillSet'
 import AboutUsComponent from '@/components/About'
+import ContactUsComponent from '@/components/ContactUs'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -52,6 +53,8 @@ export default async function Page({ params: paramsPromise }: Args) {
     <SkillSetPage skillSet={page} />
   ) : page?.type === 'about' ? (
     <AboutUsComponent aboutUs={page!} />
+  ) : page?.type === 'contact' ? (
+    <ContactUsComponent contactUsDetails={page!} />
   ) : null
 }
 

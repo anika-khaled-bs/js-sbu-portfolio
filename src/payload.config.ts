@@ -18,13 +18,13 @@ import { Testimonials } from './collections/Testimonials'
 import { Portfolio } from './collections/Portfolio'
 import { FAQ } from './collections/FAQ'
 import { HeroSliders } from './collections/HeroSliders'
-import { About } from './collections/About'
 
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Values } from './collections/Values'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -86,7 +86,7 @@ export default buildConfig({
     Portfolio,
     FAQ,
     HeroSliders,
-    About,
+    Values,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

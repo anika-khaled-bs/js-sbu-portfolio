@@ -75,16 +75,16 @@ export const Categories: CollectionConfig = {
         description: 'Featured image for category pages',
       },
     },
-    {
-      name: 'isHighlighted',
-      type: 'checkbox',
-      label: 'Highlight in Navigation',
-      defaultValue: false,
-      admin: {
-        description: 'Should this category be highlighted in navigation menus?',
-        position: 'sidebar',
-      },
-    },
+    // {
+    //   name: 'isHighlighted',
+    //   type: 'checkbox',
+    //   label: 'Highlight in Navigation',
+    //   defaultValue: false,
+    //   admin: {
+    //     description: 'Should this category be highlighted in navigation menus?',
+    //     position: 'sidebar',
+    //   },
+    // },
     {
       name: 'parent',
       type: 'relationship',

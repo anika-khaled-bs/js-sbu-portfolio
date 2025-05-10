@@ -75,14 +75,23 @@ export const Pages: CollectionConfig<'pages'> = {
       tabs: [
         {
           fields: [
-            hero,
             {
-              name: 'heading',
-              type: 'text',
-            },
-            {
-              name: 'subHeading',
-              type: 'text',
+              name: 'heroItems',
+              type: 'array',
+              fields: [
+                hero,
+                {
+                  name: 'heading',
+                  type: 'text',
+                },
+                {
+                  name: 'subHeading',
+                  type: 'text',
+                },
+              ],
+              admin: {
+                initCollapsed: true,
+              },
             },
           ],
           label: 'Hero',

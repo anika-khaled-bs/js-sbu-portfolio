@@ -2,10 +2,10 @@ import type { CollectionBeforeChangeHook } from 'payload'
 import { toKebabCase } from '../../../utilities/toKebabCase'
 
 /**
- * Automatically generates a URL-friendly slug from the about page title
+ * Automatically generates a URL-friendly slug from the value title
  * if one is not provided explicitly
  */
-export const generateAboutSlug: CollectionBeforeChangeHook = async ({
+export const generateValueSlug: CollectionBeforeChangeHook = async ({
   data,
   operation,
   originalDoc,

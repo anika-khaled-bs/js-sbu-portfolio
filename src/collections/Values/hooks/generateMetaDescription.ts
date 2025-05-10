@@ -2,14 +2,14 @@ import type { CollectionBeforeChangeHook } from 'payload'
 
 /**
  * Automatically generates meta descriptions for SEO if one is not provided
- * by extracting text from the about page content
+ * by extracting text from the value content
  */
 export const generateMetaDescription: CollectionBeforeChangeHook = async ({ data, operation }) => {
   // Only run during create or update operations when meta field exists
   if ((operation === 'create' || operation === 'update') && data.meta) {
     // Skip if a description is already provided
     if (!data.meta.description) {
-      // Try to create a description from the content
+      // Try to create a description from the content if available
       if (data.content) {
         try {
           // Extract text from the lexical rich text content
@@ -56,20 +56,9 @@ export const generateMetaDescription: CollectionBeforeChangeHook = async ({ data
         }
       }
 
-      // Use mission statement as fallback if available
-      if (!data.meta.description && data.mission) {
-        const mission = data.mission.trim()
-
-        if (mission.length > 155) {
-          data.meta.description = mission.substring(0, 152) + '...'
-        } else {
-          data.meta.description = mission
-        }
-      }
-
-      // Final fallback if we couldn't generate from content
+      // Fallback if we couldn't generate from content
       if (!data.meta.description && data.title) {
-        data.meta.description = `Learn more about ${data.title} - our company story, mission, values, and team.`
+        data.meta.description = `Learn more about our ${data.title} company value at JS SBU.`
       }
     }
   }

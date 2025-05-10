@@ -9,8 +9,8 @@ type CollectionSlug =
   | 'testimonials'
   | 'portfolio'
   | 'faqs'
-  | 'about'
   | 'hero-slides'
+  | 'values'
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
@@ -22,7 +22,7 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   portfolio: '/portfolio',
   faqs: '/faqs',
   'hero-slides': '/hero-slides',
-  about: '/about',
+  values: '/values',
 }
 
 type Props = {

@@ -10,9 +10,16 @@ interface SkillSetProps {
 }
 
 const SkillSetPage = ({ skillSet }: SkillSetProps) => {
+  const heroItems = skillSet?.heroItems || []
+
   return (
     <div className="min-h-screen pb-16">
-      <SkillSetHero title={skillSet?.title!} subtitle={skillSet?.subHeading!} />
+      {heroItems.length > 0 &&
+        heroItems.map((item, index) => {
+          return (
+            <SkillSetHero title={skillSet?.title!} subtitle={item?.subHeading!} key={item.id} />
+          )
+        })}
 
       <SkillSetOverview content={<RichText data={skillSet?.pageContent!} />} />
 
@@ -21,20 +28,23 @@ const SkillSetPage = ({ skillSet }: SkillSetProps) => {
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-slate-900">Related Links</h2>
 
           <ul className="space-y-4">
-            {skillSet?.hero.links!.map((resource, index) => (
-              <li
-                key={index}
-                className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <Link
-                  href={resource.link.url!}
-                  className="flex items-center justify-between text-slate-900 hover:text-blue-600 transition-colors"
-                >
-                  <span className="font-medium">{resource.link.label}</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </li>
-            ))}
+            {heroItems.flatMap(
+              (item) =>
+                item?.hero?.links?.map((resource, linkIndex) => (
+                  <li
+                    key={`${resource.id || linkIndex}`}
+                    className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <Link
+                      href={resource.link.url!}
+                      className="flex items-center justify-between text-slate-900 hover:text-blue-600 transition-colors"
+                    >
+                      <span className="font-medium">{resource.link.label}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </li>
+                )) || [],
+            )}
           </ul>
         </div>
       </section>

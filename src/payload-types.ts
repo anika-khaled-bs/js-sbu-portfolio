@@ -79,7 +79,7 @@ export interface Config {
     portfolio: Portfolio;
     faqs: Faq;
     'hero-sliders': HeroSlider;
-    about: About;
+    values: Value;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -103,7 +103,7 @@ export interface Config {
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
-    about: AboutSelect<false> | AboutSelect<true>;
+    values: ValuesSelect<false> | ValuesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -164,51 +164,56 @@ export interface UserAuthOperations {
 export interface Page {
   id: string;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: string | Page;
-                } | null)
-              | ({
-                  relationTo: 'services';
-                  value: string | Service;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (string | null) | Media;
-  };
-  heading?: string | null;
-  subHeading?: string | null;
+  heroItems?:
+    | {
+        hero: {
+          type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+          richText?: {
+            root: {
+              type: string;
+              children: {
+                type: string;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          links?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: string | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'services';
+                        value: string | Service;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                  /**
+                   * Choose how the link should be rendered.
+                   */
+                  appearance?: ('default' | 'outline') | null;
+                };
+                id?: string | null;
+              }[]
+            | null;
+          media?: (string | null) | Media;
+        };
+        heading?: string | null;
+        subHeading?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   pageContent?: {
     root: {
       type: string;
@@ -491,10 +496,6 @@ export interface Category {
    * Featured image for category pages
    */
   featuredImage?: (string | null) | Media;
-  /**
-   * Should this category be highlighted in navigation menus?
-   */
-  isHighlighted?: boolean | null;
   /**
    * Parent category, if this is a sub-category
    */
@@ -905,157 +906,20 @@ export interface HeroSlider {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "about".
+ * via the `definition` "values".
  */
-export interface About {
+export interface Value {
   id: string;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: string | Page;
-                } | null)
-              | ({
-                  relationTo: 'services';
-                  value: string | Service;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (string | null) | Media;
-  };
-  heading?: string | null;
-  subHeading?: string | null;
   /**
-   * Main image for this about section
+   * Icon representing this value
    */
-  featuredImage: string | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+  icon?: (string | null) | Media;
+  shortDescription: string;
   /**
-   * Company mission statement
+   * Should this value be highlighted on the about page?
    */
-  mission?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Image representing the company mission
-   */
-  missionImage?: (string | null) | Media;
-  /**
-   * Company vision statement
-   */
-  vision?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Image representing the company vision
-   */
-  visionImage?: (string | null) | Media;
-  /**
-   * Core company values
-   */
-  values?:
-    | {
-        title: string;
-        description: string;
-        icon?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Team members to feature on the about page
-   */
-  featuredTeamMembers?: (string | Team)[] | null;
-  /**
-   * Testimonials to feature on the about page
-   */
-  featuredTestimonials?: (string | Testimonial)[] | null;
-  /**
-   * Partner or client logos to display
-   */
-  partnerLogos?:
-    | {
-        logo: string | Media;
-        name: string;
-        url?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
+  isHighlighted?: boolean | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1457,8 +1321,8 @@ export interface PayloadLockedDocument {
         value: string | HeroSlider;
       } | null)
     | ({
-        relationTo: 'about';
-        value: string | About;
+        relationTo: 'values';
+        value: string | Value;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1528,30 +1392,35 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  hero?:
+  heroItems?:
     | T
     | {
-        type?: T;
-        richText?: T;
-        links?:
+        hero?:
           | T
           | {
-              link?:
+              type?: T;
+              richText?: T;
+              links?:
                 | T
                 | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
                   };
-              id?: T;
+              media?: T;
             };
-        media?: T;
+        heading?: T;
+        subHeading?: T;
+        id?: T;
       };
-  heading?: T;
-  subHeading?: T;
   pageContent?: T;
   meta?:
     | T
@@ -1702,7 +1571,6 @@ export interface CategoriesSelect<T extends boolean = true> {
   description?: T;
   icon?: T;
   featuredImage?: T;
-  isHighlighted?: T;
   parent?: T;
   slug?: T;
   slugLock?: T;
@@ -1949,65 +1817,13 @@ export interface HeroSlidersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "about_select".
+ * via the `definition` "values_select".
  */
-export interface AboutSelect<T extends boolean = true> {
+export interface ValuesSelect<T extends boolean = true> {
   title?: T;
-  hero?:
-    | T
-    | {
-        type?: T;
-        richText?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-              id?: T;
-            };
-        media?: T;
-      };
-  heading?: T;
-  subHeading?: T;
-  featuredImage?: T;
-  content?: T;
-  mission?: T;
-  missionImage?: T;
-  vision?: T;
-  visionImage?: T;
-  values?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        icon?: T;
-        id?: T;
-      };
-  featuredTeamMembers?: T;
-  featuredTestimonials?: T;
-  partnerLogos?:
-    | T
-    | {
-        logo?: T;
-        name?: T;
-        url?: T;
-        id?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
+  icon?: T;
+  shortDescription?: T;
+  isHighlighted?: T;
   publishedAt?: T;
   slug?: T;
   slugLock?: T;

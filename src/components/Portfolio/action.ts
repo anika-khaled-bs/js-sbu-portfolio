@@ -1,4 +1,3 @@
-// /app/actions/fetchPortfolio.ts
 'use server'
 
 import { getPayload } from 'payload'
@@ -10,7 +9,7 @@ export const fetchPortfolio = async (
   filter?: { services: string[] },
 ) => {
   const payload = await getPayload({ config: configPromise })
-  const { services } = filter!
+  const { services = [] } = filter || {}
 
   const data = await payload.find({
     collection: 'portfolio',

@@ -21,13 +21,13 @@ const PortfolioPage = async () => {
   })
 
   return (
-    <>
+    <div className="mt-16">
       <PageHeader
         title="Our Portfolio"
         description="Explore our collection of successful projects that showcase our expertise in creating impactful digital solutions."
       />
       <PortfolioList initialData={projects} services={services?.docs!} />
-    </>
+    </div>
   )
 }
 

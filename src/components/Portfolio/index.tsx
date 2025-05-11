@@ -63,13 +63,13 @@ export default function PortfolioList({ initialData, services }: PortfolioListPr
 
   return (
     <div className="container py-10">
-      <div className="mb-10 flex gap-2 justify-center">
+      <div className="mb-10 flex gap-2 justify-center flex-wrap ">
         {services.map((service) => (
           <Button
-            variant={selectedServices.includes(service.slug!) ? 'default' : 'secondary'}
+            variant={selectedServices.includes(service.id!) ? 'default' : 'secondary'}
             key={service.id}
-            onClick={() => handleServiceToggle(service.slug!)}
-            className="min-w-max rounded-xl"
+            onClick={() => handleServiceToggle(service.id!)}
+            className="min-w-max rounded-full text-xs md:text-base"
           >
             {service.title}
           </Button>

@@ -49,13 +49,17 @@ export default async function Page({ params: paramsPromise }: Args) {
     slug,
   })
 
-  return page?.type === 'skill' ? (
-    <SkillSetPage skillSet={page} />
-  ) : page?.type === 'about' ? (
-    <AboutUsComponent aboutUs={page!} />
-  ) : page?.type === 'contact' ? (
-    <ContactUsComponent contactUsDetails={page!} />
-  ) : null
+  return (
+    <div className="mt-16">
+      {page?.type === 'skill' ? (
+        <SkillSetPage skillSet={page} />
+      ) : page?.type === 'about' ? (
+        <AboutUsComponent aboutUs={page!} />
+      ) : page?.type === 'contact' ? (
+        <ContactUsComponent contactUsDetails={page!} />
+      ) : null}
+    </div>
+  )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {

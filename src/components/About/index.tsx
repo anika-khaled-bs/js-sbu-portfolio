@@ -58,11 +58,11 @@ const AboutUsComponent = async ({ aboutUs }: AboutUsProps) => {
 
       <OurValues values={ourValues.docs} />
       <TeamComponent team={team.docs as Team[]} />
-      <ClientLogoSlider
+      {/* <ClientLogoSlider
         clientTestimonials={clientTestimonials.docs as Testimonial[]}
         title="Our Clients"
         subTitle="Trusted by Leading Companies"
-      />
+      /> */}
       <ContactCTA />
     </>
   )

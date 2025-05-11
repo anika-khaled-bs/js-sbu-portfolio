@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import PageHeader from '@/components/PageHeader'
-import PortfolioList from '@/components/Portfolio'
+import PortfolioList from '@/components/Portfolio/List'
 
 export const dynamic = 'force-dynamic' // Force dynamic rendering to get fresh data
 

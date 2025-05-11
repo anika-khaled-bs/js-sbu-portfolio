@@ -6,7 +6,7 @@ import { fetchPortfolio } from './action'
 import { PaginatedDocs } from 'payload'
 import { Media, Portfolio, Service } from '@/payload-types'
 import { ProjectCard } from './ProjectCard'
-import { Button } from '../Button'
+import { Button } from '../../Button'
 
 interface PortfolioListProps {
   initialData: PaginatedDocs<Portfolio>

@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
+import PortfolioDetailsComponent from '@/components/Portfolio/Details'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -48,6 +48,7 @@ export default async function PortfolioDetailsPage({ params }: Args) {
   return (
     <div className="mt-16">
       <PayloadRedirects disableNotFound url={url} />
+      <PortfolioDetailsComponent portfolio={portfolioDetails} />
     </div>
   )
 }

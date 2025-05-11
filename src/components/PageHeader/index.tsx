@@ -20,7 +20,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
     >
       {image && (
         <>
-          <div className="absolute inset-0 bg-black/60 z-10"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           <Image src={image} alt={title} fill className="object-cover" priority />
         </>
       )}

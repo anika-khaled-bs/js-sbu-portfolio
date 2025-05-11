@@ -2,6 +2,8 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import PageHeader from '@/components/PageHeader'
 import PortfolioList from '@/components/Portfolio/List'
+import { Suspense } from 'react'
+import { PortfolioGridSkeleton } from '@/components/skeletons'
 
 export const dynamic = 'force-dynamic' // Force dynamic rendering to get fresh data
 
@@ -26,7 +28,9 @@ const PortfolioPage = async () => {
         title="Our Portfolio"
         description="Explore our collection of successful projects that showcase our expertise in creating impactful digital solutions."
       />
-      <PortfolioList initialData={projects} services={services?.docs!} />
+      <Suspense fallback={<PortfolioGridSkeleton />}>
+        <PortfolioList initialData={projects} services={services?.docs!} />
+      </Suspense>
     </div>
   )
 }

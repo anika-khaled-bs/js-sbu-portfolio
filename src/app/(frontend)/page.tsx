@@ -9,22 +9,19 @@ import FeaturedWorks from '@/components/Home/FeaturedProjects'
 import FeaturedServices from '@/components/Home/ServicesSection'
 import AboutUsComponent from '@/components/Home/AboutUsSection'
 import { Suspense } from 'react'
-import { Loader2 } from 'lucide-react'
 import ContactCTA from '@/components/ContactCTA'
+import {
+  HeroSliderSkeleton,
+  ClientLogoSliderSkeleton,
+  ServicesSkeleton,
+  FeaturedProjectsSkeleton,
+  AboutUsSkeleton,
+  ContactCTASkeleton,
+} from '@/components/skeletons'
 
 // export default PageTemplate
 
 // export { generateMetadata }
-
-// Loading component for sections
-const SectionLoader = ({ height = 'h-[400px]', text = 'Loading content...' }) => (
-  <div
-    className={`${height} w-full flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm`}
-  >
-    <Loader2 className="h-10 w-10 animate-spin text-primary mb-2" />
-    <p className="text-muted-foreground">{text}</p>
-  </div>
-)
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
@@ -84,26 +81,29 @@ export default async function Page() {
 
   return (
     <div>
-      <Suspense fallback={<SectionLoader height="h-[700px]" text="Loading hero content..." />}>
+      <Suspense fallback={<HeroSliderSkeleton />}>
         <HeroSlider sliders={heroBannerSliders.docs} />
       </Suspense>
 
-      <Suspense fallback={<SectionLoader text="Loading trusted partners..." />}>
+      <Suspense fallback={<ClientLogoSliderSkeleton />}>
         <ClientLogoSlider clientTestimonials={clientTestimonials.docs} />
       </Suspense>
 
-      <Suspense fallback={<SectionLoader text="Loading our services..." />}>
+      <Suspense fallback={<ServicesSkeleton />}>
         <FeaturedServices services={services.docs} />
       </Suspense>
 
-      <Suspense fallback={<SectionLoader text="Loading featured projects..." />}>
+      <Suspense fallback={<FeaturedProjectsSkeleton />}>
         <FeaturedWorks featuredProjects={featuredProjects.docs} />
       </Suspense>
 
-      <Suspense fallback={<SectionLoader text="Loading about us section..." />}>
+      <Suspense fallback={<AboutUsSkeleton />}>
         <AboutUsComponent aboutUs={aboutUs.docs[0]!} />
       </Suspense>
-      <ContactCTA />
+
+      <Suspense fallback={<ContactCTASkeleton />}>
+        <ContactCTA />
+      </Suspense>
     </div>
   )
 }

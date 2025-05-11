@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -13,7 +14,7 @@ export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
   return (
     <Link
       href={link}
-      className="group flex flex-col h-full overflow-hidden rounded-lg shadow-sm card-hover"
+      className="group flex flex-col h-full overflow-hidden rounded-lg shadow-sm card-hover border"
     >
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
@@ -29,10 +30,17 @@ export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
         </div>
       </div>
       <div className="p-4 bg-card flex-grow">
-        <h3 className="text-2xl mt-4 mb-2 font-semibold text-black dark:text-white group-hover:text-primary">
+        <p className="text-2xl mt-4 mb-2 font-semibold text-black dark:text-white group-hover:text-primary">
           {title}
-        </h3>
+        </p>
         {otherInfo}
+        <Link
+          href={link}
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-muted-foreground transition-colors"
+        >
+          Learn more
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </Link>
   )

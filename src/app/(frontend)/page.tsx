@@ -10,6 +10,7 @@ import FeaturedServices from '@/components/Home/ServicesSection'
 import AboutUsComponent from '@/components/Home/AboutUsSection'
 import { Suspense } from 'react'
 import { Loader2 } from 'lucide-react'
+import ContactCTA from '@/components/ContactCTA'
 
 // export default PageTemplate
 
@@ -102,6 +103,7 @@ export default async function Page() {
       <Suspense fallback={<SectionLoader text="Loading about us section..." />}>
         <AboutUsComponent aboutUs={aboutUs.docs[0]!} />
       </Suspense>
+      <ContactCTA />
     </div>
   )
 }

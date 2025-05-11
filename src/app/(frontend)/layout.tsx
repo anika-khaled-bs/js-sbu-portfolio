@@ -4,7 +4,7 @@ import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React, { Suspense } from 'react'
-import { inter, montserrat } from '../fonts'
+import { montserrat } from '../fonts'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
@@ -50,7 +50,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main className="flex-grow">
             <Suspense fallback={<PageLoader />}>{children}</Suspense>
           </main>
-          <br />
           {/* <Footer /> */}
           <GlobalFooter />
         </Providers>

@@ -7,6 +7,7 @@ import React, { cache } from 'react'
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import PortfolioDetailsComponent from '@/components/Portfolio/Details'
+import ContactCTA from '@/components/ContactCTA'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -39,8 +40,6 @@ export default async function PortfolioDetailsPage({ params }: Args) {
 
   const portfolioDetails = await queryPortfolioBySlug({ slug })
 
-  console.log('🚀 ~ PortfolioDetailsPage ~ portfolioDetails:', portfolioDetails)
-
   if (!portfolioDetails) {
     if (!portfolioDetails) return <PayloadRedirects url={url} />
   }
@@ -49,6 +48,7 @@ export default async function PortfolioDetailsPage({ params }: Args) {
     <div className="mt-16">
       <PayloadRedirects disableNotFound url={url} />
       <PortfolioDetailsComponent portfolio={portfolioDetails} />
+      <ContactCTA />
     </div>
   )
 }

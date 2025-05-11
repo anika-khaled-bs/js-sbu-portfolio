@@ -8,6 +8,7 @@ import ClientLogoSlider from '../TrustedBySection'
 import Introduction from './Introduction'
 import OurValues from './OurValues'
 import TeamComponent from './Team'
+import ContactCTA from '../ContactCTA'
 
 interface AboutUsProps {
   aboutUs: RequiredDataFromCollectionSlug<'pages'> | null
@@ -62,6 +63,7 @@ const AboutUsComponent = async ({ aboutUs }: AboutUsProps) => {
         title="Our Clients"
         subTitle="Trusted by Leading Companies"
       />
+      <ContactCTA />
     </>
   )
 }

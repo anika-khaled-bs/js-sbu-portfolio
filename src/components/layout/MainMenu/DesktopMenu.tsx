@@ -53,7 +53,7 @@ export const DesktopMenu: React.FC<DesktopMenuProps> = ({
                 <ChevronDown className="h-4 w-4" />
               </button>
               {(openDropdown === item.link.label || hoveredItem === item.link.label) && (
-                <div className="absolute top-full left-0 w-56 bg-popover text-popover-foreground rounded-md shadow-md overflow-hidden z-50 animate-fade-in">
+                <div className="absolute top-full left-0 w-56 bg-popover text-popover-foreground rounded-md shadow-md overflow-hidden z-50 animate-fade-in min-w-max">
                   <div className="py-1">
                     {item?.subMenuItems?.map((subItem) => (
                       <CMSLink

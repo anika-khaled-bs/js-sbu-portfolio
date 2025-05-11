@@ -38,7 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* Content Section */}
-        <div className="flex md:justify-around items-center mb-2 flex-wrap gap-2">
+        <div className="flex md:justify-around items-center mb-2 flex-wrap md:flex-nowrap gap-2">
           <p className="text-xl font-semibold min-w-max">{project.title}</p>
           {/* Completion Date - display if present */}
           {project.completionDate && (

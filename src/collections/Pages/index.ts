@@ -41,7 +41,6 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
-    type: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'type', 'updatedAt'],
@@ -74,72 +73,23 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
+          fields: [hero],
+          label: 'Hero',
+        },
+        {
           fields: [
             {
-              name: 'heroItems',
-              type: 'array',
-              fields: [
-                hero,
-                {
-                  name: 'heading',
-                  type: 'text',
-                },
-                {
-                  name: 'subHeading',
-                  type: 'text',
-                },
-              ],
+              name: 'layout',
+              type: 'blocks',
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              required: true,
               admin: {
                 initCollapsed: true,
               },
             },
           ],
-          label: 'Hero',
-        },
-        {
           label: 'Content',
-          fields: [
-            {
-              name: 'pageContent',
-              type: 'richText',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                  ]
-                },
-              }),
-            },
-          ],
         },
-        {
-          label: 'Form',
-          fields: [
-            {
-              name: 'form',
-              type: 'relationship',
-              relationTo: 'forms',
-              hasMany: false,
-            },
-          ],
-        },
-        // {
-        //   fields: [
-        //     {
-        //       name: 'layout',
-        //       type: 'blocks',
-        //       blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
-        //       required: true,
-        //       admin: {
-        //         initCollapsed: true,
-        //       },
-        //     },
-        //   ],
-        //   label: 'Content',
-        // },
         {
           name: 'meta',
           label: 'SEO',
@@ -173,25 +123,6 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'type',
-      type: 'select',
-      options: [
-        { label: 'Home', value: 'home' },
-        { label: 'About', value: 'about' },
-        { label: 'Service', value: 'service' },
-        { label: 'Skill', value: 'skill' },
-        { label: 'Portfolio', value: 'portfolio' },
-        { label: 'Team', value: 'team' },
-        { label: 'Tutorial', value: 'tutorial' },
-        { label: 'Blog', value: 'blog' },
-        { label: 'Contact', value: 'contact' },
-      ],
-      required: true,
       admin: {
         position: 'sidebar',
       },

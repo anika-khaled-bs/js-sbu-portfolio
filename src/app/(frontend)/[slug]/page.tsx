@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
 
+import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
+import { homeStatic } from '@/endpoints/seed/home-static'
 
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import SkillSetPage from '@/components/SkillSet'
-import AboutUsComponent from '@/components/About'
-import ContactUsComponent from '@/components/ContactUs'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import PageClient from './page.client'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -41,7 +44,9 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { slug = 'full-stack-development' } = await paramsPromise
+  const { isEnabled: draft } = await draftMode()
+  const { slug = 'home' } = await paramsPromise
+  const url = '/' + slug
 
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
@@ -49,21 +54,33 @@ export default async function Page({ params: paramsPromise }: Args) {
     slug,
   })
 
+  // Remove this code once your website is seeded
+  if (!page && slug === 'home') {
+    page = homeStatic
+  }
+
+  if (!page) {
+    return <PayloadRedirects url={url} />
+  }
+
+  const { hero, layout } = page
+
   return (
-    <div className="mt-16">
-      {page?.type === 'skill' ? (
-        <SkillSetPage skillSet={page} />
-      ) : page?.type === 'about' ? (
-        <AboutUsComponent aboutUs={page!} />
-      ) : page?.type === 'contact' ? (
-        <ContactUsComponent contactUsDetails={page!} />
-      ) : null}
-    </div>
+    <article className="pt-16 pb-24">
+      <PageClient />
+      {/* Allows redirects for valid pages too */}
+      <PayloadRedirects disableNotFound url={url} />
+
+      {draft && <LivePreviewListener />}
+
+      <RenderHero {...hero} />
+      <RenderBlocks blocks={layout} />
+    </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'full-stack-development' } = await paramsPromise
+  const { slug = 'home' } = await paramsPromise
   const page = await queryPageBySlug({
     slug,
   })

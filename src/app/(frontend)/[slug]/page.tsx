@@ -9,6 +9,11 @@ import { generateMeta } from '@/utilities/generateMeta'
 import SkillSetPage from '@/components/SkillSet'
 import AboutUsComponent from '@/components/About'
 import ContactUsComponent from '@/components/ContactUs'
+import { PayloadRedirects } from '@/components/PayloadRedirects'
+import PageClient from './page.client'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { RenderHero } from '@/heros/RenderHero'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -41,13 +46,21 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  const { isEnabled: draft } = await draftMode()
   const { slug = 'full-stack-development' } = await paramsPromise
+  const url = '/' + slug
 
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
   page = await queryPageBySlug({
     slug,
   })
+
+  if (!page) {
+    return <PayloadRedirects url={url} />
+  }
+
+  const { hero, layout } = page
 
   return (
     <div className="mt-16">
@@ -57,7 +70,18 @@ export default async function Page({ params: paramsPromise }: Args) {
         <AboutUsComponent aboutUs={page!} />
       ) : page?.type === 'contact' ? (
         <ContactUsComponent contactUsDetails={page!} />
-      ) : null}
+      ) : (
+        <article className="pt-16 pb-24">
+          <PageClient />
+          {/* Allows redirects for valid pages too */}
+          <PayloadRedirects disableNotFound url={url} />
+
+          {draft && <LivePreviewListener />}
+
+          <RenderHero {...hero} />
+          <RenderBlocks blocks={layout} />
+        </article>
+      )}
     </div>
   )
 }

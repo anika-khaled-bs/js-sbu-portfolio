@@ -2,7 +2,7 @@ import { Media, Portfolio } from '@/payload-types'
 import PageHeader from '@/components/PageHeader'
 import Info from './Info'
 import MainContent from './Maincontent'
-import { Card } from '@/components/Card'
+import { Card } from '@/components/CustomCard'
 
 interface PortfolioDetailsProps {
   portfolio: Portfolio

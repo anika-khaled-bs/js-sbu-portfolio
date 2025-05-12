@@ -12,36 +12,14 @@ const heroes = {
   mediumImpact: MediumImpactHero,
 }
 
-type HeroItemType = {
-  hero?: {
-    type?: 'highImpact' | 'mediumImpact' | 'lowImpact' | 'none'
-    [key: string]: any
-  }
-  heading?: string
-  subHeading?: string
-}
+export const RenderHero: React.FC<Page['hero']> = (props) => {
+  const { type } = props || {}
 
-type RenderHeroProps = {
-  heroItems?: HeroItemType[]
-}
+  if (!type || type === 'none') return null
 
-export const RenderHero: React.FC<RenderHeroProps> = ({ heroItems }) => {
-  if (!heroItems || heroItems.length === 0) return null
+  const HeroToRender = heroes[type]
 
-  return (
-    <>
-      {heroItems.map((item, index) => {
-        const { hero, heading, subHeading } = item
-        const { type } = hero || {}
+  if (!HeroToRender) return null
 
-        if (!type || type === 'none') return null
-
-        const HeroToRender = heroes[type]
-
-        if (!HeroToRender) return null
-
-        return <HeroToRender key={index} {...hero} heading={heading} subHeading={subHeading} />
-      })}
-    </>
-  )
+  return <HeroToRender {...props} />
 }

@@ -13,10 +13,12 @@ interface ContactUsProps {
 }
 
 const ContactUsComponent = async ({ contactUsDetails }: ContactUsProps) => {
+  console.log('🚀 ~ ContactUsComponent ~ contactUsDetails:', contactUsDetails)
+
   const payload = await getPayload({ config: configPromise })
 
-  const headerInfo = contactUsDetails?.heroItems?.[0]
-  const headerImage = headerInfo?.hero?.media as Media
+  const headerInfo = contactUsDetails?.hero
+  const headerImage = headerInfo?.media as Media
 
   const contactInfo = await payload.find({
     collection: 'contact-details',
@@ -30,11 +32,7 @@ const ContactUsComponent = async ({ contactUsDetails }: ContactUsProps) => {
 
   return (
     <>
-      <PageHeader
-        title={headerInfo?.heading!}
-        description={headerInfo?.subHeading!}
-        image={headerImage?.url!}
-      />
+      <PageHeader richText={headerInfo?.richText} image={headerImage?.url!} />
       <div className="container py-16">
         {contactInfo && <ContactInfoComponent contactInfo={contactInfo?.docs[0]!} />}
         <div className="mt-16">
@@ -45,7 +43,13 @@ const ContactUsComponent = async ({ contactUsDetails }: ContactUsProps) => {
                 Fill out the form below and we'll get back to you as soon as possible.
               </p>
             </div>
-            <FormBlock form={contactUsDetails?.form! as unknown as FormType} enableIntro={false} />
+            <FormBlock
+              form={
+                contactUsDetails?.layout!.find((item) => item.blockType === 'formBlock')
+                  ?.form as unknown as FormType
+              }
+              enableIntro={false}
+            />
           </div>
         </div>
       </div>

@@ -1,11 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
+import RichText from '../RichText'
 
 interface PageHeaderProps {
-  title: string
+  title?: string
   description?: string
   className?: string
   image?: string
+  richText?: any
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
@@ -13,6 +15,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   description,
   className = '',
   image,
+  richText,
 }) => {
   return (
     <div
@@ -21,17 +24,23 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
       {image && (
         <>
           <div className="absolute inset-0 bg-black/70 z-10"></div>
-          <Image src={image} alt={title} fill className="object-cover" priority />
+          <Image src={image} alt={title!} fill className="object-cover" priority />
         </>
       )}
       <div className={`relative md:max-w-[40%] mx-auto ${image ? 'z-20 text-white' : ''}`}>
-        <p className="mb-4 text-lg md:text-5xl font-bold">{title}</p>
-        {description && (
-          <p
-            className={`text-xs md:text-lg mb-0 px-8 md:px-0 ${image ? 'text-white/80' : 'text-muted-foreground'}`}
-          >
-            {description}
-          </p>
+        {richText ? (
+          <RichText data={richText} />
+        ) : (
+          <>
+            {title && <p className="mb-4 text-lg md:text-5xl font-bold">{title}</p>}
+            {description && (
+              <p
+                className={`text-xs md:text-lg mb-0 px-8 md:px-0 ${image ? 'text-white/80' : 'text-muted-foreground'}`}
+              >
+                {description}
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>

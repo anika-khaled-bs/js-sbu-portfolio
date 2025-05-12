@@ -20,12 +20,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -41,10 +35,9 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
-    type: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'type', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -74,72 +67,24 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
+          fields: [hero],
+          label: 'Hero',
+        },
+        {
           fields: [
             {
-              name: 'heroItems',
-              type: 'array',
-              fields: [
-                hero,
-                {
-                  name: 'heading',
-                  type: 'text',
-                },
-                {
-                  name: 'subHeading',
-                  type: 'text',
-                },
-              ],
+              name: 'layout',
+              type: 'blocks',
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              required: true,
               admin: {
                 initCollapsed: true,
               },
             },
           ],
-          label: 'Hero',
-        },
-        {
           label: 'Content',
-          fields: [
-            {
-              name: 'pageContent',
-              type: 'richText',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                  ]
-                },
-              }),
-            },
-          ],
         },
-        {
-          label: 'Form',
-          fields: [
-            {
-              name: 'form',
-              type: 'relationship',
-              relationTo: 'forms',
-              hasMany: false,
-            },
-          ],
-        },
-        // {
-        //   fields: [
-        //     {
-        //       name: 'layout',
-        //       type: 'blocks',
-        //       blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
-        //       required: true,
-        //       admin: {
-        //         initCollapsed: true,
-        //       },
-        //     },
-        //   ],
-        //   label: 'Content',
-        // },
+
         {
           name: 'meta',
           label: 'SEO',
@@ -169,7 +114,6 @@ export const Pages: CollectionConfig<'pages'> = {
         },
       ],
     },
-
     {
       name: 'publishedAt',
       type: 'date',
@@ -190,6 +134,7 @@ export const Pages: CollectionConfig<'pages'> = {
         { label: 'Tutorial', value: 'tutorial' },
         { label: 'Blog', value: 'blog' },
         { label: 'Contact', value: 'contact' },
+        { label: 'Other', value: 'other' },
       ],
       required: true,
       admin: {
@@ -205,6 +150,9 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   versions: {
     drafts: {
+      autosave: {
+        interval: 100, // We set this interval for optimal live preview
+      },
       schedulePublish: true,
     },
     maxPerDoc: 50,

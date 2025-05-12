@@ -12,6 +12,7 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
+  console.log('🚀 ~ >= ~ props:', props)
   const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
 
   const limit = limitFromProps || 3
@@ -41,7 +42,13 @@ export const ArchiveBlock: React.FC<
         : {}),
     })
 
-    posts = fetchedPosts.docs
+    const fetchedPortfolio = await payload.find({
+      collection: 'portfolio',
+      depth: 1,
+      limit,
+    })
+
+    posts = fetchedPortfolio.docs
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {

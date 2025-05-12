@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           /> */}
 
-          <Header />
+          {/* <Header /> */}
           <main className="flex-grow">
             <Suspense fallback={<PageLoader />}>{children}</Suspense>
           </main>

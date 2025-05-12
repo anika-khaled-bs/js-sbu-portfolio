@@ -25,6 +25,8 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Values } from './collections/Values'
+import { Blogs } from './collections/Blogs'
+import { Tags } from './collections/Tags'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -87,6 +89,8 @@ export default buildConfig({
     HeroSliders,
     Values,
     ContactDetails,
+    Blogs,
+    Tags,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

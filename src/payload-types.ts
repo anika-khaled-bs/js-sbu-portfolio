@@ -80,6 +80,8 @@ export interface Config {
     'hero-sliders': HeroSlider;
     values: Value;
     'contact-details': ContactDetail;
+    blogs: Blog;
+    tags: Tag;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +106,8 @@ export interface Config {
     'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
     'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1078,6 +1082,95 @@ export interface ContactDetail {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: string;
+  /**
+   * The title of your blog post
+   */
+  title: string;
+  /**
+   * Only published posts will be visible on the website
+   */
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Add relevant tags to help with search and categorization
+   */
+  tags?:
+    | {
+        /**
+         * The category for this blog
+         */
+        tag?: (string | null) | Tag;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The main image for this blog post (1200×630px recommended)
+   */
+  featuredImage: string | Media;
+  /**
+   * A brief summary of the post (appears in previews)
+   */
+  summary: string;
+  /**
+   * The main content of your blog post
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * The date this post was or will be published
+   */
+  publishedDate?: string | null;
+  /**
+   * Estimated reading time in minutes (auto-calculated)
+   */
+  readingTime?: number | null;
+  /**
+   * Feature this post on the homepage
+   */
+  isFeatured?: boolean | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1299,6 +1392,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-details';
         value: string | ContactDetail;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: string | Blog;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1797,6 +1898,48 @@ export interface ContactDetailsSelect<T extends boolean = true> {
   addressLine2?: T;
   isActive?: T;
   publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  title?: T;
+  status?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  featuredImage?: T;
+  summary?: T;
+  content?: T;
+  publishedDate?: T;
+  readingTime?: T;
+  isFeatured?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }

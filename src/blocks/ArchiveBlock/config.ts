@@ -89,6 +89,26 @@ export const Archive: Block = {
           label: 'Values',
           value: 'values',
         },
+        {
+          label: 'Testimonials',
+          value: 'testimonials',
+        },
+        {
+          label: 'Team',
+          value: 'team',
+        },
+        {
+          label: 'Services',
+          value: 'services',
+        },
+        {
+          label: 'Portfolio',
+          value: 'portfolio',
+        },
+        {
+          label: 'Tech Stacks',
+          value: 'tech-stacks',
+        },
       ],
     },
     {
@@ -151,7 +171,16 @@ export const Archive: Block = {
       },
       hasMany: true,
       label: 'Selection',
-      relationTo: ['posts', 'contact-details', 'values'],
+      relationTo: [
+        'posts',
+        'contact-details',
+        'values',
+        'testimonials',
+        'team',
+        'services',
+        'portfolio',
+        'tech-stacks',
+      ],
     },
   ],
 }

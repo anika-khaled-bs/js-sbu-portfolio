@@ -3,18 +3,26 @@ import React from 'react'
 
 import { Card } from '@/components/Card'
 import { ContactCard } from '@/components/ContactCard'
-import { type Post, type ContactDetail, Value } from '@/payload-types'
+import {
+  type Post,
+  type ContactDetail,
+  Value,
+  TechStack,
+  Testimonial,
+  Team,
+  Service,
+  Portfolio,
+} from '@/payload-types'
 import OurValues from '../About/OurValues'
 
 export type Props = {
-  items: (Post | ContactDetail | Value)[]
+  items: (Post | ContactDetail | Value | TechStack | Testimonial | Team | Service | Portfolio)[]
   relationTo: string
   displayType: 'grid' | 'slider' | 'feature' | 'card' | 'list' | 'default'
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
   const { items, relationTo, displayType } = props
-
   const getLayoutClasses = () => {
     switch (displayType) {
       case 'grid':
@@ -32,7 +40,6 @@ export const CollectionArchive: React.FC<Props> = (props) => {
         return 'grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-4 gap-x-4 lg:gap-y-8 lg:gap-x-8 xl:gap-x-8'
     }
   }
-
   const getItemClasses = () => {
     switch (displayType) {
       case 'grid':

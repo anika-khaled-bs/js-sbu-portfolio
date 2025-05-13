@@ -1,4 +1,14 @@
-import type { Post, ContactDetail, ArchiveBlock as ArchiveBlockProps, Value } from '@/payload-types'
+import type {
+  Post,
+  ContactDetail,
+  ArchiveBlock as ArchiveBlockProps,
+  Value,
+  TechStack,
+  Testimonial,
+  Team,
+  Service,
+  Portfolio,
+} from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -25,7 +35,16 @@ export const ArchiveBlock: React.FC<
 
   const limit = limitFromProps || 3
 
-  let items: (Post | ContactDetail | Value)[] = []
+  let items: (
+    | Post
+    | ContactDetail
+    | Value
+    | TechStack
+    | Testimonial
+    | Team
+    | Service
+    | Portfolio
+  )[] = []
   const collectionType = relationTo || 'posts'
 
   if (populateBy === 'collection') {
@@ -69,35 +88,71 @@ export const ArchiveBlock: React.FC<
       })
 
       items = fetchedValues.docs
-    }
-  } else {
-    if (selectedDocs?.length) {
-      const filteredSelectedItems = selectedDocs
-        .map((item) => {
-          if (typeof item === 'object' && item !== null) {
-            if (item.relationTo === 'contact-details' && typeof item.value === 'object') {
-              return {
-                ...item.value,
-                _collection: 'contact-details',
-              }
-            } else if (item.relationTo === 'posts' && typeof item.value === 'object') {
-              return {
-                ...item.value,
-                _collection: 'posts',
-              }
-            } else if (item.relationTo === 'values' && typeof item.value === 'object') {
-              return {
-                ...item.value,
-                _collection: 'values',
-              }
-            }
-          }
-          return null
-        })
-        .filter(Boolean) as (Post | ContactDetail)[]
+    } else if (collectionType === 'tech-stacks') {
+      const fetchedTechnologies = await payload.find({
+        collection: 'tech-stacks',
+        depth: 1,
+        limit,
+      })
 
-      items = filteredSelectedItems
+      items = fetchedTechnologies.docs
+    } else if (collectionType === 'testimonials') {
+      const fetchedTestimonials = await payload.find({
+        collection: 'testimonials',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedTestimonials.docs
+    } else if (collectionType === 'team') {
+      const fetchedTeam = await payload.find({
+        collection: 'team',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedTeam.docs
+    } else if (collectionType === 'services') {
+      const fetchedServices = await payload.find({
+        collection: 'services',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedServices.docs
+    } else if (collectionType === 'portfolio') {
+      const fetchedPortfolio = await payload.find({
+        collection: 'portfolio',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedPortfolio.docs
     }
+  } else if (selectedDocs?.length) {
+    // Use a more type-safe approach with any casting where needed
+    const filteredSelectedItems = selectedDocs
+      .map((item: any) => {
+        if (typeof item === 'object' && item !== null && typeof item.value === 'object') {
+          return {
+            ...item.value,
+            _collection: item.relationTo,
+          }
+        }
+        return null
+      })
+      .filter(Boolean) as (
+      | Post
+      | ContactDetail
+      | Value
+      | TechStack
+      | Testimonial
+      | Team
+      | Service
+      | Portfolio
+    )[]
+
+    items = filteredSelectedItems
   }
 
   return (

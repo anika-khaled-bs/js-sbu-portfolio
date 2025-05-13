@@ -244,6 +244,10 @@ export interface Service {
    * Technologies used for this service
    */
   techStacks: (string | TechStack)[];
+  /**
+   * Technologies used for this service
+   */
+  categories: (string | Category)[];
   content: {
     root: {
       type: string;
@@ -410,6 +414,43 @@ export interface TechStack {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title: string;
+  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
+  /**
+   * Brief description of this category
+   */
+  description?: string | null;
+  /**
+   * Icon to represent this category (SVG or small image)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Featured image for category pages
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Parent category, if this is a sub-category
+   */
+  parent?: (string | null) | Category;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -454,43 +495,6 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  title: string;
-  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
-  /**
-   * Brief description of this category
-   */
-  description?: string | null;
-  /**
-   * Icon to represent this category (SVG or small image)
-   */
-  icon?: (string | null) | Media;
-  /**
-   * Featured image for category pages
-   */
-  featuredImage?: (string | null) | Media;
-  /**
-   * Parent category, if this is a sub-category
-   */
-  parent?: (string | null) | Category;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  breadcrumbs?:
-    | {
-        doc?: (string | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1910,6 +1914,7 @@ export interface ServicesSelect<T extends boolean = true> {
   featuredImage?: T;
   shortDescription?: T;
   techStacks?: T;
+  categories?: T;
   content?: T;
   keyFeatures?:
     | T

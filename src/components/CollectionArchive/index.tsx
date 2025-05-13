@@ -36,7 +36,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
       case 'slider':
         return 'flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory'
       case 'feature':
-        return 'grid grid-cols-1 lg:grid-cols-2 gap-8'
+        return 'grid grid-cols-1 lg:grid-cols-3 gap-8'
       case 'list':
         return 'flex flex-col gap-4'
       case 'card':
@@ -293,9 +293,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
             )}
           </div>
           {description && (
-            <p className="text-sm text-muted-foreground line-clamp-3 mb- text-center">
-              {description}
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-3 mb-2">{description}</p>
           )}
 
           {/* Services Tags */}

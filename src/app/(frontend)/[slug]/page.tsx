@@ -27,7 +27,6 @@ export async function generateStaticParams() {
       slug: true,
     },
   })
-  console.log('🚀 ~ generateStaticParams ~ pages:', pages)
 
   const params = pages.docs
     ?.filter((doc) => {
@@ -36,7 +35,6 @@ export async function generateStaticParams() {
     .map(({ slug }) => {
       return { slug }
     })
-  console.log('🚀 ~ generateStaticParams ~ params:', params)
 
   return params
 }

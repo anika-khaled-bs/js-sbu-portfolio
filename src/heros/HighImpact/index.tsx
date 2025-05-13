@@ -8,23 +8,27 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
-  const { setHeaderTheme } = useHeaderTheme()
-
-  useEffect(() => {
-    setHeaderTheme('dark')
-  })
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }: any) => {
+  // Determine if we need to show the overlay
+  const showOverlay = richText || (Array.isArray(links) && links.length > 0)
 
   return (
     <div
       className="relative -mt-[64px] flex items-center justify-center text-white"
       data-theme="dark"
     >
-      <div className="container mb-8 z-10 relative flex items-center justify-center">
-        <div className="max-w-xl md:text-center">
+      <div className="min-h-[80vh] w-full absolute inset-0">
+        {media && typeof media === 'object' && (
+          <Media fill imgClassName="object-cover" priority resource={media} />
+        )}
+        {showOverlay && <div className="absolute inset-0 bg-black opacity-60"></div>}
+      </div>
+
+      <div className="container relative z-10 flex items-center min-h-[80vh]">
+        <div className="">
           {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex md:justify-center gap-4">
+            <ul className="gap-4">
               {links.map(({ link }, i) => {
                 return (
                   <li key={i}>
@@ -35,11 +39,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
             </ul>
           )}
         </div>
-      </div>
-      <div className="min-h-[80vh] select-none">
-        {media && typeof media === 'object' && (
-          <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
-        )}
       </div>
     </div>
   )

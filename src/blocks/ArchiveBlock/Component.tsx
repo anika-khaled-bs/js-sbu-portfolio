@@ -50,12 +50,12 @@ export const ArchiveBlock: React.FC<
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
 
-    if (collectionType === 'posts') {
-      const flattenedCategories = categories?.map((category) => {
-        if (typeof category === 'object') return category.id
-        else return category
-      })
+    const flattenedCategories = categories?.map((category) => {
+      if (typeof category === 'object') return category.id
+      else return category
+    })
 
+    if (collectionType === 'posts') {
       const fetchedPosts = await payload.find({
         collection: 'posts',
         depth: 1,
@@ -117,6 +117,15 @@ export const ArchiveBlock: React.FC<
         collection: 'services',
         depth: 1,
         limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
+              },
+            }
+          : {}),
       })
 
       items = fetchedServices.docs

@@ -119,6 +119,21 @@ export const Services: CollectionConfig = {
               },
             },
             {
+              name: 'categories',
+              type: 'relationship',
+              relationTo: 'categories',
+              hasMany: true,
+              required: true,
+              filterOptions: {
+                type: {
+                  equals: 'service',
+                },
+              },
+              admin: {
+                description: 'Technologies used for this service',
+              },
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({

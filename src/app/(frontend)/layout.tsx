@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import React, { Suspense } from 'react'
 import { montserrat } from '../fonts'
 
-import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'

@@ -1,5 +1,8 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Calendar } from 'lucide-react'
 
 import { Card } from '@/components/Card'
 import { ContactCard } from '@/components/ContactCard'
@@ -12,9 +15,11 @@ import {
   Team,
   Service,
   Portfolio,
+  Media,
 } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
+import { formatDate } from '@/utilities/formatDate'
 
 export type Props = {
   items: (Post | ContactDetail | Value | TechStack | Testimonial | Team | Service | Portfolio)[]
@@ -216,7 +221,105 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
     }
   }
 
-  // For now we'll use the existing Card component with the properly extracted data
+  // Get completion date (if any)
+  const getCompletionDate = () => {
+    if (relationTo === 'portfolio' && 'completionDate' in doc) {
+      return (doc as Portfolio).completionDate
+    }
+    return undefined
+  }
+
+  // Get related services (if any)
+  const getRelatedServices = () => {
+    if ((relationTo === 'portfolio' || relationTo === 'testimonials') && 'relatedServices' in doc) {
+      return (doc as Portfolio | Testimonial).relatedServices
+    }
+    return undefined
+  }
+
+  // Get URLs
+  const getUrl = () => {
+    const slug = getSlug()
+    if (!slug) return '#'
+    return `/${relationTo}/${slug}`
+  }
+
+  // For feature display type, we'll use a custom card similar to ProjectCard.tsx
+  if (displayType === 'feature') {
+    const title = getTitle()
+    const description = getDescription()
+    const image = getImage()
+    const url = getUrl()
+    const completionDate = getCompletionDate()
+    const relatedServices = getRelatedServices()
+
+    return (
+      <Link
+        href={url}
+        className={cn(
+          'group flex flex-col h-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-md transition-all',
+          className,
+        )}
+      >
+        <div className="px-6 py-4 flex-grow flex flex-col">
+          {/* Screenshot/Image Section */}
+          <div className="relative aspect-[4/3] overflow-hidden mb-6 rounded-md">
+            {image && typeof image !== 'string' && (
+              <Image
+                src={(image as Media).url!}
+                alt={title || 'Image'}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            )}
+            {!image && (
+              <div className="min-h-[200px] bg-muted flex items-center justify-center">
+                No image
+              </div>
+            )}
+          </div>
+
+          {/* Content Section */}
+          <div className="flex md:justify-around items-center mb-2 flex-wrap md:flex-nowrap gap-2">
+            <p className="text-xl font-semibold min-w-max">{title}</p>{' '}
+            {/* Completion Date - display if present */}
+            {completionDate && (
+              <div className="text-xs text-muted-foreground mt-auto mb-2 flex items-center md:justify-end w-full">
+                <span className="mx-1">
+                  <Calendar size={12} />
+                </span>
+                {formatDate(completionDate, { format: 'medium' })}
+              </div>
+            )}
+          </div>
+          {description && (
+            <p className="text-sm text-muted-foreground line-clamp-3 mb- text-center">
+              {description}
+            </p>
+          )}
+
+          {/* Services Tags */}
+          {relatedServices && Array.isArray(relatedServices) && relatedServices.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-auto">
+              {relatedServices
+                .filter((service): service is any => typeof service !== 'string')
+                .slice(0, 3)
+                .map((service, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2.5 py-0.5 text-xs bg-muted-foreground/10 rounded-full text-muted-foreground before:content-['•'] before:mr-1.5 before:text-sm"
+                  >
+                    {service.title}
+                  </span>
+                ))}
+            </div>
+          )}
+        </div>
+      </Link>
+    )
+  }
+
+  // For other display types we'll use the existing Card component
   return (
     <Card
       className={className}

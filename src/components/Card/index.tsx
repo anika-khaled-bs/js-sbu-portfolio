@@ -63,7 +63,7 @@ export const Card: React.FC<{
       case 'feature':
         return 'p-6 lg:w-1/2'
       case 'list':
-        return 'p-4 w-3/4'
+        return 'p-4 w-3/4 my-auto'
       default:
         return 'p-4'
     }

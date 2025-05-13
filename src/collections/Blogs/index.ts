@@ -162,7 +162,7 @@ export const Blogs: CollectionConfig = {
         }),
       ],
     },
-    ...slugField('name'),
+    ...slugField(),
   ],
   hooks: {
     beforeChange: [formatBlogTitle, generateBlogSlug, generateMetaDescription],

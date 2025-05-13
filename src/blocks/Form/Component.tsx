@@ -90,14 +90,53 @@ export const FormBlock: React.FC<
             return
           }
 
+          // Successfully submitted form, now send notification email
+          // Format data for email
+          const emailField =
+            dataToSend.find((item) => item.field === 'email')?.value || 'No email provided'
+          const nameField = dataToSend.find((item) => item.field === 'name')?.value || 'Unknown'
+          const messageField =
+            dataToSend.find((item) => item.field === 'message')?.value || 'No message content'
+
+          // Create HTML email body
+          const mailBody = `
+            <h2>New Lead From Website</h2>
+            <p><strong>Name:</strong> ${nameField}</p>
+            <p><strong>Email:</strong> ${emailField}</p>
+            <p><strong>Message:</strong></p>
+            <p>${messageField}</p>
+            <hr />
+            <h3>All Form Fields:</h3>
+            <ul>
+              ${dataToSend.map((item) => `<li><strong>${item.field}:</strong> ${item.value || 'Not provided'}</li>`).join('')}
+            </ul>
+          `
+
+          // Send notification email via our API
+          try {
+            await fetch(`${getClientSideURL()}/api/send-notification`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: emailField || 'client@example.com',
+                subject: `New Contact Form Submission: ${nameField}`,
+                mailBody,
+              }),
+            })
+            // We don't need to handle the response as this is just a notification
+          } catch (emailError) {
+            // Log error but don't disrupt user flow
+            console.error('Failed to send notification email:', emailError)
+          }
+
           setIsLoading(false)
           setHasSubmitted(true)
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
-
             const redirectUrl = url
-
             if (redirectUrl) router.push(redirectUrl)
           }
         } catch (err) {

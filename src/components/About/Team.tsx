@@ -60,7 +60,7 @@ const SocialIcon = ({ platform, label }: { platform?: string; label?: string }) 
   return <span className="text-sm">{label || 'Link'}</span>
 }
 
-const TeamCard = ({ member }: { member: Partial<Team> }) => {
+export const TeamCard = ({ member }: { member: Partial<Team> }) => {
   const image = member.profileImage as Media
 
   return (

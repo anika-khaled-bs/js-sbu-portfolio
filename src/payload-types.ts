@@ -655,7 +655,9 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('posts' | 'contact-details' | 'values') | null;
+  relationTo?:
+    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | null;
   displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
@@ -672,6 +674,26 @@ export interface ArchiveBlock {
         | {
             relationTo: 'values';
             value: string | Value;
+          }
+        | {
+            relationTo: 'testimonials';
+            value: string | Testimonial;
+          }
+        | {
+            relationTo: 'team';
+            value: string | Team;
+          }
+        | {
+            relationTo: 'services';
+            value: string | Service;
+          }
+        | {
+            relationTo: 'portfolio';
+            value: string | Portfolio;
+          }
+        | {
+            relationTo: 'tech-stacks';
+            value: string | TechStack;
           }
       )[]
     | null;
@@ -714,6 +736,300 @@ export interface Value {
    * Should this value be highlighted on the about page?
    */
   isHighlighted?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  /**
+   * The testimonial content from your client or customer
+   */
+  testimonial: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Name of the person giving the testimonial
+   */
+  clientName?: string | null;
+  /**
+   * Job title or role of the person
+   */
+  clientTitle?: string | null;
+  /**
+   * Company or organization name
+   */
+  clientCompany?: string | null;
+  /**
+   * Rating given by the client
+   */
+  rating: '5' | '4' | '3' | '2' | '1';
+  /**
+   * Photo or avatar of the client (optional)
+   */
+  clientImage?: (string | null) | Media;
+  /**
+   * Client company's logo (optional)
+   */
+  clientLogo?: (string | null) | Media;
+  /**
+   * Optional images of the project being referred to
+   */
+  projectImages?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Services this testimonial relates to
+   */
+  relatedServices?: (string | Service)[] | null;
+  /**
+   * Projects this testimonial relates to
+   */
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
+   * Technologies used in the project
+   */
+  relatedTechStacks?: (string | TechStack)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Feature this testimonial on the homepage
+   */
+  featured?: boolean | null;
+  /**
+   * When was the project completed
+   */
+  projectDate?: string | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio".
+ */
+export interface Portfolio {
+  id: string;
+  title: string;
+  /**
+   * Main image for this portfolio item
+   */
+  featuredImage: string | Media;
+  /**
+   * Short description of the project
+   */
+  shortDescription: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * The client for this project
+   */
+  client?: (string | null) | Testimonial;
+  /**
+   * URL to live project (if available)
+   */
+  projectURL?: string | null;
+  /**
+   * When the project was completed
+   */
+  completionDate?: string | null;
+  /**
+   * Technologies used in this project
+   */
+  techStacks: (string | TechStack)[];
+  /**
+   * Project logo for this portfolio item
+   */
+  logo: string | Media;
+  /**
+   * Additional images showcasing the project
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Key features of this project
+   */
+  keyFeatures?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other portfolio projects that relate to this one
+   */
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
+   * Services that were part of this project
+   */
+  relatedServices?: (string | Service)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Should this project be featured on the homepage?
+   */
+  isFeatured?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: string;
+  name: string;
+  /**
+   * Job title or role within the organization
+   */
+  role: string;
+  /**
+   * Professional headshot or profile image
+   */
+  profileImage: string | Media;
+  /**
+   * Brief bio (1-2 sentences) for team listings
+   */
+  shortBio: string;
+  /**
+   * Full biography for individual team member page
+   */
+  fullBio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Work email address (optional)
+   */
+  email?: string | null;
+  /**
+   * Work phone number (optional)
+   */
+  phone?: string | null;
+  /**
+   * Social media profiles (optional)
+   */
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'github' | 'twitter' | 'website' | 'other';
+        url: string;
+        /**
+         * Display text (optional)
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Department or team category
+   */
+  departmentCategory: string | Category;
+  /**
+   * Areas of expertise or specialization
+   */
+  expertise?:
+    | {
+        area: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Technical skills and proficiencies
+   */
+  techSkills?: (string | TechStack)[] | null;
+  /**
+   * Projects the team member has contributed to
+   */
+  projects?: (string | Post)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Controls the display order on team listings (lower numbers appear first)
+   */
+  displayOrder?: number | null;
+  /**
+   * Featured team members appear on the home page and in highlighted sections
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Designates this person as part of the leadership team
+   */
+  isLeadership?: boolean | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -946,300 +1262,6 @@ export interface PageHeaderBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'pageHeaderBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team".
- */
-export interface Team {
-  id: string;
-  name: string;
-  /**
-   * Job title or role within the organization
-   */
-  role: string;
-  /**
-   * Professional headshot or profile image
-   */
-  profileImage: string | Media;
-  /**
-   * Brief bio (1-2 sentences) for team listings
-   */
-  shortBio: string;
-  /**
-   * Full biography for individual team member page
-   */
-  fullBio?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Work email address (optional)
-   */
-  email?: string | null;
-  /**
-   * Work phone number (optional)
-   */
-  phone?: string | null;
-  /**
-   * Social media profiles (optional)
-   */
-  socialLinks?:
-    | {
-        platform: 'linkedin' | 'github' | 'twitter' | 'website' | 'other';
-        url: string;
-        /**
-         * Display text (optional)
-         */
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Department or team category
-   */
-  departmentCategory: string | Category;
-  /**
-   * Areas of expertise or specialization
-   */
-  expertise?:
-    | {
-        area: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Technical skills and proficiencies
-   */
-  techSkills?: (string | TechStack)[] | null;
-  /**
-   * Projects the team member has contributed to
-   */
-  projects?: (string | Post)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Controls the display order on team listings (lower numbers appear first)
-   */
-  displayOrder?: number | null;
-  /**
-   * Featured team members appear on the home page and in highlighted sections
-   */
-  isFeatured?: boolean | null;
-  /**
-   * Designates this person as part of the leadership team
-   */
-  isLeadership?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: string;
-  /**
-   * The testimonial content from your client or customer
-   */
-  testimonial: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Name of the person giving the testimonial
-   */
-  clientName?: string | null;
-  /**
-   * Job title or role of the person
-   */
-  clientTitle?: string | null;
-  /**
-   * Company or organization name
-   */
-  clientCompany?: string | null;
-  /**
-   * Rating given by the client
-   */
-  rating: '5' | '4' | '3' | '2' | '1';
-  /**
-   * Photo or avatar of the client (optional)
-   */
-  clientImage?: (string | null) | Media;
-  /**
-   * Client company's logo (optional)
-   */
-  clientLogo?: (string | null) | Media;
-  /**
-   * Optional images of the project being referred to
-   */
-  projectImages?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Services this testimonial relates to
-   */
-  relatedServices?: (string | Service)[] | null;
-  /**
-   * Projects this testimonial relates to
-   */
-  relatedProjects?: (string | Portfolio)[] | null;
-  /**
-   * Technologies used in the project
-   */
-  relatedTechStacks?: (string | TechStack)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Feature this testimonial on the homepage
-   */
-  featured?: boolean | null;
-  /**
-   * When was the project completed
-   */
-  projectDate?: string | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "portfolio".
- */
-export interface Portfolio {
-  id: string;
-  title: string;
-  /**
-   * Main image for this portfolio item
-   */
-  featuredImage: string | Media;
-  /**
-   * Short description of the project
-   */
-  shortDescription: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * The client for this project
-   */
-  client?: (string | null) | Testimonial;
-  /**
-   * URL to live project (if available)
-   */
-  projectURL?: string | null;
-  /**
-   * When the project was completed
-   */
-  completionDate?: string | null;
-  /**
-   * Technologies used in this project
-   */
-  techStacks: (string | TechStack)[];
-  /**
-   * Project logo for this portfolio item
-   */
-  logo: string | Media;
-  /**
-   * Additional images showcasing the project
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Key features of this project
-   */
-  keyFeatures?:
-    | {
-        title: string;
-        description: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Other portfolio projects that relate to this one
-   */
-  relatedProjects?: (string | Portfolio)[] | null;
-  /**
-   * Services that were part of this project
-   */
-  relatedServices?: (string | Service)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Should this project be featured on the homepage?
-   */
-  isFeatured?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * Hero sliders for landing pages and sections

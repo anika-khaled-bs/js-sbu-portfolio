@@ -1,4 +1,4 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, ContactDetail, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -12,43 +12,78 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    relationTo,
+    displayType,
+    selectedDocs,
+  } = props
 
   const limit = limitFromProps || 3
 
-  let posts: Post[] = []
+  let items: (Post | ContactDetail)[] = []
+  const collectionType = relationTo || 'posts'
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
 
-    const flattenedCategories = categories?.map((category) => {
-      if (typeof category === 'object') return category.id
-      else return category
-    })
+    if (collectionType === 'posts') {
+      const flattenedCategories = categories?.map((category) => {
+        if (typeof category === 'object') return category.id
+        else return category
+      })
 
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
-      depth: 1,
-      limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
+      const fetchedPosts = await payload.find({
+        collection: 'posts',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
               },
-            },
-          }
-        : {}),
-    })
+            }
+          : {}),
+      })
 
-    posts = fetchedPosts.docs
+      items = fetchedPosts.docs
+    } else if (collectionType === 'contact-details') {
+      const fetchedContactDetails = await payload.find({
+        collection: 'contact-details',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedContactDetails.docs
+    }
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Post[]
+      const filteredSelectedItems = selectedDocs
+        .map((item) => {
+          if (typeof item === 'object' && item !== null) {
+            if (item.relationTo === 'contact-details' && typeof item.value === 'object') {
+              return {
+                ...item.value,
+                _collection: 'contact-details',
+              }
+            } else if (item.relationTo === 'posts' && typeof item.value === 'object') {
+              return {
+                ...item.value,
+                _collection: 'posts',
+              }
+            }
+          }
+          return null
+        })
+        .filter(Boolean) as (Post | ContactDetail)[]
 
-      posts = filteredSelectedPosts
+      items = filteredSelectedItems
     }
   }
 
@@ -59,7 +94,11 @@ export const ArchiveBlock: React.FC<
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+      <CollectionArchive
+        items={items}
+        relationTo={collectionType}
+        displayType={displayType || 'grid'}
+      />
     </div>
   )
 }

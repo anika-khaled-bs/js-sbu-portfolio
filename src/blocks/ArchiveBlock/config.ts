@@ -10,6 +10,10 @@ import {
 export const Archive: Block = {
   slug: 'archive',
   interfaceName: 'ArchiveBlock',
+  labels: {
+    plural: 'Archives',
+    singular: 'Archive',
+  },
   fields: [
     {
       name: 'introContent',
@@ -54,6 +58,38 @@ export const Archive: Block = {
           label: 'Posts',
           value: 'posts',
         },
+        {
+          label: 'Contact Details',
+          value: 'contact-details',
+        },
+      ],
+    },
+    {
+      name: 'displayType',
+      type: 'select',
+      defaultValue: 'grid',
+      label: 'Display Type',
+      options: [
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
+        {
+          label: 'Slider',
+          value: 'slider',
+        },
+        {
+          label: 'Feature Block',
+          value: 'feature',
+        },
+        {
+          label: 'Card',
+          value: 'card',
+        },
+        {
+          label: 'List',
+          value: 'list',
+        },
       ],
     },
     {
@@ -84,11 +120,7 @@ export const Archive: Block = {
       },
       hasMany: true,
       label: 'Selection',
-      relationTo: ['posts'],
+      relationTo: ['posts', 'contact-details'],
     },
   ],
-  labels: {
-    plural: 'Archives',
-    singular: 'Archive',
-  },
 }

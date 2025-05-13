@@ -27,6 +27,7 @@ export async function generateStaticParams() {
       slug: true,
     },
   })
+  console.log('🚀 ~ generateStaticParams ~ pages:', pages)
 
   const params = pages.docs
     ?.filter((doc) => {
@@ -35,6 +36,7 @@ export async function generateStaticParams() {
     .map(({ slug }) => {
       return { slug }
     })
+  console.log('🚀 ~ generateStaticParams ~ params:', params)
 
   return params
 }
@@ -64,24 +66,24 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <div className="mt-16">
-      {page?.type === 'skill' ? (
+      {/* {page?.type === 'skill' ? (
         <SkillSetPage skillSet={page} />
       ) : page?.type === 'about' ? (
         <AboutUsComponent aboutUs={page!} />
       ) : page?.type === 'contact' ? (
         <ContactUsComponent contactUsDetails={page!} />
-      ) : (
-        <article className="pt-16 pb-24">
-          <PageClient />
-          {/* Allows redirects for valid pages too */}
-          <PayloadRedirects disableNotFound url={url} />
+      ) : ( */}
+      <article className="pt-16 pb-24">
+        <PageClient />
+        {/* Allows redirects for valid pages too */}
+        <PayloadRedirects disableNotFound url={url} />
 
-          {draft && <LivePreviewListener />}
+        {draft && <LivePreviewListener />}
 
-          <RenderHero {...hero} />
-          <RenderBlocks blocks={layout} />
-        </article>
-      )}
+        <RenderHero {...hero} />
+        <RenderBlocks blocks={layout} />
+      </article>
+      {/* )} */}
     </div>
   )
 }
@@ -105,7 +107,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     pagination: false,
-    overrideAccess: draft,
+    // overrideAccess: draft,
     where: {
       slug: {
         equals: slug,

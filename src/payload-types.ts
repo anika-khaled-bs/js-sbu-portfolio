@@ -639,18 +639,44 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
+  relationTo?: ('posts' | 'contact-details') | null;
+  displayType?: ('grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: string | Post;
-      }[]
+    | (
+        | {
+            relationTo: 'posts';
+            value: string | Post;
+          }
+        | {
+            relationTo: 'contact-details';
+            value: string | ContactDetail;
+          }
+      )[]
     | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-details".
+ */
+export interface ContactDetail {
+  id: string;
+  email: string;
+  phone: string;
+  time: string;
+  addressLine1: string;
+  addressLine2?: string | null;
+  /**
+   * Is this the active set of contact details to display?
+   */
+  isActive?: boolean | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1205,25 +1231,6 @@ export interface Value {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-details".
- */
-export interface ContactDetail {
-  id: string;
-  email: string;
-  phone: string;
-  time: string;
-  addressLine1: string;
-  addressLine2?: string | null;
-  /**
-   * Is this the active set of contact details to display?
-   */
-  isActive?: boolean | null;
-  publishedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1627,6 +1634,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   introContent?: T;
   populateBy?: T;
   relationTo?: T;
+  displayType?: T;
   categories?: T;
   limit?: T;
   selectedDocs?: T;

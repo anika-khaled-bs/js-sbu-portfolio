@@ -14,34 +14,71 @@ export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
   doc?: CardPostData
-  relationTo?: 'posts'
+  relationTo?: string
   showCategories?: boolean
   title?: string
+  displayType?: 'grid' | 'slider' | 'feature' | 'card' | 'list'
 }> = (props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
-
   const { slug, categories, meta, title } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+
+  // Don't generate hrefs for contact-details as they don't have dedicated pages
+  const href = relationTo === 'contact-details' ? '#' : `/${relationTo}/${slug}`
+  const { displayType = 'grid' } = props
+
+  const getCardStyle = () => {
+    switch (displayType) {
+      case 'feature':
+        return 'flex flex-col lg:flex-row border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'
+      case 'list':
+        return 'flex flex-row border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'
+      case 'slider':
+        return 'flex flex-col h-full border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'
+      case 'grid':
+        'grid grid-cols-1 md:grid-cols-3 gap-8 mb-16'
+      case 'card':
+      default:
+        return 'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'
+    }
+  }
+
+  const getImageStyle = () => {
+    switch (displayType) {
+      case 'feature':
+        return 'relative lg:w-1/2'
+      case 'list':
+        return 'relative w-1/4'
+      default:
+        return 'relative w-full'
+    }
+  }
+
+  const getContentStyle = () => {
+    switch (displayType) {
+      case 'feature':
+        return 'p-6 lg:w-1/2'
+      case 'list':
+        return 'p-4 w-3/4'
+      default:
+        return 'p-4'
+    }
+  }
 
   return (
-    <article
-      className={cn(
-        'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
-        className,
-      )}
-      ref={card.ref}
-    >
-      <div className="relative w-full ">
-        {!metaImage && <div className="">No image</div>}
+    <article className={cn(getCardStyle(), className)} ref={card.ref}>
+      <div className={getImageStyle()}>
+        {!metaImage && (
+          <div className="min-h-[200px] bg-muted flex items-center justify-center">No image</div>
+        )}
         {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
       </div>
-      <div className="p-4">
+      <div className={getContentStyle()}>
         {showCategories && hasCategories && (
           <div className="uppercase text-sm mb-4">
             {showCategories && hasCategories && (

@@ -41,7 +41,6 @@ export const Card: React.FC<{
       case 'slider':
         return 'flex flex-col h-full border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'
       case 'grid':
-        'grid grid-cols-1 md:grid-cols-3 gap-8 mb-16'
       case 'card':
       default:
         return 'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer'

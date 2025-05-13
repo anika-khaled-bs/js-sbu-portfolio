@@ -48,41 +48,40 @@ export const CollectionArchive: React.FC<Props> = (props) => {
 
   return (
     <div className={cn('container')}>
-      <div>
-        <div className={getLayoutClasses()}>
-          {' '}
-          {items?.map((item, index) => {
-            if (typeof item === 'object' && item !== null) {
-              // Handle items with _collection marker from selectedDocs
-              const itemCollection = (item as any)._collection || relationTo
+      <div className={getLayoutClasses()}>
+        {' '}
+        {items?.map((item, index) => {
+          if (typeof item === 'object' && item !== null) {
+            // Handle items with _collection marker from selectedDocs
+            const itemCollection = (item as any)._collection || relationTo
 
-              if (itemCollection === 'contact-details') {
-                return (
-                  <div className={getItemClasses()} key={index}>
-                    <ContactCard
-                      className="h-full"
-                      doc={item as ContactDetail}
-                      displayType={displayType}
-                    />
-                  </div>
-                )
-              } else {
-                return (
-                  <div className={getItemClasses()} key={index}>
-                    <Card
-                      className="h-full"
-                      doc={item as Post}
-                      relationTo={itemCollection}
-                      showCategories={itemCollection === 'posts'}
-                      displayType={displayType}
-                    />
-                  </div>
-                )
-              }
+            if (itemCollection === 'contact-details') {
+              return (
+                // <div className={getItemClasses()} key={index}>
+                <ContactCard
+                  key={index}
+                  className={getItemClasses()}
+                  doc={item as ContactDetail}
+                  displayType={displayType}
+                />
+                // </div>
+              )
+            } else {
+              return (
+                <div className={getItemClasses()} key={index}>
+                  <Card
+                    className="h-full"
+                    doc={item as Post}
+                    relationTo={itemCollection}
+                    showCategories={itemCollection === 'posts'}
+                    displayType={displayType}
+                  />
+                </div>
+              )
             }
-            return null
-          })}
-        </div>
+          }
+          return null
+        })}
       </div>
     </div>
   )

@@ -115,58 +115,66 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="lg:max-w-[48rem] mt-4">
-      {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
-      )}
-      <div className="p-4 lg:p-6">
-        <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <div className="bg-primary-foreground p-4 rounded-md mb-4">
-              <RichText data={confirmationMessage} className="text-sm text-muted-foreground" />
-            </div>
-          )}
-
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
+    <div className="container">
+      <div className="lg:max-w-[48rem] mt-4  border rounded-lg p-6 md:p-10 max-w-3xl mx-auto">
+        {enableIntro && introContent && !hasSubmitted && (
+          <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+        )}
+        <div className="px-4 pt-4 lg:px-6 lg:pt-6 pb-0">
+          <FormProvider {...formMethods}>
+            {!isLoading && hasSubmitted && confirmationType === 'message' && (
+              <div className="bg-primary-foreground p-4 rounded-md mb-4">
+                <RichText data={confirmationMessage} className="text-sm text-muted-foreground" />
               </div>
+            )}
 
-              <Button form={formID} type="submit" variant="default" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Submitting...
-                  </>
-                ) : (
-                  submitButtonLabel
-                )}
-              </Button>
-            </form>
-          }
-        </FormProvider>
+            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+            {
+              <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-4 last:mb-0">
+                  {formFromProps &&
+                    formFromProps.fields &&
+                    formFromProps.fields?.map((field, index) => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                      if (Field) {
+                        return (
+                          <div className="mb-6 last:mb-0" key={index}>
+                            <Field
+                              form={formFromProps}
+                              {...field}
+                              {...formMethods}
+                              control={control}
+                              errors={errors}
+                              register={register}
+                            />
+                          </div>
+                        )
+                      }
+                      return null
+                    })}
+                </div>
+
+                <Button
+                  form={formID}
+                  type="submit"
+                  variant="default"
+                  disabled={isLoading}
+                  className="mb-0"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    submitButtonLabel
+                  )}
+                </Button>
+              </form>
+            }
+          </FormProvider>
+        </div>
       </div>
     </div>
   )

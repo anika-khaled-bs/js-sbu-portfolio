@@ -49,7 +49,6 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   return (
     <div className={cn('container')}>
       <div className={getLayoutClasses()}>
-        {' '}
         {items?.map((item, index) => {
           if (typeof item === 'object' && item !== null) {
             // Handle items with _collection marker from selectedDocs

@@ -21,7 +21,7 @@ export const MenuLink: React.FC<MenuLinkProps> = ({ href, label, className, acti
       href={href}
       className={cn(
         'transition-colors hover:text-primary',
-        isActive ? 'text-primary font-medium' : 'text-foreground',
+        isActive ? 'text-primary font-medium' : 'text-white',
         className,
         isActive && activeClassName,
       )}
@@ -32,7 +32,7 @@ export const MenuLink: React.FC<MenuLinkProps> = ({ href, label, className, acti
     <button
       className={cn(
         'transition-colors hover:text-primary',
-        isActive ? 'text-primary font-medium' : 'text-foreground',
+        isActive ? 'text-primary font-medium' : 'text-white',
         className,
         isActive && activeClassName,
       )}

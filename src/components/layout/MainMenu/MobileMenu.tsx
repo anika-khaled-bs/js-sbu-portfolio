@@ -41,7 +41,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                         key={subItem.id}
                         {...subItem.link}
                         appearance="ghost"
-                        className="block px-3 py-2 rounded-md text-sm text-foreground hover:bg-muted"
+                        className="block px-3 py-2 rounded-md text-sm text-white hover:bg-muted"
                         onClick={() => {
                           setMobileMenuOpen(false)
                         }}
@@ -55,7 +55,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 key={item.id}
                 {...item.link}
                 appearance="ghost"
-                className="block px-3 py-2 rounded-md text-sm text-foreground hover:bg-muted"
+                className="block px-3 py-2 rounded-md text-sm text-white hover:bg-muted"
                 onClick={() => {
                   setMobileMenuOpen(false)
                 }}

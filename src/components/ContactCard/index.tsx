@@ -9,7 +9,7 @@ import ContactInfoComponent from '../ContactUs/ContactInfo'
 export type ContactCardProps = {
   className?: string
   doc?: ContactDetail
-  displayType?: 'grid' | 'slider' | 'feature' | 'card' | 'list'
+  displayType?: 'grid' | 'slider' | 'feature' | 'card' | 'list' | 'default'
 }
 
 export const ContactCard: React.FC<ContactCardProps> = (props) => {

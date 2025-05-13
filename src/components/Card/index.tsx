@@ -17,7 +17,7 @@ export const Card: React.FC<{
   relationTo?: string
   showCategories?: boolean
   title?: string
-  displayType?: 'grid' | 'slider' | 'feature' | 'card' | 'list'
+  displayType?: 'grid' | 'slider' | 'feature' | 'card' | 'list' | 'default'
 }> = (props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props

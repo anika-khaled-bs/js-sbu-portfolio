@@ -3,12 +3,13 @@ import React from 'react'
 
 import { Card } from '@/components/Card'
 import { ContactCard } from '@/components/ContactCard'
-import { type Post, type ContactDetail } from '@/payload-types'
+import { type Post, type ContactDetail, Value } from '@/payload-types'
+import OurValues from '../About/OurValues'
 
 export type Props = {
-  items: (Post | ContactDetail)[]
+  items: (Post | ContactDetail | Value)[]
   relationTo: string
-  displayType: 'grid' | 'slider' | 'feature' | 'card' | 'list'
+  displayType: 'grid' | 'slider' | 'feature' | 'card' | 'list' | 'default'
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
@@ -25,6 +26,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
       case 'list':
         return 'flex flex-col gap-4'
       case 'card':
+      case 'default':
+        return ''
       default:
         return 'grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-4 gap-x-4 lg:gap-y-8 lg:gap-x-8 xl:gap-x-8'
     }
@@ -41,6 +44,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
       case 'list':
         return 'w-full'
       case 'card':
+      case 'default':
+        return ''
       default:
         return 'col-span-4'
     }
@@ -49,38 +54,42 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   return (
     <div className={cn('container')}>
       <div className={getLayoutClasses()}>
-        {items?.map((item, index) => {
-          if (typeof item === 'object' && item !== null) {
-            // Handle items with _collection marker from selectedDocs
-            const itemCollection = (item as any)._collection || relationTo
+        {relationTo === 'values' && displayType === 'default' ? (
+          <OurValues values={items as Value[]} />
+        ) : (
+          items?.map((item, index) => {
+            if (typeof item === 'object' && item !== null) {
+              // Handle items with _collection marker from selectedDocs
+              const itemCollection = (item as any)._collection || relationTo
 
-            if (itemCollection === 'contact-details') {
-              return (
-                // <div className={getItemClasses()} key={index}>
-                <ContactCard
-                  key={index}
-                  className={getItemClasses()}
-                  doc={item as ContactDetail}
-                  displayType={displayType}
-                />
-                // </div>
-              )
-            } else {
-              return (
-                <div className={getItemClasses()} key={index}>
-                  <Card
-                    className="h-full"
-                    doc={item as Post}
-                    relationTo={itemCollection}
-                    showCategories={itemCollection === 'posts'}
+              if (itemCollection === 'contact-details') {
+                return (
+                  // <div className={getItemClasses()} key={index}>
+                  <ContactCard
+                    key={index}
+                    className={getItemClasses()}
+                    doc={item as ContactDetail}
                     displayType={displayType}
                   />
-                </div>
-              )
+                  // </div>
+                )
+              } else {
+                return (
+                  <div className={getItemClasses()} key={index}>
+                    <Card
+                      className="h-full"
+                      doc={item as Post}
+                      relationTo={itemCollection}
+                      showCategories={itemCollection === 'posts'}
+                      displayType={displayType}
+                    />
+                  </div>
+                )
+              }
             }
-          }
-          return null
-        })}
+            return null
+          })
+        )}
       </div>
     </div>
   )

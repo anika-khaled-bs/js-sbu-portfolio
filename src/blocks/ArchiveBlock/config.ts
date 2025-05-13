@@ -1,11 +1,24 @@
 import type { Block } from 'payload'
 
 import {
+  AlignFeature,
+  BlocksFeature,
+  BoldFeature,
   FixedToolbarFeature,
   HeadingFeature,
+  HorizontalRuleFeature,
   InlineToolbarFeature,
+  ItalicFeature,
   lexicalEditor,
+  LinkFeature,
+  SubscriptFeature,
+  SuperscriptFeature,
+  UnderlineFeature,
+  UploadFeature,
 } from '@payloadcms/richtext-lexical'
+import { MediaBlock } from '../MediaBlock/config'
+import { Banner } from '../Banner/config'
+import { Code } from '../Code/config'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -22,9 +35,19 @@ export const Archive: Block = {
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
+            BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            HorizontalRuleFeature(),
+            AlignFeature(),
+            LinkFeature(),
+            UnderlineFeature(),
+            BoldFeature(),
+            ItalicFeature(),
+            SubscriptFeature(),
+            SuperscriptFeature(),
+            UploadFeature(),
           ]
         },
       }),
@@ -62,6 +85,10 @@ export const Archive: Block = {
           label: 'Contact Details',
           value: 'contact-details',
         },
+        {
+          label: 'Values',
+          value: 'values',
+        },
       ],
     },
     {
@@ -70,6 +97,10 @@ export const Archive: Block = {
       defaultValue: 'grid',
       label: 'Display Type',
       options: [
+        {
+          label: 'Default',
+          value: 'default',
+        },
         {
           label: 'Grid',
           value: 'grid',
@@ -120,7 +151,7 @@ export const Archive: Block = {
       },
       hasMany: true,
       label: 'Selection',
-      relationTo: ['posts', 'contact-details'],
+      relationTo: ['posts', 'contact-details', 'values'],
     },
   ],
 }

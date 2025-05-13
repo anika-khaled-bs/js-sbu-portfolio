@@ -46,7 +46,7 @@ export const DesktopMenu: React.FC<DesktopMenuProps> = ({
           {item?.subMenuItems?.length! > 0 ? (
             <>
               <button
-                className="nav-link flex items-center gap-1 text-white"
+                className="nav-link flex items-center gap-1 "
                 onClick={() => toggleDropdown(item.link.label)}
               >
                 {item.link.label}
@@ -60,7 +60,7 @@ export const DesktopMenu: React.FC<DesktopMenuProps> = ({
                         key={subItem.id}
                         {...subItem.link}
                         appearance="ghost"
-                        className="block px-4 text-sm hover:bg-muted m-0 text-white"
+                        className="block px-4 text-sm hover:bg-muted m-0"
                       />
                     ))}
                   </div>
@@ -68,7 +68,7 @@ export const DesktopMenu: React.FC<DesktopMenuProps> = ({
               )}
             </>
           ) : (
-            <CMSLink {...item.link} appearance="ghost" className="text-white text-base" />
+            <CMSLink {...item.link} appearance="ghost" className="text-base" />
           )}
         </div>
       ))}

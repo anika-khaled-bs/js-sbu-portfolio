@@ -164,8 +164,8 @@ export interface UserAuthOperations {
 export interface Page {
   id: string;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+  hero?: {
+    type?: ('none' | 'highImpact' | 'mediumImpact' | 'lowImpact') | null;
     richText?: {
       root: {
         type: string;
@@ -207,7 +207,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -614,6 +614,22 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: string | Media;
+  title?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -639,8 +655,8 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('posts' | 'contact-details') | null;
-  displayType?: ('grid' | 'slider' | 'feature' | 'card' | 'list') | null;
+  relationTo?: ('posts' | 'contact-details' | 'values') | null;
+  displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -652,6 +668,10 @@ export interface ArchiveBlock {
         | {
             relationTo: 'contact-details';
             value: string | ContactDetail;
+          }
+        | {
+            relationTo: 'values';
+            value: string | Value;
           }
       )[]
     | null;
@@ -675,6 +695,28 @@ export interface ContactDetail {
    */
   isActive?: boolean | null;
   publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "values".
+ */
+export interface Value {
+  id: string;
+  title: string;
+  /**
+   * Icon representing this value
+   */
+  icon?: (string | null) | Media;
+  shortDescription: string;
+  /**
+   * Should this value be highlighted on the about page?
+   */
+  isHighlighted?: boolean | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -877,6 +919,33 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock".
+ */
+export interface PageHeaderBlock {
+  title: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pageHeaderBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1209,28 +1278,6 @@ export interface HeroSlider {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "values".
- */
-export interface Value {
-  id: string;
-  title: string;
-  /**
-   * Icon representing this value
-   */
-  icon?: (string | null) | Media;
-  shortDescription: string;
-  /**
-   * Should this value be highlighted on the about page?
-   */
-  isHighlighted?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1551,6 +1598,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        pageHeaderBlock?: T | PageHeaderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1623,6 +1671,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  title?: T;
+  content?: T;
   id?: T;
   blockName?: T;
 }
@@ -1649,6 +1699,18 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock_select".
+ */
+export interface PageHeaderBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
+  richText?: T;
   id?: T;
   blockName?: T;
 }

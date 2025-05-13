@@ -1,4 +1,4 @@
-import type { Post, ContactDetail, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, ContactDetail, ArchiveBlock as ArchiveBlockProps, Value } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -25,7 +25,7 @@ export const ArchiveBlock: React.FC<
 
   const limit = limitFromProps || 3
 
-  let items: (Post | ContactDetail)[] = []
+  let items: (Post | ContactDetail | Value)[] = []
   const collectionType = relationTo || 'posts'
 
   if (populateBy === 'collection') {
@@ -61,6 +61,14 @@ export const ArchiveBlock: React.FC<
       })
 
       items = fetchedContactDetails.docs
+    } else if (collectionType === 'values') {
+      const fetchedValues = await payload.find({
+        collection: 'values',
+        depth: 1,
+        limit,
+      })
+
+      items = fetchedValues.docs
     }
   } else {
     if (selectedDocs?.length) {
@@ -76,6 +84,11 @@ export const ArchiveBlock: React.FC<
               return {
                 ...item.value,
                 _collection: 'posts',
+              }
+            } else if (item.relationTo === 'values' && typeof item.value === 'object') {
+              return {
+                ...item.value,
+                _collection: 'values',
               }
             }
           }

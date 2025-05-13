@@ -73,15 +73,14 @@ export default async function Page({ params: paramsPromise }: Args) {
       ) : page?.type === 'contact' ? (
         <ContactUsComponent contactUsDetails={page!} />
       ) : ( */}
-      <article className="pt-16 pb-24">
+      <article className="">
         <PageClient />
         {/* Allows redirects for valid pages too */}
         <PayloadRedirects disableNotFound url={url} />
 
         {draft && <LivePreviewListener />}
 
-        <RenderHero {...hero} />
-        <RenderBlocks blocks={layout} />
+        <RenderBlocks blocks={layout} hero={<RenderHero {...hero} />} />
       </article>
       {/* )} */}
     </div>

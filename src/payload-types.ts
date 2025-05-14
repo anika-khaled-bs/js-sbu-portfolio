@@ -277,7 +277,11 @@ export interface Service {
   /**
    * Related projects that demonstrate this service
    */
-  relatedProjects?: (string | Post)[] | null;
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
+   * Other posts that relate to this one
+   */
+  relatedServices?: (string | Service)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -295,6 +299,7 @@ export interface Service {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -451,12 +456,19 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "portfolio".
  */
-export interface Post {
+export interface Portfolio {
   id: string;
   title: string;
-  heroImage?: (string | null) | Media;
+  /**
+   * Main image for this portfolio item
+   */
+  featuredImage: string | Media;
+  /**
+   * Short description of the project
+   */
+  shortDescription: string;
   content: {
     root: {
       type: string;
@@ -472,8 +484,54 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (string | Post)[] | null;
-  categories?: (string | Category)[] | null;
+  /**
+   * The client for this project
+   */
+  client?: (string | null) | Testimonial;
+  /**
+   * URL to live project (if available)
+   */
+  projectURL?: string | null;
+  /**
+   * When the project was completed
+   */
+  completionDate?: string | null;
+  /**
+   * Technologies used in this project
+   */
+  techStacks: (string | TechStack)[];
+  /**
+   * Project logo for this portfolio item
+   */
+  logo: string | Media;
+  /**
+   * Additional images showcasing the project
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Key features of this project
+   */
+  keyFeatures?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other portfolio projects that relate to this one
+   */
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
+   * Services that were part of this project
+   */
+  relatedServices?: (string | Service)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -482,14 +540,11 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
   };
+  /**
+   * Should this project be featured on the homepage?
+   */
+  isFeatured?: boolean | null;
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -498,21 +553,95 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "testimonials".
  */
-export interface User {
+export interface Testimonial {
   id: string;
-  name?: string | null;
+  /**
+   * The testimonial content from your client or customer
+   */
+  testimonial: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Name of the person giving the testimonial
+   */
+  clientName?: string | null;
+  /**
+   * Job title or role of the person
+   */
+  clientTitle?: string | null;
+  /**
+   * Company or organization name
+   */
+  clientCompany?: string | null;
+  /**
+   * Rating given by the client
+   */
+  rating: '5' | '4' | '3' | '2' | '1';
+  /**
+   * Photo or avatar of the client (optional)
+   */
+  clientImage?: (string | null) | Media;
+  /**
+   * Client company's logo (optional)
+   */
+  clientLogo?: (string | null) | Media;
+  /**
+   * Optional images of the project being referred to
+   */
+  projectImages?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Services this testimonial relates to
+   */
+  relatedServices?: (string | Service)[] | null;
+  /**
+   * Projects this testimonial relates to
+   */
+  relatedProjects?: (string | Portfolio)[] | null;
+  /**
+   * Technologies used in the project
+   */
+  relatedTechStacks?: (string | TechStack)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Feature this testimonial on the homepage
+   */
+  featured?: boolean | null;
+  /**
+   * When was the project completed
+   */
+  projectDate?: string | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -657,6 +786,71 @@ export interface ArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  heroImage?: (string | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (string | Post)[] | null;
+  categories?: (string | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-details".
  */
 export interface ContactDetail {
@@ -695,195 +889,6 @@ export interface Value {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: string;
-  /**
-   * The testimonial content from your client or customer
-   */
-  testimonial: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Name of the person giving the testimonial
-   */
-  clientName?: string | null;
-  /**
-   * Job title or role of the person
-   */
-  clientTitle?: string | null;
-  /**
-   * Company or organization name
-   */
-  clientCompany?: string | null;
-  /**
-   * Rating given by the client
-   */
-  rating: '5' | '4' | '3' | '2' | '1';
-  /**
-   * Photo or avatar of the client (optional)
-   */
-  clientImage?: (string | null) | Media;
-  /**
-   * Client company's logo (optional)
-   */
-  clientLogo?: (string | null) | Media;
-  /**
-   * Optional images of the project being referred to
-   */
-  projectImages?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Services this testimonial relates to
-   */
-  relatedServices?: (string | Service)[] | null;
-  /**
-   * Projects this testimonial relates to
-   */
-  relatedProjects?: (string | Portfolio)[] | null;
-  /**
-   * Technologies used in the project
-   */
-  relatedTechStacks?: (string | TechStack)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Feature this testimonial on the homepage
-   */
-  featured?: boolean | null;
-  /**
-   * When was the project completed
-   */
-  projectDate?: string | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "portfolio".
- */
-export interface Portfolio {
-  id: string;
-  title: string;
-  /**
-   * Main image for this portfolio item
-   */
-  featuredImage: string | Media;
-  /**
-   * Short description of the project
-   */
-  shortDescription: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * The client for this project
-   */
-  client?: (string | null) | Testimonial;
-  /**
-   * URL to live project (if available)
-   */
-  projectURL?: string | null;
-  /**
-   * When the project was completed
-   */
-  completionDate?: string | null;
-  /**
-   * Technologies used in this project
-   */
-  techStacks: (string | TechStack)[];
-  /**
-   * Project logo for this portfolio item
-   */
-  logo: string | Media;
-  /**
-   * Additional images showcasing the project
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Key features of this project
-   */
-  keyFeatures?:
-    | {
-        title: string;
-        description: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Other portfolio projects that relate to this one
-   */
-  relatedProjects?: (string | Portfolio)[] | null;
-  /**
-   * Services that were part of this project
-   */
-  relatedServices?: (string | Service)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  /**
-   * Should this project be featured on the homepage?
-   */
-  isFeatured?: boolean | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1849,6 +1854,7 @@ export interface ServicesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedProjects?: T;
+  relatedServices?: T;
   meta?:
     | T
     | {
@@ -1862,6 +1868,7 @@ export interface ServicesSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2520,6 +2527,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: string | Service;
         } | null)
       | ({
           relationTo: 'portfolio';

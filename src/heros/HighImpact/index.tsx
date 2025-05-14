@@ -14,17 +14,17 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative -mt-[64px] flex items-center justify-center text-white"
+      className="relative -mt[64px] flex items-center justify-center text-white"
       data-theme="dark"
     >
-      <div className="min-h-[80vh] w-full absolute inset-0">
+      <div className="min-h-[50vh] w-full absolute inset-0">
         {media && typeof media === 'object' && (
           <Media fill imgClassName="object-cover" priority resource={media} />
         )}
         {showOverlay && <div className="absolute inset-0 bg-black opacity-60"></div>}
       </div>
 
-      <div className="container relative z-10 flex items-center min-h-[80vh]">
+      <div className="container relative z-10 flex items-center min-h-[50vh]">
         <div className="">
           {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
           {Array.isArray(links) && links.length > 0 && (

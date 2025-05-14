@@ -178,10 +178,28 @@ export const Services: CollectionConfig = {
             {
               name: 'relatedProjects',
               type: 'relationship',
-              relationTo: 'posts', // Will update to 'portfolio' when that collection is created
+              relationTo: 'portfolio', // Will update to 'portfolio' when that collection is created
               hasMany: true,
               admin: {
                 description: 'Related projects that demonstrate this service',
+              },
+            },
+            {
+              name: 'relatedServices',
+              type: 'relationship',
+              relationTo: 'services',
+              hasMany: true,
+              max: 3,
+              admin: {
+                description: 'Other posts that relate to this one',
+                // condition: (data) => Boolean(data?.id),
+              },
+              filterOptions: ({ id }) => {
+                return {
+                  id: {
+                    not_equals: id,
+                  },
+                }
               },
             },
           ],
@@ -249,13 +267,13 @@ export const Services: CollectionConfig = {
     afterChange: [revalidateService],
     afterDelete: [revalidateDelete],
   },
-  // versions: {
-  //   drafts: {
-  //     autosave: {
-  //       interval: 100, // Interval for optimal live preview
-  //     },
-  //     schedulePublish: true,
-  //   },
-  //   maxPerDoc: 50,
-  // },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // Interval for optimal live preview
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }

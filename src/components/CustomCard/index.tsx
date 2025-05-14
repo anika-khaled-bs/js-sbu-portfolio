@@ -4,22 +4,33 @@ import Link from 'next/link'
 import React from 'react'
 
 export interface CardProps {
-  title: string
-  imageUrl: string
-  link: string
+  title?: string
+  imageUrl?: string
+  link?: string
   otherInfo?: React.ReactNode | string | number
+  doc?: any
+  relationTo?: any
+  showCategories?: any
 }
 
-export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
+export function Card({
+  title,
+  imageUrl,
+  link,
+  otherInfo,
+  doc,
+  relationTo,
+  showCategories,
+}: CardProps) {
   return (
     <Link
-      href={link}
+      href={link!}
       className="group flex flex-col h-full overflow-hidden rounded-lg shadow-sm card-hover border"
     >
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
-          src={imageUrl}
-          alt={title}
+          src={imageUrl!}
+          alt={title!}
           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
           fill
         />
@@ -35,7 +46,7 @@ export function Card({ title, imageUrl, link, otherInfo }: CardProps) {
         </p>
         {otherInfo}
         <Link
-          href={link}
+          href={link!}
           className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-muted-foreground transition-colors"
         >
           Learn more

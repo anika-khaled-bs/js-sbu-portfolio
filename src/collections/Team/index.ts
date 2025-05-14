@@ -225,7 +225,7 @@ export const Team: CollectionConfig = {
             {
               name: 'projects',
               type: 'relationship',
-              relationTo: 'posts', // Will update to 'portfolio' when that collection is created
+              relationTo: 'portfolio', // Will update to 'portfolio' when that collection is created
               hasMany: true,
               admin: {
                 description: 'Projects the team member has contributed to',

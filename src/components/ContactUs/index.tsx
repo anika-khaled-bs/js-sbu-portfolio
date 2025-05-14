@@ -40,7 +40,7 @@ const ContactUsComponent = async ({ contactUsDetails }: ContactUsProps) => {
             <div className="text-center">
               <p className="mb-2 text-4xl font-semibold">Send Us a Message</p>
               <p className="text-muted-foreground">
-                Fill out the form below and we'll get back to you as soon as possible.
+                Fill out the form below and we&apos;ll get back to you as soon as possible.
               </p>
             </div>
             <FormBlock

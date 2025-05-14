@@ -1,5 +1,5 @@
 import { mailConfig } from 'config/mail'
-import * as nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer'
 
 export class MailService {
   private readonly maxRetries: number = 3

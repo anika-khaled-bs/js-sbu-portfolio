@@ -45,9 +45,7 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        data: {},
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -133,11 +131,11 @@ export const seed = async ({
       data: imageHero1,
       file: hero1Buffer,
     }),
-
     payload.create({
       collection: 'categories',
       data: {
         title: 'Technology',
+        type: 'blog',
         breadcrumbs: [
           {
             label: 'Technology',
@@ -146,11 +144,11 @@ export const seed = async ({
         ],
       },
     }),
-
     payload.create({
       collection: 'categories',
       data: {
         title: 'News',
+        type: 'blog',
         breadcrumbs: [
           {
             label: 'News',
@@ -159,11 +157,11 @@ export const seed = async ({
         ],
       },
     }),
-
     payload.create({
       collection: 'categories',
       data: {
         title: 'Finance',
+        type: 'blog',
         breadcrumbs: [
           {
             label: 'Finance',
@@ -176,6 +174,7 @@ export const seed = async ({
       collection: 'categories',
       data: {
         title: 'Design',
+        type: 'skill',
         breadcrumbs: [
           {
             label: 'Design',
@@ -184,11 +183,11 @@ export const seed = async ({
         ],
       },
     }),
-
     payload.create({
       collection: 'categories',
       data: {
         title: 'Software',
+        type: 'skill',
         breadcrumbs: [
           {
             label: 'Software',
@@ -197,11 +196,11 @@ export const seed = async ({
         ],
       },
     }),
-
     payload.create({
       collection: 'categories',
       data: {
         title: 'Engineering',
+        type: 'blog',
         breadcrumbs: [
           {
             label: 'Engineering',
@@ -340,7 +339,7 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        quickLinks: [
           {
             link: {
               type: 'custom',
@@ -365,6 +364,7 @@ export const seed = async ({
             },
           },
         ],
+        copyrightText: '© 2023 Javascript SBU. All rights reserved.',
       },
     }),
   ])

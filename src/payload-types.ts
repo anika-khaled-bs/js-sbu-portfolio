@@ -743,7 +743,7 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
-    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | ('contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
     | null;
   displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
@@ -973,7 +973,7 @@ export interface Team {
   /**
    * Projects the team member has contributed to
    */
-  projects?: (string | Post)[] | null;
+  projects?: (string | Portfolio)[] | null;
   meta?: {
     title?: string | null;
     /**

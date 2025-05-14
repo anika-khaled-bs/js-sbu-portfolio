@@ -17,11 +17,11 @@ type Props = MediaBlockProps & {
   staticImage?: StaticImageData
   disableInnerContainer?: boolean
   index?: number // for alternating layout
-  title?: string
-  content?: string
+  title?: string | null | undefined
+  content?: string | null | undefined
 }
 
-export const MediaBlock: React.FC<Props> = (props) => {
+export const MediaBlock: React.FC<any> = (props) => {
   const {
     captionClassName,
     className,

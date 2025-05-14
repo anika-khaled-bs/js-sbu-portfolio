@@ -27,8 +27,8 @@ const ContactCTA = async () => {
             Want to Start a Project?
           </p>
           <p className="text-primary-foreground/90 mb-8 text-lg max-w-xl mx-auto">
-            Let's collaborate to build something amazing together. Our team is ready to bring your
-            vision to life.
+            Let&apos;s collaborate to build something amazing together. Our team is ready to bring
+            your vision to life.
           </p>
           <Link
             href={`/${contactUs?.docs[0]?.slug}`}

@@ -6,9 +6,7 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
-import SkillSetPage from '@/components/SkillSet'
-import AboutUsComponent from '@/components/About'
-import ContactUsComponent from '@/components/ContactUs'
+
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -51,9 +49,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'full-stack-development' } = await paramsPromise
   const url = '/' + slug
 
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
-
-  page = await queryPageBySlug({
+  const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,
   })
 

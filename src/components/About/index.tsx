@@ -5,7 +5,7 @@ import configPromise from '@payload-config'
 
 import PageHeader from '../PageHeader'
 import ClientLogoSlider from '../TrustedBySection'
-import Introduction from './Introduction'
+// import Introduction from './Introduction'
 import OurValues from './OurValues'
 import TeamComponent from './Team'
 import ContactCTA from '../ContactCTA'
@@ -54,7 +54,7 @@ const AboutUsComponent = async ({ aboutUs }: AboutUsProps) => {
   return (
     <>
       <PageHeader title="Our Story" />
-      <Introduction aboutUs={aboutUs} />
+      {/* <Introduction aboutUs={aboutUs} /> */}
 
       <OurValues values={ourValues.docs} />
       <TeamComponent team={team.docs as Team[]} />

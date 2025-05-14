@@ -22,7 +22,7 @@ export const revalidateCategory: CollectionAfterChangeHook = ({
 
     // Revalidate related content based on category type
     if (doc.type === 'blog') {
-      revalidateTag('posts')
+      revalidateTag('blog')
       revalidatePath('/blog')
     } else if (doc.type === 'service') {
       revalidateTag('services')

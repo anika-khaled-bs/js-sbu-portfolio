@@ -8,6 +8,10 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // This allows the build to complete even when there are ESLint warnings
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {

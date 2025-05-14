@@ -9,6 +9,7 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
   contactForm,
 }) => {
   return {
+    type: 'contact',
     slug: 'contact',
     _status: 'published',
     hero: {

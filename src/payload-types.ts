@@ -217,6 +217,10 @@ export interface Page {
     description?: string | null;
   };
   publishedAt?: string | null;
+  /**
+   * Should this page show the contact banner?
+   */
+  showContactCTA?: boolean | null;
   type: 'home' | 'about' | 'service' | 'skill' | 'portfolio' | 'team' | 'tutorial' | 'blog' | 'contact' | 'other';
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1640,6 +1644,7 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  showContactCTA?: T;
   type?: T;
   slug?: T;
   slugLock?: T;

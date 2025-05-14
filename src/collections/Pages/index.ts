@@ -123,6 +123,16 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'showContactCTA',
+      type: 'checkbox',
+      label: 'Show Contact Banner',
+      defaultValue: false,
+      admin: {
+        description: 'Should this page show the contact banner?',
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'type',
       type: 'select',
       options: [

@@ -8,6 +8,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import ContactCTA from '@/components/ContactCTA'
 import ServiceDetails from '@/components/ServiceDetails'
+import { Service } from '@/payload-types'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -41,8 +42,8 @@ export default async function serviceDetailsPage({ params }: Args) {
   // Fetch current service details
   const serviceDetails = await queryServiceBySlug({ slug })
 
+  console.log('🚀 ~ serviceDetailsPage ~ serviceDetails:', serviceDetails)
   // Fetch all services for related services component
-  const allServices = await queryAllServices()
 
   if (!serviceDetails) {
     return <PayloadRedirects url={url} />
@@ -51,7 +52,10 @@ export default async function serviceDetailsPage({ params }: Args) {
   return (
     <div className="mt-16">
       <PayloadRedirects disableNotFound url={url} />
-      <ServiceDetails service={serviceDetails} allServices={allServices} />
+      <ServiceDetails
+        service={serviceDetails}
+        allServices={serviceDetails?.relatedServices! as Service[]}
+      />
       <ContactCTA />
     </div>
   )
@@ -79,24 +83,4 @@ const queryServiceBySlug = cache(async ({ slug }: { slug: string }) => {
   })
 
   return result.docs?.[0] || null
-})
-
-const queryAllServices = cache(async () => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'services',
-    limit: 100,
-    pagination: false,
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      shortDescription: true,
-      icon: true,
-      categories: true,
-    },
-  })
-
-  return result.docs || []
 })

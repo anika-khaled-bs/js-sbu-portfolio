@@ -8,13 +8,17 @@ type ServiceCardProps = {
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
-  const { title, slug, shortDescription, icon } = service
+  const { title, slug, shortDescription, icon, featuredImage } = service
   const iconData = typeof icon === 'object' ? icon : null
+  const imageData = featuredImage && typeof featuredImage === 'object' ? featuredImage : null
+  // Get description from shortDescription or meta.description
+  const description =
+    shortDescription || (service.meta?.description ? service.meta.description : '')
 
   return (
     <Link
       href={`/services/${slug}`}
-      className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+      className="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
     >
       <div className="flex items-center space-x-4 mb-3">
         {iconData?.url && (
@@ -28,11 +32,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
             />
           </div>
         )}
+        {!iconData?.url && imageData?.thumbnailURL && (
+          <div className="flex-shrink-0">
+            <Image
+              src={imageData.thumbnailURL}
+              alt={imageData.alt || title}
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+          </div>
+        )}
         <h3 className="text-xl font-semibold">{title}</h3>
       </div>
-      {shortDescription && (
-        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{shortDescription}</p>
-      )}
+      {description && <p className="text-secondary-foreground line-clamp-3">{description}</p>}
     </Link>
   )
 }
@@ -55,7 +68,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
       if (service.id === currentServiceId) return false
 
       // If we have category IDs, filter by those
-      if (categoryIds.length > 0) {
+      if (categoryIds.length > 0 && service.categories) {
         // Check if any of the service's categories match our category IDs
         const serviceCategories =
           service.categories?.map((cat) => (typeof cat === 'object' ? cat.id : cat)) || []
@@ -63,6 +76,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
         return serviceCategories.some((catId) => categoryIds.includes(catId))
       }
 
+      // If no categories to filter by, include the service
       return true
     })
     .slice(0, 3)
@@ -73,7 +87,8 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
 
   return (
     <div className="mt-16">
-      <h2 className="text-2xl font-bold mb-8">Related Services</h2>
+      <h2 className="text-2xl font-bold mb-8">Visit More Services</h2>
+      <hr className="text-secondary mb-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {relatedServices.map((service) => (
           <ServiceCard key={service.id} service={service} />

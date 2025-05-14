@@ -62,7 +62,7 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({ service, allServices = 
       {allServices.length > 0 && (
         <RelatedServices
           currentServiceId={id}
-          categoryIds={categories?.map((cat) => (typeof cat === 'object' ? cat.id : cat))}
+          // categoryIds={categories?.map((cat) => (typeof cat === 'object' ? cat.id : cat))}
           services={allServices}
         />
       )}

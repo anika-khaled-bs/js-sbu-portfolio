@@ -2,6 +2,7 @@ import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
+import { LoadingLink } from '@/components/ui/loading-link'
 
 import type { Page, Post } from '@/payload-types'
 
@@ -56,22 +57,27 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
+  // Use regular Link for external links and new tab links
+  const LinkComponent = (newTab || href.startsWith('http') || href.startsWith('mailto:')) 
+    ? Link 
+    : LoadingLink
+
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link href={href} {...newTabProps}>
+      <LinkComponent href={href} {...newTabProps}>
         {label && label}
         {children && children}
-      </Link>
+      </LinkComponent>
     )
   }
 
   return (
     <Button asChild className={className} size={size} variant={appearance} onClick={props.onClick}>
-      <Link href={href} {...newTabProps}>
+      <LinkComponent href={href} {...newTabProps}>
         {label && label}
         {children && children}
-      </Link>
+      </LinkComponent>
     </Button>
   )
 }

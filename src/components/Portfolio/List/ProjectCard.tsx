@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 import { Media, Portfolio } from '@/payload-types'
 import { Calendar } from 'lucide-react'
 import { formatDate } from '@/utilities/formatDate'
+import { LoadingLink } from '@/components/ui/loading-link'
 
 interface ProjectCardProps {
   project: Portfolio
@@ -11,7 +11,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <Link
+    <LoadingLink
       href={`/portfolio/${project.slug}`}
       className="group flex flex-col h-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-md transition-all"
     >
@@ -71,6 +71,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
         )}
       </div>
-    </Link>
+    </LoadingLink>
   )
 }

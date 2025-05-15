@@ -496,7 +496,7 @@ export interface Portfolio {
   /**
    * URL to live project (if available)
    */
-  projectURL?: string | null;
+  projectURL: string;
   /**
    * When the project was completed
    */

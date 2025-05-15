@@ -27,10 +27,12 @@ const Info = ({ portfolio }: PortfolioDetailsProps) => {
         </div>
 
         <div className="space-y-4">
-          <div>
-            <p className="text-muted-foreground mb-1">Client</p>
-            <p className="font-medium">{(portfolio.client as Testimonial).clientCompany!}</p>
-          </div>
+          {portfolio.client && (
+            <div>
+              <p className="text-muted-foreground mb-1">Client</p>
+              <p className="font-medium">{(portfolio.client as Testimonial).clientCompany}</p>
+            </div>
+          )}
 
           <div>
             <p className="text-muted-foreground mb-1">Completion Date</p>

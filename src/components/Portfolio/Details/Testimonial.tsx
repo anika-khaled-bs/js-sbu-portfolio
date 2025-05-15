@@ -30,7 +30,7 @@ const ClientTestimonial = ({ testimonialContent }: ClientTestimonialProps) => {
 
   return (
     <div>
-      <p className="text-xl font-semibold mb-6">Client Testimonial</p>
+      <p className="text-xl font-semibold mb-4">Client Testimonial</p>
 
       <Card className="p-6 bg-white shadow-md rounded-xl">
         <div className="flex flex-col md:flex-row gap-6">

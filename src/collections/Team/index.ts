@@ -315,14 +315,14 @@ export const Team: CollectionConfig = {
     afterChange: [revalidateTeam],
     afterDelete: [revalidateDelete],
   },
-  // versions: {
-  //   drafts: {
-  //     autosave: {
-  //       interval: 100, // Interval for optimal live preview
-  //     },
-  //     schedulePublish: true,
-  //   },
-  //   maxPerDoc: 50,
-  // },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // Interval for optimal live preview
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
   timestamps: true,
 }

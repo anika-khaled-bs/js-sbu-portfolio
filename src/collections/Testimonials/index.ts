@@ -299,12 +299,13 @@ export const Testimonials: CollectionConfig = {
     afterChange: [revalidateTestimonial],
     afterDelete: [revalidateDelete],
   },
-  // Removed unsupported 'indexes' property. Handle indexing in the database configuration if needed.
-  // Enable versioning with limits for performance
-  // versions: {
-  //   drafts: {
-  //     autosave: true,
-  //   },
-  //   maxPerDoc: 10, // Limit versions to save DB space
-  // },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // Interval for optimal live preview
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }

@@ -69,18 +69,12 @@ export default async function Page() {
     collection: 'services',
     depth: 1,
     limit: 12,
+    where: {
+      isHighlighted: {
+        equals: true, // Only fetch featured testimonials
+      },
+    },
   })
-
-  // const aboutUs = await payload.find({
-  //   collection: 'pages',
-  //   depth: 1,
-  //   limit: 1,
-  //   where: {
-  //     type: {
-  //       equals: 'about',
-  //     },
-  //   },
-  // })
 
   return (
     <div>
@@ -101,7 +95,7 @@ export default async function Page() {
       </Suspense>
 
       {/* <Suspense fallback={<SectionLoader text="Loading about us section..." />}>
-        <AboutUsComponent aboutUs={aboutUs.docs[0]!} />
+        <AboutUsComponent />
       </Suspense> */}
       <ContactCTA />
     </div>

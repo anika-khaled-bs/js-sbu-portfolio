@@ -420,6 +420,7 @@ export interface TechStack {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -553,6 +554,7 @@ export interface Portfolio {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -645,6 +647,7 @@ export interface Testimonial {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -892,6 +895,7 @@ export interface Value {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -998,6 +1002,7 @@ export interface Team {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1888,6 +1893,7 @@ export interface TechStacksSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1933,6 +1939,7 @@ export interface TeamSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1970,6 +1977,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2014,6 +2022,7 @@ export interface PortfolioSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2046,6 +2055,7 @@ export interface ValuesSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2534,6 +2544,26 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'services';
           value: string | Service;
+        } | null)
+      | ({
+          relationTo: 'tech-stacks';
+          value: string | TechStack;
+        } | null)
+      | ({
+          relationTo: 'team';
+          value: string | Team;
+        } | null)
+      | ({
+          relationTo: 'testimonials';
+          value: string | Testimonial;
+        } | null)
+      | ({
+          relationTo: 'portfolio';
+          value: string | Portfolio;
+        } | null)
+      | ({
+          relationTo: 'values';
+          value: string | Value;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

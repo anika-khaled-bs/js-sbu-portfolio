@@ -151,6 +151,7 @@ export const Portfolio: CollectionConfig = {
             },
             {
               name: 'projectURL',
+              required: true,
               type: 'text',
               admin: {
                 description: 'URL to live project (if available)',

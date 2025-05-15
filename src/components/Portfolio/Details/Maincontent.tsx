@@ -1,6 +1,7 @@
 import RichText from '@/components/RichText'
 import { Portfolio, Testimonial } from '@/payload-types'
 import ClientTestimonial from './Testimonial'
+import { KeyFeaturesList } from '@/components/ServiceDetails/KeyFeaturesList'
 
 interface PortfolioDetailsProps {
   portfolio: Portfolio
@@ -18,6 +19,7 @@ const MainContent = ({ portfolio }: PortfolioDetailsProps) => {
       {portfolio.client && (
         <ClientTestimonial testimonialContent={portfolio.client! as Testimonial} />
       )}
+      {portfolio.keyFeatures && <KeyFeaturesList features={portfolio.keyFeatures} />}
     </div>
   )
 }

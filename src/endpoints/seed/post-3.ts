@@ -5,6 +5,8 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
   heroImage,
   blockImage,
   author,
+  featuredImage,
+  shortDescription,
 }) => {
   return {
     slug: 'dollar-and-sense-the-financial-forecast',
@@ -257,6 +259,8 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
       },
     },
     heroImage: heroImage.id,
+    featuredImage: featuredImage.id,
+    shortDescription,
     meta: {
       description: `Money isn't just currency; it's a language. Dive deep into its nuances, where strategy meets intuition in the vast sea of finance.`,
       image: heroImage.id,

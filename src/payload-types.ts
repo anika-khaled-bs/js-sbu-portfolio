@@ -745,7 +745,7 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
-    | ('contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
     | null;
   displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
@@ -798,6 +798,11 @@ export interface Post {
   id: string;
   title: string;
   heroImage?: (string | null) | Media;
+  /**
+   * Main image for this service
+   */
+  featuredImage: string | Media;
+  shortDescription: string;
   content: {
     root: {
       type: string;
@@ -1686,6 +1691,8 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  featuredImage?: T;
+  shortDescription?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;

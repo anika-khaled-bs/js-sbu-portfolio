@@ -76,10 +76,10 @@ export const Archive: Block = {
       },
       label: 'Collections To Show',
       options: [
-        // {
-        //   label: 'Posts',
-        //   value: 'posts',
-        // },
+        {
+          label: 'Posts',
+          value: 'posts',
+        },
         {
           label: 'Contact Details',
           value: 'contact-details',

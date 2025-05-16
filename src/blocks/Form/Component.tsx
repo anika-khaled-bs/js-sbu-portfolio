@@ -40,6 +40,7 @@ export const FormBlock: React.FC<
     formState: { errors },
     handleSubmit,
     register,
+    reset,
   } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
@@ -114,7 +115,7 @@ export const FormBlock: React.FC<
 
           // Send notification email via our API
           try {
-            await fetch(`${getClientSideURL()}/api/send-notification`, {
+            const req = await fetch(`${getClientSideURL()}/api/send-notification`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -125,6 +126,16 @@ export const FormBlock: React.FC<
                 mailBody,
               }),
             })
+            const res = await req.json()
+            if (!res.success) {
+              setIsLoading(false)
+              reset(formFromProps.fields as any)
+              setError({
+                message: res.message || 'Internal Server Error',
+              })
+
+              return
+            }
             // We don't need to handle the response as this is just a notification
           } catch (emailError) {
             // Log error but don't disrupt user flow
@@ -133,6 +144,9 @@ export const FormBlock: React.FC<
 
           setIsLoading(false)
           setHasSubmitted(true)
+
+          // Reset form fields to their default values
+          // reset(formFromProps.fields as any)
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
@@ -150,13 +164,13 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [router, formID, redirect, confirmationType, reset, formFromProps.fields],
   )
 
   return (
     <div className="container">
       <div className="lg:max-w-[48rem] mt-4  border rounded-lg p-6 md:p-10 max-w-3xl mx-auto">
-        {enableIntro && introContent && !hasSubmitted && (
+        {enableIntro && introContent && !hasSubmitted && !error && (
           <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
         )}
         <div className="px-4 pt-4 lg:px-6 lg:pt-6 pb-0">
@@ -167,7 +181,9 @@ export const FormBlock: React.FC<
               </div>
             )}
 
-            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+            {error && (
+              <div className="bg-red-400 p-4 rounded-md mb-4">{`${error.status || '500'}: ${error.message || ''}`}</div>
+            )}
             {
               <form id={formID} onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4 last:mb-0">

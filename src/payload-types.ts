@@ -873,6 +873,7 @@ export interface ContactDetail {
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2071,6 +2072,7 @@ export interface ContactDetailsSelect<T extends boolean = true> {
   publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2564,6 +2566,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'values';
           value: string | Value;
+        } | null)
+      | ({
+          relationTo: 'contact-details';
+          value: string | ContactDetail;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

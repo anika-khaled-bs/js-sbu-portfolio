@@ -10,6 +10,7 @@ const PortfolioPage = async () => {
 
   const projects = await payload.find({
     collection: 'portfolio',
+    overrideAccess: false,
     depth: 1,
     limit: 3, // Using a higher limit for initial load
     page: 1,
@@ -17,6 +18,7 @@ const PortfolioPage = async () => {
 
   const services = await payload.find({
     collection: 'services',
+    overrideAccess: false,
     limit: 100, // Fetch all services for filtering
   })
 

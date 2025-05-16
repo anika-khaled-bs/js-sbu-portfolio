@@ -13,6 +13,7 @@ export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const portfolioDetails = await payload.find({
     collection: 'portfolio',
+    overrideAccess: false,
     draft: false,
     limit: 1000,
     pagination: false,
@@ -65,6 +66,7 @@ const queryPortfolioBySlug = cache(async ({ slug }: { slug: string }) => {
 
   const result = await payload.find({
     collection: 'portfolio',
+    overrideAccess: false,
     limit: 1,
     pagination: false,
     where: {

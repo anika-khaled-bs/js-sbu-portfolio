@@ -38,6 +38,7 @@ export default async function Page() {
 
   const clientTestimonials = await payload.find({
     collection: 'testimonials',
+    overrideAccess: false,
     depth: 2, // Increase depth to properly resolve media relations
     limit: 6,
     select: {
@@ -56,6 +57,7 @@ export default async function Page() {
 
   const featuredProjects = await payload.find({
     collection: 'portfolio',
+    overrideAccess: false,
     depth: 1,
     limit: 3,
     where: {
@@ -67,6 +69,7 @@ export default async function Page() {
 
   const services = await payload.find({
     collection: 'services',
+    overrideAccess: false,
     depth: 1,
     limit: 12,
     where: {

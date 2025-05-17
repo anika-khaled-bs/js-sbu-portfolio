@@ -347,7 +347,7 @@ export interface TechStack {
   name: string;
   description?: string | null;
   /**
-   * Key features of this service
+   * Key features of this technology stack
    */
   keyFeatures?:
     | {

@@ -1,9 +1,10 @@
 import React from 'react'
 import { ContactCard } from '@/components/ContactCard'
-import { ContactDetail, Value } from '@/payload-types'
+import { ContactDetail, Value, TechStack } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import ClientLogoSlider from '../TrustedBySection'
+import TechStackGrid from './components/TechStackGrid'
 
 import { Props } from './types'
 import { useLayoutClasses, useItemClasses } from './utils/layoutClasses'
@@ -30,6 +31,11 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
 
   if (relationTo === 'testimonials' && displayType === 'default') {
     return <ClientLogoSlider clientTestimonials={items} />
+  }
+
+  // Special handling for tech stacks - use our specialized component for all display types
+  if (relationTo === 'tech-stacks') {
+    return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} />
   }
 
   return (

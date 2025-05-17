@@ -42,7 +42,7 @@ export const TechStacks: CollectionConfig = {
       name: 'keyFeatures',
       type: 'array',
       admin: {
-        description: 'Key features of this service',
+        description: 'Key features of this technology stack',
       },
       fields: [
         {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ContactCard } from '@/components/ContactCard'
-import { ContactDetail, Value, TechStack } from '@/payload-types'
+import { ContactDetail, Value, TechStack, Service } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import ClientLogoSlider from '../TrustedBySection'
@@ -9,6 +9,7 @@ import TechStackGrid from './components/TechStackGrid'
 import { Props } from './types'
 import { useLayoutClasses, useItemClasses } from './utils/layoutClasses'
 import CollectionCard from './components/CollectionCard'
+import FeaturedServices from '../Home/ServicesSection'
 
 /**
  * Main CollectionArchive component that renders collections of different types
@@ -31,6 +32,10 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
 
   if (relationTo === 'testimonials' && displayType === 'default') {
     return <ClientLogoSlider clientTestimonials={items} />
+  }
+
+  if (relationTo === 'services' && displayType === 'default') {
+    return <FeaturedServices services={items as Service[]} />
   }
 
   // Special handling for tech stacks - use our specialized component for all display types

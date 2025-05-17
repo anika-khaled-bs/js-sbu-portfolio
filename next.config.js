@@ -21,6 +21,10 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      {
+        hostname: process.env.MEDIA_DOMAIN,
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,

@@ -3,12 +3,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar } from 'lucide-react'
 import { cn } from '@/utilities/ui'
-import { Media } from '@/payload-types'
+import { Media, Team } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 
 import { CollectionCardProps } from '../types'
 import { collectionDataExtractors } from '../utils/dataExtractors'
-import { RatingStars } from './UIComponents'
+import { RatingStars, SocialLinks } from './UIComponents'
 
 /**
  * List Card Component - Used for list layout displays
@@ -43,6 +43,50 @@ const ListCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
   const relatedServices = getRelatedServices(doc, relationTo)
   const clientCompany = getClientCompany(doc, relationTo)
   const clientTitle = getClientTitle(doc, relationTo)
+
+  // Special handling for team members
+  if (relationTo === 'team') {
+    const teamMember = doc as Team
+
+    return (
+      <div
+        className={cn(
+          'group flex flex-col md:flex-row h-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-md transition-all',
+          className,
+        )}
+      >
+        {/* Team Member Image with proper aspect ratio */}
+        <div className="relative w-full md:w-1/4 shrink-0">
+          <div className="relative aspect-square w-full">
+            {image && typeof image !== 'string' && (
+              <Image
+                src={(image as Media).url!}
+                alt={title || 'Team member'}
+                fill
+                sizes="(max-width: 768px) 100vw, 25vw"
+                className="object-cover object-center"
+              />
+            )}
+            {!image && (
+              <div className="h-full w-full bg-muted flex items-center justify-center">
+                No image
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Team Member Info */}
+        <div className="p-4 md:p-6 flex flex-col justify-center flex-grow">
+          <h3 className="text-xl font-semibold mb-1">{title}</h3>
+          {role && <p className="text-primary text-sm mb-2">{role}</p>}
+          {description && <p className="text-muted-foreground text-sm mb-4">{description}</p>}
+
+          {/* Social Links - using our new reusable component */}
+          <SocialLinks socialLinks={teamMember.socialLinks} className="mt-2" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Link

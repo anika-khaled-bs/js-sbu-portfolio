@@ -3,12 +3,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar } from 'lucide-react'
 import { cn } from '@/utilities/ui'
-import { Media } from '@/payload-types'
+import { Media, Team } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 
 import { CollectionCardProps } from '../types'
 import { collectionDataExtractors } from '../utils/dataExtractors'
-import { RatingStars } from './UIComponents'
+import { RatingStars, SocialLinks } from './UIComponents'
 
 /**
  * Grid Card Component - Used for grid layout displays
@@ -40,6 +40,47 @@ const GridCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
   const clientCompany = getClientCompany(doc, relationTo)
   const clientTitle = getClientTitle(doc, relationTo)
 
+  // Special handling for team members
+  if (relationTo === 'team') {
+    const teamMember = doc as Team
+
+    return (
+      <div
+        className={cn(
+          'flex flex-col h-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-md transition-all',
+          className,
+        )}
+      >
+        {/* Team Member Image - Square aspect ratio */}
+        <div className="relative aspect-square overflow-hidden">
+          {image && typeof image !== 'string' && (
+            <Image
+              src={(image as Media).url!}
+              alt={title || 'Team member'}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover object-center"
+            />
+          )}
+          {!image && (
+            <div className="h-full w-full bg-muted flex items-center justify-center">No image</div>
+          )}
+        </div>
+
+        {/* Team Member Info */}
+        <div className="p-4 flex flex-col text-center">
+          <h3 className="text-lg font-semibold mb-1">{title}</h3>
+          {role && <p className="text-sm text-primary mb-2">{role}</p>}
+          {description && <p className="text-sm text-muted-foreground mb-3">{description}</p>}
+
+          {/* Social Links - using our new reusable component */}
+          <SocialLinks socialLinks={teamMember.socialLinks} layout="center" className="mt-auto" />
+        </div>
+      </div>
+    )
+  }
+
+  // Standard grid card for other collection types
   return (
     <Link
       href={url}

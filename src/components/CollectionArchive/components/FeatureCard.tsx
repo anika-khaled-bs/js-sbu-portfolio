@@ -3,12 +3,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar } from 'lucide-react'
 import { cn } from '@/utilities/ui'
-import { Media } from '@/payload-types'
+import { Media, Team } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 
 import { CollectionCardProps } from '../types'
 import { collectionDataExtractors } from '../utils/dataExtractors'
-import { RatingStars, TagList } from './UIComponents'
+import { RatingStars, TagList, SocialLinks } from './UIComponents'
 
 /**
  * Feature Card Component - Used for featured content display
@@ -41,6 +41,52 @@ const FeatureCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className
   const clientTitle = getClientTitle(doc, relationTo)
   const rating = getRating(doc, relationTo)
   const role = getRole(doc, relationTo)
+
+  // Special handling for team members
+  if (relationTo === 'team') {
+    const teamMember = doc as Team
+
+    return (
+      <div
+        className={cn(
+          'flex flex-col h-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-md transition-all',
+          className,
+        )}
+      >
+        <div className="flex flex-col md:flex-row h-full">
+          {/* Team Member Image with proper aspect ratio */}
+          <div className="relative md:w-2/5 overflow-hidden">
+            <div className="aspect-square w-full">
+              {image && typeof image !== 'string' && (
+                <Image
+                  src={(image as Media).url!}
+                  alt={title || 'Team member'}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="object-cover object-center"
+                />
+              )}
+              {!image && (
+                <div className="h-full w-full bg-muted flex items-center justify-center">
+                  No image
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Team Member Info */}
+          <div className="p-6 flex flex-col md:w-3/5">
+            <h3 className="text-xl font-semibold mb-2">{title}</h3>
+            {role && <p className="text-primary text-sm mb-3">{role}</p>}
+            {description && <p className="text-muted-foreground text-sm mb-4">{description}</p>}
+
+            {/* Social Links - using our new reusable component */}
+            <SocialLinks socialLinks={teamMember.socialLinks} className="mt-auto" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Link

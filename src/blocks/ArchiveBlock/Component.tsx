@@ -254,7 +254,7 @@ export const ArchiveBlock: React.FC<
               className={`${hasLinks ? 'md:max-w-[70%]' : 'mx-auto max-w-prose'} flex flex-col gap-3`}
             >
               {subheader && <h3 className="text-sm font-medium text-primary">{header}</h3>}
-              {header && <h2 className="text-4xl font-bold mb-2">{subheader}</h2>}
+              {header && <h2 className="text-4xl mb-2">{subheader}</h2>}
               {description && <p className="text-muted-foreground">{description}</p>}
             </div>
             {hasLinks && <div className="mt-4 md:mt-0 md:ml-auto">{renderLink()}</div>}

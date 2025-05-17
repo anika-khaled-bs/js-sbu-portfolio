@@ -133,7 +133,6 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   displayType,
 }) => {
   // Extract common properties for meta
-  console.log('doc', doc)
   const getMetaData = () => {
     switch (relationTo) {
       case 'posts':

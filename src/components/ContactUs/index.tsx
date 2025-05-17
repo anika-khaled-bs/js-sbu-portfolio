@@ -13,8 +13,6 @@ interface ContactUsProps {
 }
 
 const ContactUsComponent = async ({ contactUsDetails }: ContactUsProps) => {
-  console.log('🚀 ~ ContactUsComponent ~ contactUsDetails:', contactUsDetails)
-
   const payload = await getPayload({ config: configPromise })
 
   const headerInfo = contactUsDetails?.hero

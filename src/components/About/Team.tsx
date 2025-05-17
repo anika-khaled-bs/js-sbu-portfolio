@@ -104,7 +104,6 @@ export const TeamCard = ({ member }: { member: Partial<Team> }) => {
 }
 
 const TeamComponent = ({ team, className = '' }: TeamProps) => {
-  console.log('🚀 ~ TeamComponent ~ team:', team)
   return (
     <section className={`section ${className}`} id="team">
       <div className="container py-16">

@@ -1,22 +1,22 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 interface PaginatedResponse<T = any> {
-  docs: T[];
-  totalDocs: number;
-  limit: number;
-  totalPages: number;
-  page: number;
-  pagingCounter: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  prevPage: number | null;
-  nextPage: number | null;
+  docs: T[]
+  totalDocs: number
+  limit: number
+  totalPages: number
+  page: number
+  pagingCounter: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
+  prevPage: number | null
+  nextPage: number | null
 }
 
 interface UseInfinitePaginationOptions<T = any> {
-  initialData?: PaginatedResponse<T>;
-  fetchFunction: (page: number) => Promise<PaginatedResponse<T>>;
-  initialPage?: number;
+  initialData?: PaginatedResponse<T>
+  fetchFunction: (page: number) => Promise<PaginatedResponse<T>>
+  initialPage?: number
 }
 
 export function useInfinitePagination<T = any>({
@@ -24,11 +24,11 @@ export function useInfinitePagination<T = any>({
   fetchFunction,
   initialPage = 1,
 }: UseInfinitePaginationOptions<T>) {
-  const [items, setItems] = useState<T[]>(initialData?.docs || []);
-  const [currentPage, setCurrentPage] = useState<number>(initialData?.page || initialPage);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(initialData?.hasNextPage || false);
-  const [error, setError] = useState<Error | null>(null);
+  const [items, setItems] = useState<T[]>(initialData?.docs || [])
+  const [currentPage, setCurrentPage] = useState<number>(initialData?.page || initialPage)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [hasMore, setHasMore] = useState<boolean>(initialData?.hasNextPage || false)
+  const [error, setError] = useState<Error | null>(null)
   const [meta, setMeta] = useState<Omit<PaginatedResponse<T>, 'docs'>>({
     totalDocs: initialData?.totalDocs || 0,
     limit: initialData?.limit || 10,
@@ -39,46 +39,33 @@ export function useInfinitePagination<T = any>({
     hasNextPage: initialData?.hasNextPage || false,
     prevPage: initialData?.prevPage || null,
     nextPage: initialData?.nextPage || null,
-  });
+  })
 
   // Reference to track if component is mounted
-  const isMounted = useRef(true);
+  const isMounted = useRef(true)
 
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  // Debug log
-  useEffect(() => {
-    console.log('useInfinitePagination init:', { 
-      items: items.length, 
-      currentPage, 
-      hasMore, 
-      meta 
-    });
-  }, [items.length, currentPage, hasMore, meta]);
+      isMounted.current = false
+    }
+  }, [])
 
   const loadMore = useCallback(async () => {
     if (isLoading || !hasMore) {
-      console.log('loadMore aborted:', { isLoading, hasMore });
-      return;
+      return
     }
-    
+
     try {
-      console.log('Loading more items, page:', currentPage + 1);
-      setIsLoading(true);
-      const nextPage = currentPage + 1;
-      const response = await fetchFunction(nextPage);
-      console.log('Fetch response:', response);
-      
+      setIsLoading(true)
+      const nextPage = currentPage + 1
+      const response = await fetchFunction(nextPage)
+
       if (isMounted.current) {
         if (response.docs && Array.isArray(response.docs)) {
-          setItems(prevItems => [...prevItems, ...response.docs]);
-          setCurrentPage(nextPage);
-          setHasMore(response.hasNextPage);
+          setItems((prevItems) => [...prevItems, ...response.docs])
+          setCurrentPage(nextPage)
+          setHasMore(response.hasNextPage)
           setMeta({
             totalDocs: response.totalDocs,
             limit: response.limit,
@@ -89,37 +76,37 @@ export function useInfinitePagination<T = any>({
             hasNextPage: response.hasNextPage,
             prevPage: response.prevPage,
             nextPage: response.nextPage,
-          });
+          })
         } else {
-          console.error('Invalid response format:', response);
-          setError(new Error('Invalid response format'));
+          console.error('Invalid response format:', response)
+          setError(new Error('Invalid response format'))
         }
       }
     } catch (err) {
-      console.error('Error loading more items:', err);
+      console.error('Error loading more items:', err)
       if (isMounted.current) {
-        setError(err as Error);
+        setError(err as Error)
       }
     } finally {
       if (isMounted.current) {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  }, [currentPage, fetchFunction, hasMore, isLoading]);
+  }, [currentPage, fetchFunction, hasMore, isLoading])
 
   // Function to reset the pagination
   const reset = useCallback(async () => {
-    if (isLoading) return;
-    
+    if (isLoading) return
+
     try {
-      setIsLoading(true);
-      const response = await fetchFunction(initialPage);
-      
+      setIsLoading(true)
+      const response = await fetchFunction(initialPage)
+
       if (isMounted.current) {
-        setItems(response.docs);
-        setCurrentPage(initialPage);
-        setHasMore(response.hasNextPage);
-        setError(null);
+        setItems(response.docs)
+        setCurrentPage(initialPage)
+        setHasMore(response.hasNextPage)
+        setError(null)
         setMeta({
           totalDocs: response.totalDocs,
           limit: response.limit,
@@ -130,19 +117,19 @@ export function useInfinitePagination<T = any>({
           hasNextPage: response.hasNextPage,
           prevPage: response.prevPage,
           nextPage: response.nextPage,
-        });
+        })
       }
     } catch (err) {
-      console.error('Error resetting pagination:', err);
+      console.error('Error resetting pagination:', err)
       if (isMounted.current) {
-        setError(err as Error);
+        setError(err as Error)
       }
     } finally {
       if (isMounted.current) {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  }, [fetchFunction, initialPage, isLoading]);
+  }, [fetchFunction, initialPage, isLoading])
 
   return {
     items,
@@ -153,7 +140,7 @@ export function useInfinitePagination<T = any>({
     reset,
     meta,
     currentPage,
-  };
+  }
 }
 
-export default useInfinitePagination;
+export default useInfinitePagination

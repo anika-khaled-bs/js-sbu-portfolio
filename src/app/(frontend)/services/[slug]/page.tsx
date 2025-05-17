@@ -42,7 +42,6 @@ export default async function serviceDetailsPage({ params }: Args) {
   // Fetch current service details
   const serviceDetails = await queryServiceBySlug({ slug })
 
-  console.log('🚀 ~ serviceDetailsPage ~ serviceDetails:', serviceDetails)
   // Fetch all services for related services component
 
   if (!serviceDetails) {

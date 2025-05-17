@@ -34,6 +34,9 @@ import type { UploadApiResponse } from 'cloudinary'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Create a Map to store resource_type by filename and format
+const resourceTypeMap = new Map<string, string>()
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -78,7 +81,6 @@ const cloudinaryAdapter = () => ({
               return reject(error)
             }
             if (!result) return reject(new Error('No result returned from Cloudinary'))
-            console.log('Cloudinary upload success:', result.resource_type, result.format)
             resolve(result) // handle result
           },
         )
@@ -87,6 +89,9 @@ const cloudinaryAdapter = () => ({
       file.filename = uploadResult.public_id // Use Cloudinary's public_id as the file's unique name
       file.mimeType = `${uploadResult.format}` // Set MIME type based on Cloudinary's format (e.g., image/png)
       file.filesize = uploadResult.bytes // Set the actual file size in bytes, for admin display and validations
+      // Store the resource_type in our global Map
+      const mapKey = `${uploadResult.display_name}.${uploadResult.format}`
+      resourceTypeMap.set(mapKey, uploadResult.resource_type)
     } catch (err) {
       console.error('Upload Error:', err)
       throw err // Re-throw to let Payload handle the error
@@ -183,9 +188,12 @@ export default buildConfig({
           disableLocalStorage: true, // Prevent Payload from saving files to disk
 
           generateFileURL: ({ filename }) => {
+            const baseFilename = filename.split('/').pop() || filename
+            const resourceType = resourceTypeMap.get(baseFilename) || 'auto'
             return cloudinary.url(`media/${filename}`, {
               secure: true,
               cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+              resource_type: resourceType,
             })
           },
         },

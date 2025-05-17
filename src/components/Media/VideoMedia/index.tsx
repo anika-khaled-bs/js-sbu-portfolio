@@ -7,7 +7,6 @@ import type { Props as MediaProps } from '../types'
 
 export const VideoMedia: React.FC<MediaProps> = (props) => {
   const { onClick, resource, videoClassName } = props
-  console.log('🚀 ~ resource:', resource)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   // const [showFallback] = useState<boolean>()
@@ -23,7 +22,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
   }, [])
 
   if (resource && typeof resource === 'object') {
-    const { filename } = resource
+    const { url } = resource
 
     return (
       <video
@@ -37,7 +36,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         ref={videoRef}
       >
         {/* <source src={`${getClientSideURL()}/media/${filename}`} /> */}
-        <source src={`${filename!}`} />
+        <source src={`${url!}`} />
       </video>
     )
   }

@@ -8,7 +8,7 @@ interface ContactInfoProps {
   className?: string
 }
 
-const ContactInfoComponent = async ({ contactInfo, className }: ContactInfoProps) => {
+const ContactInfoComponent = ({ contactInfo, className }: ContactInfoProps) => {
   const { email, phone, time, addressLine1, addressLine2 } = contactInfo || {}
 
   return (

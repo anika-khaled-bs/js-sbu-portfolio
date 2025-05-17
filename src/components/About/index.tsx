@@ -19,12 +19,14 @@ const AboutUsComponent = async ({ aboutUs }: AboutUsProps) => {
 
   const ourValues = await payload.find({
     collection: 'values',
+    overrideAccess: false,
     depth: 1,
     limit: 12,
   })
 
   const team = await payload.find({
     collection: 'team',
+    overrideAccess: false,
     depth: 1,
     where: {
       isFeatured: {

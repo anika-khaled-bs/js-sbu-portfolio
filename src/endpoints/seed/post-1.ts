@@ -5,12 +5,16 @@ export type PostArgs = {
   heroImage: Media
   blockImage: Media
   author: User
+  featuredImage: Media
+  shortDescription: string
 }
 
 export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> = ({
   heroImage,
   blockImage,
   author,
+  featuredImage,
+  shortDescription,
 }) => {
   return {
     slug: 'digital-horizons',
@@ -303,6 +307,8 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
       },
     },
     heroImage: heroImage.id,
+    featuredImage: featuredImage.id,
+    shortDescription,
     meta: {
       description:
         'Dive into the marvels of modern innovation, where the only constant is change. A journey where pixels and data converge to craft the future.',

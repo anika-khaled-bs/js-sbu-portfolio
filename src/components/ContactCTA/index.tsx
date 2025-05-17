@@ -7,6 +7,7 @@ const ContactCTA = async () => {
 
   const contactUs = await payload.find({
     collection: 'pages',
+    overrideAccess: false,
     depth: 1,
     pagination: false,
     where: {

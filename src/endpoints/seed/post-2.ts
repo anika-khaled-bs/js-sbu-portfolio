@@ -5,6 +5,8 @@ export const post2: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
   heroImage,
   blockImage,
   author,
+  featuredImage,
+  shortDescription,
 }) => {
   return {
     slug: 'global-gaze',
@@ -220,6 +222,8 @@ export const post2: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
       },
     },
     heroImage: heroImage.id,
+    featuredImage: featuredImage.id,
+    shortDescription,
     meta: {
       description:
         'Explore the untold and overlooked. A magnified view into the corners of the world, where every story deserves its spotlight.',

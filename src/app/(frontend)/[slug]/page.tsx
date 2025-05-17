@@ -85,16 +85,13 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'pages',
-    draft,
     limit: 1,
     pagination: false,
-    // overrideAccess: draft,
+    overrideAccess: false,
     where: {
       slug: {
         equals: slug,

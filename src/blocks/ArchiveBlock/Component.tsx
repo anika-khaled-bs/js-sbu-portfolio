@@ -58,6 +58,7 @@ export const ArchiveBlock: React.FC<
     if (collectionType === 'posts') {
       const fetchedPosts = await payload.find({
         collection: 'posts',
+        overrideAccess: false,
         depth: 1,
         limit,
         ...(flattenedCategories && flattenedCategories.length > 0
@@ -75,6 +76,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'contact-details') {
       const fetchedContactDetails = await payload.find({
         collection: 'contact-details',
+        overrideAccess: false,
         depth: 1,
         limit,
       })
@@ -83,6 +85,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'values') {
       const fetchedValues = await payload.find({
         collection: 'values',
+        overrideAccess: false,
         depth: 1,
         limit,
       })
@@ -91,6 +94,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'tech-stacks') {
       const fetchedTechnologies = await payload.find({
         collection: 'tech-stacks',
+        overrideAccess: false,
         depth: 1,
         limit,
       })
@@ -99,6 +103,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'testimonials') {
       const fetchedTestimonials = await payload.find({
         collection: 'testimonials',
+        overrideAccess: false,
         depth: 1,
         limit,
       })
@@ -107,6 +112,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'team') {
       const fetchedTeam = await payload.find({
         collection: 'team',
+        overrideAccess: false,
         depth: 1,
         limit,
       })
@@ -115,6 +121,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'services') {
       const fetchedServices = await payload.find({
         collection: 'services',
+        overrideAccess: false,
         depth: 1,
         limit,
         ...(flattenedCategories && flattenedCategories.length > 0
@@ -132,6 +139,7 @@ export const ArchiveBlock: React.FC<
     } else if (collectionType === 'portfolio') {
       const fetchedPortfolio = await payload.find({
         collection: 'portfolio',
+        overrideAccess: false,
         depth: 1,
         limit,
       })

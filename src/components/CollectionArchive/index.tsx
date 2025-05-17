@@ -133,6 +133,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   displayType,
 }) => {
   // Extract common properties for meta
+  console.log('doc', doc)
   const getMetaData = () => {
     switch (relationTo) {
       case 'posts':
@@ -182,7 +183,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const getDescription = () => {
     switch (relationTo) {
       case 'posts':
-        return (doc as Post).meta?.description
+        return (doc as Post).shortDescription
       case 'services':
         return (doc as Service).shortDescription
       case 'portfolio':
@@ -204,7 +205,6 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const getImage = () => {
     switch (relationTo) {
       case 'posts':
-        return (doc as Post).meta?.image
       case 'portfolio':
       case 'services':
         return 'featuredImage' in doc ? (doc as Portfolio | Service).featuredImage : undefined
@@ -233,6 +233,16 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const getRelatedServices = () => {
     if ((relationTo === 'portfolio' || relationTo === 'testimonials') && 'relatedServices' in doc) {
       return (doc as Portfolio | Testimonial).relatedServices
+    }
+    return undefined
+  }
+
+  const getCategories = () => {
+    if (relationTo === 'posts' && 'categories' in doc) {
+      return (doc as Post).categories?.map((category) => {
+        if (typeof category === 'object') return category.title
+        else return category
+      })
     }
     return undefined
   }
@@ -280,11 +290,11 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           </div>
 
           {/* Content Section */}
-          <div className="flex md:justify-around items-center mb-2 flex-wrap md:flex-nowrap gap-2">
-            <p className="text-xl font-semibold min-w-max">{title}</p>{' '}
+          <div className="flex flex-col mb-2">
+            <p className="text-xl font-semibold break-words">{title}</p>{' '}
             {/* Completion Date - display if present */}
             {completionDate && (
-              <div className="text-xs text-muted-foreground mt-auto mb-2 flex items-center md:justify-end w-full">
+              <div className="text-xs text-muted-foreground mt-2 flex items-center">
                 <span className="mx-1">
                   <Calendar size={12} />
                 </span>
@@ -293,7 +303,9 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
             )}
           </div>
           {description && (
-            <p className="text-sm text-muted-foreground line-clamp-3 mb-2">{description}</p>
+            <p className="text-sm text-muted-foreground line-clamp-3 mb-2 overflow-hidden text-ellipsis">
+              {description}
+            </p>
           )}
 
           {/* Services Tags */}
@@ -310,6 +322,19 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
                     {service.title}
                   </span>
                 ))}
+            </div>
+          )}
+          {/* Category Tags */}
+          {getCategories() && getCategories()!.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-auto">
+              {getCategories()?.map((category, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-2.5 py-0.5 text-xs bg-muted-foreground/10 rounded-full text-muted-foreground before:content-['•'] before:mr-1.5 before:text-sm"
+                >
+                  {category}
+                </span>
+              ))}
             </div>
           )}
         </div>

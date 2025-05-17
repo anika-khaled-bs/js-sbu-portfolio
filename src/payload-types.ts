@@ -745,7 +745,7 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
-    | ('contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
     | null;
   displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
@@ -798,6 +798,11 @@ export interface Post {
   id: string;
   title: string;
   heroImage?: (string | null) | Media;
+  /**
+   * Main image for this service
+   */
+  featuredImage: string | Media;
+  shortDescription: string;
   content: {
     root: {
       type: string;
@@ -873,6 +878,7 @@ export interface ContactDetail {
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1685,6 +1691,8 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  featuredImage?: T;
+  shortDescription?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
@@ -2071,6 +2079,7 @@ export interface ContactDetailsSelect<T extends boolean = true> {
   publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2564,6 +2573,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'values';
           value: string | Value;
+        } | null)
+      | ({
+          relationTo: 'contact-details';
+          value: string | ContactDetail;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

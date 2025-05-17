@@ -85,6 +85,21 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             },
             {
+              name: 'featuredImage',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+              admin: {
+                description: 'Main image for this service',
+              },
+            },
+            {
+              name: 'shortDescription',
+              type: 'textarea',
+              required: true,
+              defaultValue: '',
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({

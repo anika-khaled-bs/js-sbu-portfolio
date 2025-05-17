@@ -207,7 +207,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock)[];
+  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock | SliderBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -1187,6 +1187,54 @@ export interface PageHeaderBlock {
   blockType: 'pageHeaderBlock';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock".
+ */
+export interface SliderBlock {
+  slides: {
+    image: string | Media;
+    header?: string | null;
+    shortDescription?: string | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: string | Service;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  settings?: {
+    autoplay?: boolean | null;
+    showNavigation?: boolean | null;
+    showPagination?: boolean | null;
+    loop?: boolean | null;
+    contentAlignment?: ('left' | 'center' | 'right') | null;
+    speed?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'slider';
+}
+/**
  * Hero sliders for landing pages and sections
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1543,6 +1591,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pageHeaderBlock?: T | PageHeaderBlockSelect<T>;
+        slider?: T | SliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1630,6 +1679,48 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock_select".
+ */
+export interface SliderBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        header?: T;
+        shortDescription?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  settings?:
+    | T
+    | {
+        autoplay?: T;
+        showNavigation?: T;
+        showPagination?: T;
+        loop?: T;
+        contentAlignment?: T;
+        speed?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }

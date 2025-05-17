@@ -1,0 +1,122 @@
+/* Custom styles for the Slider block */
+
+.sliderContainer {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.slideContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.slideImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slideOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+  z-index: 5;
+}
+
+/* Hide default Swiper navigation arrows */
+:global(.swiper-button-next::after),
+:global(.swiper-button-prev::after) {
+  display: none;
+}
+
+/* Custom navigation buttons */
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  background: none;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+/* Completely reset and remove default styling */
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
+:global(.swiper-button-prev) {
+  left: 10px;
+}
+
+:global(.swiper-button-next) {
+  right: 10px;
+}
+
+:global(.swiper-button-next:hover),
+:global(.swiper-button-prev:hover) {
+  background: none;
+}
+
+/* Custom pagination bullets */
+:global(.swiper-pagination-bullet) {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0.7;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: white;
+  opacity: 1;
+}
+
+/* Media Queries for responsive margins */
+@media (min-width: 640px) {
+  :global(.swiper-button-prev) {
+    left: 20px;
+  }
+
+  :global(.swiper-button-next) {
+    right: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  :global(.swiper-button-next),
+  :global(.swiper-button-prev) {
+    width: 40px;
+    height: 40px;
+  }
+
+  :global(.swiper-button-prev) {
+    left: 30px;
+  }
+
+  :global(.swiper-button-next) {
+    right: 30px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :global(.swiper-button-prev) {
+    left: 40px;
+  }
+
+  :global(.swiper-button-next) {
+    right: 40px;
+  }
+}

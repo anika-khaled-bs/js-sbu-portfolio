@@ -677,26 +677,50 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  /**
+   * Optional header text for the archive block
+   */
+  header?: string | null;
+  /**
+   * Optional subheader text for the archive block
+   */
+  subheader?: string | null;
+  /**
+   * Optional description for the archive block
+   */
+  description?: string | null;
+  /**
+   * Optional link for the archive block
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
     | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
     | null;
-  displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
+  displayType?: ('default' | 'grid' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -1649,7 +1673,24 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
+  header?: T;
+  subheader?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   populateBy?: T;
   relationTo?: T;
   displayType?: T;

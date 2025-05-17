@@ -20,6 +20,7 @@ import {
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import { formatDate } from '@/utilities/formatDate'
+import ClientLogoSlider from '../TrustedBySection'
 
 export type Props = {
   items: (Post | ContactDetail | Value | TechStack | Testimonial | Team | Service | Portfolio)[]
@@ -72,6 +73,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
           <OurValues values={items as Value[]} />
         ) : relationTo === 'team' && displayType === 'default' ? (
           <TeamComponent team={items} />
+        ) : relationTo === 'testimonials' && displayType === 'default' ? (
+          <ClientLogoSlider clientTestimonials={items} />
         ) : (
           items?.map((item, index) => {
             if (typeof item === 'object' && item !== null) {

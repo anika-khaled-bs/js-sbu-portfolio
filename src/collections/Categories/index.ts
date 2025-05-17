@@ -43,8 +43,8 @@ export const Categories: CollectionConfig = {
         { label: 'Team', value: 'team' },
         { label: 'Tutorial', value: 'tutorial' },
         { label: 'Skill', value: 'skill' },
+        { label: 'Other', value: 'other' },
       ],
-      defaultValue: 'blog',
       required: true,
       admin: {
         position: 'sidebar',
@@ -75,16 +75,6 @@ export const Categories: CollectionConfig = {
         description: 'Featured image for category pages',
       },
     },
-    // {
-    //   name: 'isHighlighted',
-    //   type: 'checkbox',
-    //   label: 'Highlight in Navigation',
-    //   defaultValue: false,
-    //   admin: {
-    //     description: 'Should this category be highlighted in navigation menus?',
-    //     position: 'sidebar',
-    //   },
-    // },
     {
       name: 'parent',
       type: 'relationship',
@@ -96,5 +86,14 @@ export const Categories: CollectionConfig = {
     },
     ...slugField(),
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // Interval for optimal live preview
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
   timestamps: true,
 }

@@ -39,6 +39,19 @@ export const TechStacks: CollectionConfig = {
       type: 'textarea',
     },
     {
+      name: 'keyFeatures',
+      type: 'array',
+      admin: {
+        description: 'Key features of this service',
+      },
+      fields: [
+        {
+          name: 'featureDetails',
+          type: 'text',
+        },
+      ],
+    },
+    {
       name: 'icon',
       type: 'upload',
       relationTo: 'media',
@@ -59,7 +72,6 @@ export const TechStacks: CollectionConfig = {
         { label: 'Other', value: 'other' },
       ],
       required: true,
-      defaultValue: 'other',
       admin: {
         position: 'sidebar',
       },
@@ -77,9 +89,9 @@ export const TechStacks: CollectionConfig = {
   ],
   versions: {
     drafts: {
-      // autosave: {
-      //   interval: 100, // Interval for optimal live preview
-      // },
+      autosave: {
+        interval: 100, // Interval for optimal live preview
+      },
       schedulePublish: true,
     },
     maxPerDoc: 50,

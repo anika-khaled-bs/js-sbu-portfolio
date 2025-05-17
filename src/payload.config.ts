@@ -55,6 +55,14 @@ const cloudinaryAdapter = () => ({
       // Since Cloudinary's upload_stream is callback-based, we wrap it in a Promise
       // so we can use async/await syntax for cleaner, easier handling.
       // It uploads the file with a specific public_id under "media/", without overwriting existing files.
+
+      // Log file info for debugging
+      console.log('Uploading file to Cloudinary:', {
+        filename: file.filename,
+        filesize: file.filesize,
+        mimetype: file.mimeType,
+      })
+
       const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
@@ -62,10 +70,15 @@ const cloudinaryAdapter = () => ({
             public_id: `media/${file.filename.replace(/\.[^/.]+$/, '')}`, // Set custom file name without extension, and it also prefixed the cleaned filename with media/
             overwrite: false, // Do not overwrite if a file with the same name exists
             use_filename: true, // Use original filename
+            chunk_size: 6000000, // Use chunked uploading for larger files (6MB chunks)
           },
           (error, result) => {
-            if (error) return reject(error)
+            if (error) {
+              console.error('Cloudinary upload error:', error)
+              return reject(error)
+            }
             if (!result) return reject(new Error('No result returned from Cloudinary'))
+            console.log('Cloudinary upload success:', result.resource_type, result.format)
             resolve(result) // handle result
           },
         )
@@ -75,7 +88,8 @@ const cloudinaryAdapter = () => ({
       file.mimeType = `${uploadResult.format}` // Set MIME type based on Cloudinary's format (e.g., image/png)
       file.filesize = uploadResult.bytes // Set the actual file size in bytes, for admin display and validations
     } catch (err) {
-      console.error('Upload Error', err)
+      console.error('Upload Error:', err)
+      throw err // Re-throw to let Payload handle the error
     }
   },
 

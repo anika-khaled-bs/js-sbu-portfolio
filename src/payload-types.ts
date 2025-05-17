@@ -248,9 +248,6 @@ export interface Service {
    * Technologies used for this service
    */
   techStacks: (string | TechStack)[];
-  /**
-   * Technologies used for this service
-   */
   categories: (string | Category)[];
   content: {
     root: {
@@ -273,7 +270,7 @@ export interface Service {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         icon?: (string | null) | Media;
         id?: string | null;
       }[]
@@ -350,6 +347,15 @@ export interface TechStack {
   name: string;
   description?: string | null;
   /**
+   * Key features of this service
+   */
+  keyFeatures?:
+    | {
+        featureDetails?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Icon representing this technology (SVG preferred)
    */
   icon?: (string | null) | Media;
@@ -371,7 +377,7 @@ export interface TechStack {
 export interface Category {
   id: string;
   title: string;
-  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
+  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill' | 'other';
   /**
    * Brief description of this category
    */
@@ -400,6 +406,7 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -467,7 +474,7 @@ export interface Portfolio {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1701,6 +1708,7 @@ export interface CategoriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1762,6 +1770,12 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface TechStacksSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  keyFeatures?:
+    | T
+    | {
+        featureDetails?: T;
+        id?: T;
+      };
   icon?: T;
   category?: T;
   featured?: T;
@@ -2417,6 +2431,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'categories';
+          value: string | Category;
         } | null)
       | ({
           relationTo: 'services';

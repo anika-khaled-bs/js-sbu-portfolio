@@ -5,10 +5,9 @@ import React, { useEffect, useRef } from 'react'
 
 import type { Props as MediaProps } from '../types'
 
-import { getClientSideURL } from '@/utilities/getURL'
-
 export const VideoMedia: React.FC<MediaProps> = (props) => {
   const { onClick, resource, videoClassName } = props
+  console.log('🚀 ~ resource:', resource)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   // const [showFallback] = useState<boolean>()
@@ -38,7 +37,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         ref={videoRef}
       >
         {/* <source src={`${getClientSideURL()}/media/${filename}`} /> */}
-        <source src={`${filename}`} />
+        <source src={`${filename!}`} />
       </video>
     )
   }

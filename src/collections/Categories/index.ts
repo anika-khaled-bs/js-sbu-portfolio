@@ -7,6 +7,7 @@ import { generateCategorySlug } from './hooks/generateCategorySlug'
 import { validateCategoryHierarchy } from './hooks/validateCategoryHierarchy'
 import { buildCategoryBreadcrumbs } from './hooks/buildCategoryBreadcrumbs'
 import { revalidateCategory, revalidateDelete } from './hooks/revalidateCategory'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -15,6 +16,11 @@ export const Categories: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    type: true,
   },
   admin: {
     useAsTitle: 'title',
@@ -86,14 +92,6 @@ export const Categories: CollectionConfig = {
     },
     ...slugField(),
   ],
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // Interval for optimal live preview
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+
   timestamps: true,
 }

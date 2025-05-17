@@ -60,7 +60,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout, showContactCTA } = page
 
   return (
-    <div className="mt-16">
+    <div className="mt-16 overflow-x-hidden">
       <article className="">
         <PageClient />
         {/* Allows redirects for valid pages too */}

@@ -46,8 +46,8 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'full-stack-development' } = await paramsPromise
-  const url = '/' + slug
+  const { slug = 'home' } = await paramsPromise
+  const url = slug === 'home' ? '/' : '/' + slug
 
   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,
@@ -60,7 +60,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout, showContactCTA } = page
 
   return (
-    <div className="mt-16 overflow-x-hidden">
+    <div className="overflow-x-hidden">
       <article className="">
         <PageClient />
         {/* Allows redirects for valid pages too */}
@@ -76,7 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'full-stack-development' } = await paramsPromise
+  const { slug = 'home' } = await paramsPromise
   const page = await queryPageBySlug({
     slug,
   })

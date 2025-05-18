@@ -9,6 +9,7 @@ import {
   Media,
 } from '@/payload-types'
 import { CollectionItem } from '../types'
+import { formatDate } from '@/utilities/formatDate'
 
 /**
  * Utility functions to extract data from various collection types
@@ -77,9 +78,66 @@ export const collectionDataExtractors = {
     }
   },
 
+  getPublishedDate: (doc: CollectionItem, relationTo: string): string | undefined => {
+    if (relationTo === 'posts' && 'publishedAt' in doc) {
+      return (doc as Post).publishedAt || undefined
+    }
+    return undefined
+  },
+
+  getFormattedDate: (
+    date: string | undefined,
+    format: 'short' | 'medium' | 'long' = 'medium',
+  ): string | undefined => {
+    if (!date) return undefined
+    return formatDate(date, { format })
+  },
+
+  getAuthors: (doc: CollectionItem, relationTo: string) => {
+    if (relationTo === 'posts') {
+      // Handle both authors and populatedAuthors fields
+      if ('populatedAuthors' in doc && (doc as Post).populatedAuthors?.length) {
+        return (doc as Post).populatedAuthors
+      } else if ('authors' in doc && (doc as Post).authors?.length) {
+        return (doc as Post).authors
+      }
+    }
+    return undefined
+  },
+
+  getReadingTime: (doc: CollectionItem, relationTo: string): string => {
+    if (relationTo === 'posts' && 'content' in doc) {
+      const post = doc as Post
+      if (!post.content || !post.content.root || !post.content.root.children) return '3 min'
+
+      // Extract text from content
+      let textContent = ''
+      const extractText = (node: any) => {
+        if (node.text) {
+          textContent += node.text + ' '
+        } else if (node.children) {
+          node.children.forEach(extractText)
+        }
+      }
+
+      post.content.root.children.forEach(extractText)
+
+      // Calculate reading time (200 words per minute)
+      const words = textContent.trim().split(/\s+/).length
+      const minutes = Math.max(1, Math.ceil(words / 200))
+      return `${minutes} min read`
+    }
+    return '3 min read'
+  },
+
   getImage: (doc: CollectionItem, relationTo: string) => {
     switch (relationTo) {
       case 'posts':
+        // For posts, prefer heroImage, then featuredImage
+        if ('heroImage' in doc && (doc as Post).heroImage) {
+          return (doc as Post).heroImage
+        }
+        return 'featuredImage' in doc ? (doc as Post).featuredImage : undefined
       case 'portfolio':
       case 'services':
         return 'featuredImage' in doc ? (doc as Portfolio | Service).featuredImage : undefined

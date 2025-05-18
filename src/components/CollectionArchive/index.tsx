@@ -1,6 +1,6 @@
 import React from 'react'
 import { ContactCard } from '@/components/ContactCard'
-import { ContactDetail, Value, TechStack, Service, Team } from '@/payload-types'
+import { ContactDetail, Value, TechStack, Service, Team, Post } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import ClientLogoSlider from '../TrustedBySection'
@@ -12,6 +12,7 @@ import CollectionCard from './components/CollectionCard'
 import FeaturedServices from '../Home/ServicesSection'
 import { groupBy } from '@/utilities/helpers'
 import ListCard from './components/ListCard'
+import PostCard from '@/components/PostDetails/PostCard'
 
 /**
  * Main CollectionArchive component that renders collections of different types
@@ -43,6 +44,20 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
   // Special handling for tech stacks - use our specialized component for all display types
   if (relationTo === 'tech-stacks') {
     return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} />
+  }
+
+  // Special handling for posts collection with featuredBlock display type
+  if (relationTo === 'posts' && displayType === 'feature') {
+    return (
+      <div className={shouldHaveContainer ? 'container' : ''}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {items?.map((item, index) => {
+            if (typeof item !== 'object' || item === null) return null
+            return <PostCard key={index} post={item as Post} className={itemClasses} />
+          })}
+        </div>
+      </div>
+    )
   }
 
   // Special handling for team members in list view - group by department category

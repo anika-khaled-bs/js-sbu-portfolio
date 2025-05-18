@@ -6,7 +6,6 @@ import React, { cache } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import ContactCTA from '@/components/ContactCTA'
 import PostDetails from '@/components/PostDetails'
 
 export async function generateStaticParams() {

@@ -3,17 +3,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar } from 'lucide-react'
 import { cn } from '@/utilities/ui'
-import { Media, Team } from '@/payload-types'
+import { Media, Team, TechStack, Portfolio } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 
 import { CollectionCardProps } from '../types'
 import { collectionDataExtractors } from '../utils/dataExtractors'
-import { RatingStars, SocialLinks } from './UIComponents'
+import { RatingStars, SocialLinks, TagList, LinkableTagList } from './UIComponents'
 
 /**
  * List Card Component - Used for list layout displays
  */
-const ListCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className }) => {
+const ListCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className, displayType }) => {
   const {
     getTitle,
     getDescription,
@@ -48,6 +48,35 @@ const ListCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
   if (relationTo === 'team') {
     const teamMember = doc as Team
 
+    // Format expertise areas for display if they exist
+    const expertiseAreas = teamMember.expertise
+      ? teamMember.expertise.map((item) => item.area).filter(Boolean)
+      : []
+
+    // Extract tech skills names for display
+    const techSkillNames =
+      teamMember.techSkills && Array.isArray(teamMember.techSkills)
+        ? teamMember.techSkills
+            .filter((tech): tech is TechStack => typeof tech === 'object' && tech !== null)
+            .map((tech) => tech.name)
+            .filter(Boolean)
+        : []
+
+    // Extract project names and create clickable project objects with slug and title
+    const projects =
+      teamMember.projects && Array.isArray(teamMember.projects)
+        ? teamMember.projects
+            .filter(
+              (project): project is Portfolio => typeof project === 'object' && project !== null,
+            )
+            .map((project) => ({
+              title: project.title,
+              slug: project.slug || '',
+              id: project.id,
+            }))
+            .filter((project) => project.title && project.slug)
+        : []
+
     return (
       <div
         className={cn(
@@ -76,13 +105,44 @@ const ListCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
         </div>
 
         {/* Team Member Info */}
-        <div className="p-4 md:p-6 flex flex-col justify-center flex-grow">
-          <h3 className="text-xl font-semibold mb-1">{title}</h3>
-          {role && <p className="text-primary text-sm mb-2">{role}</p>}
-          {description && <p className="text-muted-foreground text-sm mb-4">{description}</p>}
+        <div className="p-4 md:p-6 flex flex-col justify-between flex-grow">
+          <div>
+            <h3 className="text-xl font-semibold mb-1">{title}</h3>
+            {role && <p className="text-primary text-sm mb-2">{role}</p>}
+            {description && <p className="text-muted-foreground text-sm mb-4">{description}</p>}
 
-          {/* Social Links - using our new reusable component */}
-          <SocialLinks socialLinks={teamMember.socialLinks} className="mt-2" />
+            {/* Expertise Areas */}
+            {expertiseAreas.length > 0 && (
+              <div className="mt-3">
+                <h4 className="text-sm font-semibold mb-1">Expertise</h4>
+                <TagList tags={expertiseAreas} className="mb-3" tagStyle="expertise" />
+              </div>
+            )}
+
+            {/* Tech Skills */}
+            {techSkillNames.length > 0 && (
+              <div className="mt-2">
+                <h4 className="text-sm font-semibold mb-1">Technical Skills</h4>
+                <TagList tags={techSkillNames} className="mb-3" tagStyle="techSkill" />
+              </div>
+            )}
+
+            {/* Projects - Now clickable */}
+            {projects.length > 0 && (
+              <div className="mt-2">
+                <h4 className="text-sm font-semibold mb-1">Projects</h4>
+                <LinkableTagList
+                  items={projects}
+                  className="mb-3"
+                  tagStyle="project"
+                  baseUrl="/portfolio"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Social Links - at the bottom */}
+          <SocialLinks socialLinks={teamMember.socialLinks} className="mt-4" />
         </div>
       </div>
     )

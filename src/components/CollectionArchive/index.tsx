@@ -1,6 +1,6 @@
 import React from 'react'
 import { ContactCard } from '@/components/ContactCard'
-import { ContactDetail, Value, TechStack, Service } from '@/payload-types'
+import { ContactDetail, Value, TechStack, Service, Team } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import ClientLogoSlider from '../TrustedBySection'
@@ -10,6 +10,8 @@ import { Props } from './types'
 import { useLayoutClasses, useItemClasses } from './utils/layoutClasses'
 import CollectionCard from './components/CollectionCard'
 import FeaturedServices from '../Home/ServicesSection'
+import { groupBy } from '@/utilities/helpers'
+import ListCard from './components/ListCard'
 
 /**
  * Main CollectionArchive component that renders collections of different types
@@ -41,6 +43,48 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
   // Special handling for tech stacks - use our specialized component for all display types
   if (relationTo === 'tech-stacks') {
     return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} />
+  }
+
+  // Special handling for team members in list view - group by department category
+  if (relationTo === 'team' && displayType === 'list') {
+    // Cast items to Team[] for proper typing
+    const teamMembers = items as Team[]
+
+    // Group team members by department category
+    const groupedByDepartment = groupBy(teamMembers, (member) => {
+      if (member.departmentCategory) {
+        if (typeof member.departmentCategory === 'object' && member.departmentCategory.title) {
+          return member.departmentCategory.title
+        }
+        return 'Other'
+      }
+      return 'Other'
+    })
+
+    // Sort departments alphabetically
+    const sortedDepartments = Object.keys(groupedByDepartment).sort()
+
+    return (
+      <div className={shouldHaveContainer ? 'container' : ''}>
+        {sortedDepartments.map((department) => (
+          <div key={department} className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6 text-primary">{department}</h2>
+            <div className={layoutClasses}>
+              {groupedByDepartment[department]?.map((member, index) => (
+                <div className={itemClasses} key={index}>
+                  <ListCard
+                    className="h-full"
+                    doc={member}
+                    relationTo="team"
+                    displayType={displayType}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
   }
 
   return (

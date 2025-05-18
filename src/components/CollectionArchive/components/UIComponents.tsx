@@ -1,4 +1,5 @@
 import React, { JSX } from 'react'
+import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 import { Star } from 'lucide-react'
 import { Team } from '@/payload-types'
@@ -25,18 +26,83 @@ export const RatingStars: React.FC<{ rating: string; size?: number }> = ({ ratin
 /**
  * Tags/Categories display component
  */
-export const TagList: React.FC<{ tags: string[]; className?: string }> = ({ tags, className }) => (
-  <div className={cn('flex flex-wrap gap-2', className)}>
-    {tags.map((tag, index) => (
-      <span
-        key={index}
-        className="inline-flex items-center px-2.5 py-0.5 text-xs bg-muted-foreground/10 rounded-full text-muted-foreground before:content-['•'] before:mr-1.5 before:text-sm"
-      >
-        {tag}
-      </span>
-    ))}
-  </div>
-)
+export const TagList: React.FC<{
+  tags: string[]
+  className?: string
+  tagStyle?: 'default' | 'expertise' | 'techSkill' | 'project'
+}> = ({ tags, className, tagStyle = 'default' }) => {
+  // Define different styles for different tag types
+  const getTagStyle = () => {
+    switch (tagStyle) {
+      case 'expertise':
+        return 'bg-blue-50 text-blue-700 before:text-blue-400'
+      case 'techSkill':
+        return 'bg-green-50 text-green-700 before:text-green-400'
+      case 'project':
+        return 'bg-purple-50 text-purple-700 before:text-purple-400'
+      default:
+        return 'bg-muted-foreground/10 text-muted-foreground before:text-muted-foreground/50'
+    }
+  }
+
+  return (
+    <div className={cn('flex flex-wrap gap-2', className)}>
+      {tags.map((tag, index) => (
+        <span
+          key={index}
+          className={cn(
+            'inline-flex items-center px-2.5 py-0.5 text-xs rounded-full before:content-["•"] before:mr-1.5 before:text-sm',
+            getTagStyle(),
+          )}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Linkable Tags/Categories display component
+ * For items that should link to their detail pages
+ */
+export const LinkableTagList: React.FC<{
+  items: Array<{ title: string; slug: string; id?: string }>
+  className?: string
+  tagStyle?: 'default' | 'expertise' | 'techSkill' | 'project'
+  baseUrl: string
+}> = ({ items, className, tagStyle = 'default', baseUrl }) => {
+  // Define different styles for different tag types
+  const getTagStyle = () => {
+    switch (tagStyle) {
+      case 'expertise':
+        return 'bg-blue-50 text-blue-700 hover:bg-blue-100 before:text-blue-400'
+      case 'techSkill':
+        return 'bg-green-50 text-green-700 hover:bg-green-100 before:text-green-400'
+      case 'project':
+        return 'bg-purple-50 text-purple-700 hover:bg-purple-100 before:text-purple-400'
+      default:
+        return 'bg-muted-foreground/10 text-muted-foreground hover:bg-muted-foreground/20 before:text-muted-foreground/50'
+    }
+  }
+
+  return (
+    <div className={cn('flex flex-wrap gap-2', className)}>
+      {items.map((item) => (
+        <Link
+          key={item.id || item.slug}
+          href={`${baseUrl}/${item.slug}`}
+          className={cn(
+            'inline-flex items-center px-2.5 py-0.5 text-xs rounded-full before:content-["•"] before:mr-1.5 before:text-sm transition-colors',
+            getTagStyle(),
+          )}
+        >
+          {item.title}
+        </Link>
+      ))}
+    </div>
+  )
+}
 
 /**
  * Social Media Icons and Links Component

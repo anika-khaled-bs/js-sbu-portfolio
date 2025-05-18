@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { cn } from '@/utilities/ui'
 import { Media, TechStack as TechStackType } from '@/payload-types'
 
 type TechStackItem = TechStackType | string
@@ -46,9 +47,7 @@ export const TechStackList: React.FC<TechStackListProps> = ({ techStacks }) => {
   }
 
   return (
-    <div className="bg-secondary p-6 rounded-lg">
-      <h3 className="text-xl font-bold mb-4">Technology Stack</h3>
-
+    <div className="bg-card text-card-foreground rounded-lg">
       {Object.entries(groupedTechStacks).map(([category, stacks]) => (
         <div key={category} className="mb-6 last:mb-0">
           <h4 className="text-lg font-medium capitalize mb-3">{category}</h4>
@@ -56,7 +55,7 @@ export const TechStackList: React.FC<TechStackListProps> = ({ techStacks }) => {
             {stacks.map((stack) => (
               <li key={stack.id} className="flex items-center">
                 {stack.icon?.url && (
-                  <div className="mr-2 relative flex-shrink-0">
+                  <div className="mr-2 relative flex-shrink-0 bg-muted/50 p-1 rounded-md">
                     <Image
                       src={stack.icon.url}
                       alt={(stack.icon.alt as string) || stack.name}
@@ -66,7 +65,7 @@ export const TechStackList: React.FC<TechStackListProps> = ({ techStacks }) => {
                     />
                   </div>
                 )}
-                <span>{stack.name}</span>
+                <span className="text-foreground">{stack.name}</span>
               </li>
             ))}
           </ul>

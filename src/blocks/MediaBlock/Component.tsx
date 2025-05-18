@@ -76,11 +76,6 @@ export const MediaBlock: React.FC<any> = (props) => {
   // Check if the media is a video
   const isVideo = typeof media === 'object' && media?.mimeType?.includes('video')
 
-  // Fix URL for videos - replace 'image' with 'video' in the URL path
-  if (isVideo && media && typeof media === 'object' && media.url) {
-    media.url = media.url.replace('/image/upload/', '/video/upload/')
-  }
-
   // Check content to determine display style
   const hasTitle = !!title
   const hasContent = hasRichTextContent(content)

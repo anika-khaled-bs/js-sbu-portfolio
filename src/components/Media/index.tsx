@@ -12,7 +12,6 @@ export const Media: React.FC<Props> = (props) => {
   const isVideo = typeof resource === 'object' && resource?.mimeType?.includes('video')
 
   // Fix URL for videos - replace 'image' with 'video' in the URL path
-
   if (isVideo && resource && typeof resource === 'object' && resource.url) {
     resource.url = resource.url.replace('/image/upload/', '/video/upload/')
   }

@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Post, Media } from '@/payload-types'
-import { CalendarDays, ArrowRight, Clock } from 'lucide-react'
+import { CalendarDays, ArrowRight, Clock, User } from 'lucide-react'
 import { formatDate } from '@/utilities/formatDate'
 
 type RelatedPostCardProps = {
@@ -37,78 +37,93 @@ const RelatedPostCard: React.FC<RelatedPostCardProps> = ({ post }) => {
   return (
     <Link
       href={`/posts/${slug}`}
-      className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 h-full flex flex-col transform hover:-translate-y-1"
+      className="group relative h-[460px] rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 flex flex-col transform hover:-translate-y-1"
     >
-      {/* Post featured image with gradient overlay */}
-      <div className="relative h-56 w-full overflow-hidden">
+      {/* Full height background image with gradient overlay */}
+      <div className="absolute inset-0">
         {imageData?.url ? (
           <>
             <Image
               src={imageData.url}
               alt={imageData.alt || title}
               fill
-              className="object-cover transition-transform group-hover:scale-105"
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/30 opacity-80 group-hover:opacity-90 transition-opacity"></div>
           </>
         ) : (
           <div className="h-full w-full bg-primary/10 flex items-center justify-center">
             <span className="text-primary/50">No image</span>
           </div>
         )}
+      </div>
 
-        {/* Categories overlay - if we have categories */}
+      {/* Content overlay positioned over the image */}
+      <div className="relative h-full z-10 p-6 flex flex-col text-white">
+        {/* Categories tag at the top */}
         {post.categories && post.categories.length > 0 && (
-          <div className="absolute top-4 left-4 z-10">
-            <span className="bg-primary/80 backdrop-blur-sm text-primary-foreground text-xs font-medium px-3 py-1 rounded-full">
+          <div className="mb-auto">
+            <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-medium px-3 py-1.5 rounded-full shadow-sm">
               {typeof post.categories[0] === 'object' ? post.categories[0].title : 'Category'}
             </span>
           </div>
         )}
-      </div>
 
-      <div className="p-6 flex flex-col flex-grow">
-        {/* Post metadata */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-          {/* Date */}
-          {publishedAt && (
+        {/* Main content positioned at the bottom */}
+        <div className="mt-auto">
+          {/* Post title with enhanced typography */}
+          <h3 className="text-2xl font-bold mb-3 group-hover:text-primary/90 transition-colors tracking-tight">
+            {title}
+          </h3>
+
+          {/* Post description with better spacing, only show on hover */}
+          {shortDescription && (
+            <p className="text-sm text-white/80 line-clamp-3 mb-5 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {shortDescription}
+            </p>
+          )}
+
+          {/* Post metadata */}
+          <div className="flex items-center justify-between text-xs text-white/80 mb-4">
+            {/* Date */}
+            {publishedAt && (
+              <div className="flex items-center">
+                <CalendarDays size={14} className="mr-1.5 text-white/70" />
+                <span>{formatDate(publishedAt, { format: 'medium' })}</span>
+              </div>
+            )}
+
+            {/* Reading time */}
             <div className="flex items-center">
-              <CalendarDays size={14} className="mr-1" />
-              <span>{formatDate(publishedAt, { format: 'medium' })}</span>
+              <Clock size={14} className="mr-1.5 text-white/70" />
+              <span>{estimatedReadingTime()} read</span>
+            </div>
+          </div>
+
+          {/* Author section with improved styling */}
+          {post.populatedAuthors && post.populatedAuthors.length > 0 && (
+            <div className="flex items-center text-xs text-white/80 mb-4 border-t border-white/20 pt-4">
+              <User size={14} className="mr-2 text-white/70" />
+              <span>
+                by{' '}
+                <span className="font-medium text-white/90">
+                  {post.populatedAuthors.map((author) => author.name).join(', ')}
+                </span>
+              </span>
             </div>
           )}
 
-          {/* Reading time */}
-          <div className="flex items-center">
-            <Clock size={14} className="mr-1" />
-            <span>{estimatedReadingTime()} read</span>
+          {/* Read more link with enhanced animated arrow */}
+          <div className="pt-1">
+            <span className="inline-flex items-center text-primary/90 text-sm font-medium group-hover:underline">
+              Read article
+              <ArrowRight
+                size={16}
+                className="ml-1.5 transition-all duration-300 transform group-hover:translate-x-1.5"
+              />
+            </span>
           </div>
-        </div>
-
-        {/* Post title */}
-        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
-          {title}
-        </h3>
-
-        {/* Post description */}
-        {shortDescription && (
-          <p className="text-sm text-muted-foreground line-clamp-3 mb-5">{shortDescription}</p>
-        )}
-
-        {/* Author - new section */}
-        {post.populatedAuthors && post.populatedAuthors.length > 0 && (
-          <div className="flex items-center text-xs text-muted-foreground mb-3">
-            <span>by {post.populatedAuthors.map((author) => author.name).join(', ')}</span>
-          </div>
-        )}
-
-        {/* Read more link with animated arrow */}
-        <div className="mt-auto">
-          <span className="inline-flex items-center text-primary text-sm font-medium group-hover:underline">
-            Read article
-            <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
-          </span>
         </div>
       </div>
     </Link>

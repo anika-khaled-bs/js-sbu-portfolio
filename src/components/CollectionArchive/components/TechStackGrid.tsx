@@ -27,8 +27,7 @@ const TechStackGrid: React.FC<TechStackGridProps> = ({ techStacks, displayType }
       )}
     >
       {techStacks.map((stack) => (
-        <Link
-          href={`/tech-stacks/${stack.slug}`}
+        <div
           key={stack.id}
           className={cn(
             'bg-card shadow hover:shadow-md transition-shadow rounded-lg overflow-hidden border border-border flex flex-col h-full',
@@ -83,53 +82,8 @@ const TechStackGrid: React.FC<TechStackGridProps> = ({ techStacks, displayType }
             {stack.description && (
               <p className="text-muted-foreground mb-4 line-clamp-2">{stack.description}</p>
             )}
-
-            {/* Key features displayed based on display type */}
-            {stack.keyFeatures && stack.keyFeatures.length > 0 && (
-              <div className="mt-auto">
-                {displayType !== 'grid' && displayType !== 'slider' && (
-                  <h4 className="text-sm font-medium text-primary mb-2">Key Features</h4>
-                )}
-
-                {displayType === 'list' ? (
-                  <div className="flex flex-wrap gap-2">
-                    {stack.keyFeatures.map((feature, index) => (
-                      <span
-                        key={index}
-                        className="bg-primary/10 text-xs px-2 py-1 rounded-full flex items-center gap-1"
-                      >
-                        <Check size={12} className="text-primary flex-shrink-0" />
-                        <span>{feature.featureDetails}</span>
-                      </span>
-                    ))}
-                  </div>
-                ) : displayType === 'grid' ? (
-                  <div className="space-y-1">
-                    {stack.keyFeatures.slice(0, 3).map((feature, index) => (
-                      <div key={index} className="flex items-start gap-1">
-                        <Check size={14} className="text-primary mt-0.5 flex-shrink-0" />
-                        <p className="text-xs line-clamp-1 text-muted-foreground">
-                          {feature.featureDetails}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <ul className="text-sm space-y-2">
-                    {stack.keyFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check size={12} className="text-primary" />
-                        </div>
-                        <span>{feature.featureDetails}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   )

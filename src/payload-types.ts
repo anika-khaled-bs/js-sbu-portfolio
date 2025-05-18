@@ -370,7 +370,6 @@ export interface TechStack {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2061,7 +2060,6 @@ export interface TechStacksSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2764,10 +2762,6 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'services';
           value: string | Service;
-        } | null)
-      | ({
-          relationTo: 'tech-stacks';
-          value: string | TechStack;
         } | null)
       | ({
           relationTo: 'team';

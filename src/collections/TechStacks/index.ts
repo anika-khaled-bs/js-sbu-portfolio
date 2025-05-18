@@ -5,6 +5,7 @@ import { anyone } from '../../access/anyone'
 import { slugField } from '@/fields/slug'
 import { checkReferencesBeforeDelete } from './hooks/checkReferencesBeforeDelete'
 import { revalidateTechStack, revalidateDelete } from './hooks/revalidateTechStack'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 export const TechStacks: CollectionConfig = {
   slug: 'tech-stacks',
@@ -14,7 +15,12 @@ export const TechStacks: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
-
+  defaultPopulate: {
+    name: true,
+    description: true,
+    icon: true,
+    // Selective field population for performance
+  },
   admin: {
     useAsTitle: 'name',
     group: 'Collections',
@@ -87,14 +93,14 @@ export const TechStacks: CollectionConfig = {
     },
     ...slugField('name'),
   ],
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // Interval for optimal live preview
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  // versions: {
+  //   drafts: {
+  //     autosave: {
+  //       interval: 100, // Interval for optimal live preview
+  //     },
+  //     schedulePublish: true,
+  //   },
+  //   maxPerDoc: 50,
+  // },
   timestamps: true,
 }

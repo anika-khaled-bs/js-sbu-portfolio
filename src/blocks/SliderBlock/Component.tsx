@@ -78,7 +78,9 @@ export const SliderBlockComponent: React.FC<Props> = (props) => {
                 <div className="absolute inset-0">
                   <MediaBlock resource={image as Media} imgClassName={styles.slideImage} fill />
                   {/* Overlay for better text visibility */}
-                  <div className={styles.slideOverlay}></div>
+                  {(header || shortDescription || linkData) && (
+                    <div className={styles.slideOverlay}></div>
+                  )}
                 </div>
 
                 {/* Content */}

@@ -38,30 +38,32 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({ service, allServices = 
 
   return (
     <div className="bg-background text-foreground w-full">
-      {/* Hero section with full width background */}
-      <div className="w-full bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-12 md:py-16">
-          <ServiceHeader title={title} shortDescription={shortDescription} />
-        </div>
-      </div>
+      {/* Hero section with full width background image and overlay */}
+      <div className="relative w-full h-[400px] md:h-[450px] lg:h-[500px]">
+        {imageData?.url ? (
+          <>
+            <Image
+              src={imageData.url}
+              alt={imageData.alt || title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-black/50"></div>
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-primary"></div>
+        )}
 
-      {/* Featured Image section */}
-      {imageData?.url && (
-        <div className="w-full py-8">
-          <div className="container mx-auto px-4">
-            <div className="relative w-full h-[250px] sm:h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-md">
-              <Image
-                src={imageData.url}
-                alt={imageData.alt || title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                priority
-              />
-            </div>
+        {/* Service Header positioned in the middle of the banner */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-4 text-white">
+            <ServiceHeader title={title} shortDescription={shortDescription} />
           </div>
         </div>
-      )}
+      </div>
 
       {/* Main content section - fixed 5-cols left sidebar and fluid right content */}
       <div className="container mx-auto px-4 py-8">

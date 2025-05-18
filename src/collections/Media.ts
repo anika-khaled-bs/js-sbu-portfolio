@@ -29,6 +29,13 @@ export const Media: CollectionConfig = {
       type: 'richText',
       editor: defaultLexicalEditor,
     },
+    {
+      name: 'url', // or 'cloudinaryURL'
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
   ],
   // upload: {
   //   // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload

@@ -89,6 +89,8 @@ const cloudinaryAdapter = () => ({
       file.filename = uploadResult.public_id // Use Cloudinary's public_id as the file's unique name
       file.mimeType = `${uploadResult.format}` // Set MIME type based on Cloudinary's format (e.g., image/png)
       file.filesize = uploadResult.bytes // Set the actual file size in bytes, for admin display and validations
+      data.url = uploadResult.secure_url // <-- THIS IS THE IMPORTANT LINE
+
       // Store the resource_type in our global Map
       const mapKey = `${uploadResult.display_name}.${uploadResult.format}`
       resourceTypeMap.set(mapKey, uploadResult.resource_type)
@@ -187,15 +189,15 @@ export default buildConfig({
 
           disableLocalStorage: true, // Prevent Payload from saving files to disk
 
-          generateFileURL: ({ filename }) => {
-            const baseFilename = filename.split('/').pop() || filename
-            const resourceType = resourceTypeMap.get(baseFilename) || 'auto'
-            return cloudinary.url(`media/${filename}`, {
-              secure: true,
-              cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-              resource_type: resourceType,
-            })
-          },
+          // generateFileURL: async ({ filename }) => {
+          //   const baseFilename = filename.split('/').pop() || filename
+          //   const resourceType = resourceTypeMap.get(baseFilename) || 'auto'
+          //   return cloudinary.url(`media/${filename}`, {
+          //     secure: true,
+          //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+          //     resource_type: resourceType,
+          //   })
+          // },
         },
       },
     }),

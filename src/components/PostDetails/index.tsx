@@ -124,6 +124,22 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }) => {
                 <span>By {populatedAuthors.map((author) => author.name).join(', ')}</span>
               </div>
             )}
+            {/* Share buttons */}
+            <div className="flex gap-3 items-center cursor-pointer">
+              <p
+                className="rounded-full bg-muted hover:bg-muted/70 transition-colors"
+                onClick={handleCopyURL}
+                title="Copy link"
+              >
+                <Share2 size={18} className="text-primary" />
+              </p>
+              {copied && (
+                <span className="text-sm text-primary bg-primary-foreground px-2 py-1 rounded-md animate-in fade-in">
+                  URL copied!
+                </span>
+              )}
+              {/* Add more social share icons here */}
+            </div>
           </div>
         </div>
       </div>
@@ -152,45 +168,25 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }) => {
             {content && <RichText data={content} />}
           </div>
 
-          {/* Share buttons */}
-          <div className="mt-10 pt-8 border-t border-border">
-            <div className="flex flex-wrap items-center gap-4">
-              <span className="font-medium  md:text-xl">Share this article:</span>
-              <div className="flex gap-3 items-center cursor-pointer">
-                <p
-                  className="p-2 rounded-full bg-muted hover:bg-muted/70 transition-colors"
-                  onClick={handleCopyURL}
-                  title="Copy link"
-                >
-                  <Share2 size={18} className="text-primary" />
-                </p>
-                {copied && (
-                  <span className="text-sm text-primary bg-primary-foreground px-2 py-1 rounded-md animate-in fade-in">
-                    URL copied!
-                  </span>
-                )}
-                {/* Add more social share icons here */}
-              </div>
-            </div>
-          </div>
-
           {/* Author section - Enhanced */}
           {populatedAuthors && populatedAuthors.length > 0 && (
             <div className="mt-10 pt-8 border-t border-border">
-              <h3 className="text-xl font-bold mb-6">Written by</h3>
-              {populatedAuthors.map((author) => (
-                <div
-                  key={author.id}
-                  className="bg-card rounded-xl p-6 border border-border mb-4 flex flex-col md:flex-row md:items-center gap-4"
-                >
-                  <div className="bg-primary/10 h-16 w-16 rounded-full flex items-center justify-center flex-shrink-0">
-                    <User size={24} className="text-primary" />
+              <h3 className="text-xl font-bold mb-6">Written by:</h3>
+              <div className="flex flex-wrap gap-6 items-center">
+                {populatedAuthors.map((author) => (
+                  <div
+                    key={author.id}
+                    className="bg-card rounded-xl px-4 py-3 border border-border mb-4 flex flex-col md:flex-row md:items-center gap-4 min-w-max"
+                  >
+                    <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0">
+                      <User size={24} className="text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg">{author.name}</h4>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-lg font-semibold">{author.name}</h4>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>

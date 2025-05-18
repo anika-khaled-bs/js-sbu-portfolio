@@ -170,3 +170,8 @@ html[data-theme='light'] {
     right: 40px;
   }
 }
+
+.prose {
+  max-width: 100%;
+  color: var(--foreground);
+}

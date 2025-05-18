@@ -80,6 +80,7 @@ export interface Config {
     'hero-sliders': HeroSlider;
     values: Value;
     'contact-details': ContactDetail;
+    tutorials: Tutorial;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +105,7 @@ export interface Config {
     'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
     'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
+    tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -717,7 +719,17 @@ export interface ArchiveBlock {
     | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
-    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | (
+        | 'posts'
+        | 'contact-details'
+        | 'values'
+        | 'testimonials'
+        | 'team'
+        | 'services'
+        | 'portfolio'
+        | 'tech-stacks'
+        | 'tutorials'
+      )
     | null;
   displayType?: ('default' | 'grid' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
@@ -1294,6 +1306,138 @@ export interface HeroSlider {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials".
+ */
+export interface Tutorial {
+  id: string;
+  title: string;
+  /**
+   * Thumbnail image for this tutorial (16:9 ratio recommended)
+   */
+  thumbnailImage: string | Media;
+  /**
+   * Featured image for this tutorial
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Upload the video file for this tutorial
+   */
+  videoFile: string | Media;
+  /**
+   * Optional: URL to an external video (YouTube, Vimeo, etc.) if not uploading directly
+   */
+  externalVideoUrl?: string | null;
+  /**
+   * Brief summary of the tutorial (shown in listings)
+   */
+  shortDescription: string;
+  /**
+   * Written tutorial content, can include code snippets, steps, etc.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Prerequisites or requirements for this tutorial
+   */
+  prerequisites?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Additional resources for this tutorial
+   */
+  resources?:
+    | {
+        title: string;
+        url: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL to the code repository (GitHub, GitLab, etc.)
+   */
+  codeRepository?: string | null;
+  /**
+   * URL to a live demo of the tutorial project
+   */
+  demoURL?: string | null;
+  /**
+   * Other tutorials that relate to this one
+   */
+  relatedTutorials?: (string | Tutorial)[] | null;
+  /**
+   * Blog posts that relate to this tutorial
+   */
+  relatedPosts?: (string | Post)[] | null;
+  /**
+   * Categories for this tutorial
+   */
+  categories?: (string | Category)[] | null;
+  /**
+   * Technologies used in this tutorial
+   */
+  techStacks?: (string | TechStack)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Difficulty level of this tutorial
+   */
+  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
+  /**
+   * Estimated duration in minutes
+   */
+  duration?: number | null;
+  /**
+   * Feature this tutorial on the homepage or tutorial index
+   */
+  isFeatured?: boolean | null;
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1515,6 +1659,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-details';
         value: string | ContactDetail;
+      } | null)
+    | ({
+        relationTo: 'tutorials';
+        value: string | Tutorial;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2095,6 +2243,57 @@ export interface ContactDetailsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials_select".
+ */
+export interface TutorialsSelect<T extends boolean = true> {
+  title?: T;
+  thumbnailImage?: T;
+  featuredImage?: T;
+  videoFile?: T;
+  externalVideoUrl?: T;
+  shortDescription?: T;
+  content?: T;
+  prerequisites?: T;
+  resources?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        description?: T;
+        id?: T;
+      };
+  codeRepository?: T;
+  demoURL?: T;
+  relatedTutorials?: T;
+  relatedPosts?: T;
+  categories?: T;
+  techStacks?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  difficultyLevel?: T;
+  duration?: T;
+  isFeatured?: T;
+  publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -2589,6 +2788,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'contact-details';
           value: string | ContactDetail;
+        } | null)
+      | ({
+          relationTo: 'tutorials';
+          value: string | Tutorial;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

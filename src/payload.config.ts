@@ -30,6 +30,7 @@ import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { v2 as cloudinary } from 'cloudinary'
 import type { HandleUpload, HandleDelete } from '@payloadcms/plugin-cloud-storage/types'
 import type { UploadApiResponse } from 'cloudinary'
+import { Tutorials } from './collections/Tutorials'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -169,6 +170,7 @@ export default buildConfig({
     HeroSliders,
     Values,
     ContactDetails,
+    Tutorials,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

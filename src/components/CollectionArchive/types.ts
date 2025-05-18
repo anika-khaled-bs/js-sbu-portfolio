@@ -7,6 +7,7 @@ import {
   Team,
   Service,
   Portfolio,
+  Tutorial,
 } from '@/payload-types'
 
 // Common types
@@ -19,6 +20,7 @@ export type CollectionItem =
   | Team
   | Service
   | Portfolio
+  | Tutorial
 export type DisplayType = 'grid' | 'slider' | 'feature' | 'card' | 'list' | 'default'
 
 export type Props = {

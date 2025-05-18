@@ -7,6 +7,7 @@ import {
   Value,
   TechStack,
   Media,
+  Tutorial,
 } from '@/payload-types'
 import { CollectionItem } from '../types'
 import { formatDate } from '@/utilities/formatDate'
@@ -27,6 +28,8 @@ export const collectionDataExtractors = {
         return (doc as Team).meta
       case 'portfolio':
         return (doc as Portfolio).meta
+      case 'tutorials':
+        return (doc as Tutorial).meta
       default:
         return undefined
     }
@@ -37,7 +40,8 @@ export const collectionDataExtractors = {
       case 'posts':
       case 'services':
       case 'portfolio':
-        return (doc as Post | Service | Portfolio).title || 'Untitled'
+      case 'tutorials':
+        return (doc as Post | Service | Portfolio | Tutorial).title || 'Untitled'
       case 'values':
         return (doc as Value).title || 'Untitled'
       case 'tech-stacks':
@@ -73,14 +77,16 @@ export const collectionDataExtractors = {
         )
       case 'team':
         return (doc as Team).shortBio || undefined
+      case 'tutorials':
+        return (doc as Tutorial).shortDescription || undefined
       default:
         return undefined
     }
   },
 
   getPublishedDate: (doc: CollectionItem, relationTo: string): string | undefined => {
-    if (relationTo === 'posts' && 'publishedAt' in doc) {
-      return (doc as Post).publishedAt || undefined
+    if ((relationTo === 'posts' || relationTo === 'tutorials') && 'publishedAt' in doc) {
+      return (doc as Post | Tutorial).publishedAt || undefined
     }
     return undefined
   },
@@ -94,12 +100,12 @@ export const collectionDataExtractors = {
   },
 
   getAuthors: (doc: CollectionItem, relationTo: string) => {
-    if (relationTo === 'posts') {
+    if (relationTo === 'posts' || relationTo === 'tutorials') {
       // Handle both authors and populatedAuthors fields
-      if ('populatedAuthors' in doc && (doc as Post).populatedAuthors?.length) {
-        return (doc as Post).populatedAuthors
-      } else if ('authors' in doc && (doc as Post).authors?.length) {
-        return (doc as Post).authors
+      if ('populatedAuthors' in doc && (doc as Post | Tutorial).populatedAuthors?.length) {
+        return (doc as Post | Tutorial).populatedAuthors
+      } else if ('authors' in doc && (doc as Post | Tutorial).authors?.length) {
+        return (doc as Post | Tutorial).authors
       }
     }
     return undefined
@@ -130,6 +136,29 @@ export const collectionDataExtractors = {
     return '3 min read'
   },
 
+  getDuration: (doc: CollectionItem, relationTo: string): string | undefined => {
+    if (relationTo === 'tutorials' && 'duration' in doc) {
+      const duration = (doc as Tutorial).duration
+      if (!duration) return undefined
+      return `${duration} min`
+    }
+    return undefined
+  },
+
+  getDifficultyLevel: (doc: CollectionItem, relationTo: string): string | undefined => {
+    if (relationTo === 'tutorials' && 'difficultyLevel' in doc) {
+      return (doc as Tutorial).difficultyLevel || undefined
+    }
+    return undefined
+  },
+
+  getTechStacksForTutorial: (doc: CollectionItem, relationTo: string) => {
+    if (relationTo === 'tutorials' && 'techStacks' in doc) {
+      return (doc as Tutorial).techStacks
+    }
+    return undefined
+  },
+
   getImage: (doc: CollectionItem, relationTo: string) => {
     switch (relationTo) {
       case 'posts':
@@ -149,9 +178,29 @@ export const collectionDataExtractors = {
         return (doc as Testimonial).clientImage || (doc as Testimonial).clientLogo
       case 'values':
         return (doc as Value).icon
+      case 'tutorials':
+        // For tutorials, prefer thumbnailImage, then featuredImage
+        if ('thumbnailImage' in doc && (doc as Tutorial).thumbnailImage) {
+          return (doc as Tutorial).thumbnailImage
+        }
+        return 'featuredImage' in doc ? (doc as Tutorial).featuredImage : undefined
       default:
         return undefined
     }
+  },
+
+  getVideoFile: (doc: CollectionItem, relationTo: string) => {
+    if (relationTo === 'tutorials' && 'videoFile' in doc) {
+      return (doc as Tutorial).videoFile
+    }
+    return undefined
+  },
+
+  getExternalVideoUrl: (doc: CollectionItem, relationTo: string): string | undefined => {
+    if (relationTo === 'tutorials' && 'externalVideoUrl' in doc) {
+      return (doc as Tutorial).externalVideoUrl || undefined
+    }
+    return undefined
   },
 
   getCompletionDate: (doc: CollectionItem, relationTo: string): string | undefined => {
@@ -183,8 +232,8 @@ export const collectionDataExtractors = {
   },
 
   getCategories: (doc: CollectionItem, relationTo: string) => {
-    if (relationTo === 'posts' && 'categories' in doc) {
-      return (doc as Post).categories?.map((category) => {
+    if ((relationTo === 'posts' || relationTo === 'tutorials') && 'categories' in doc) {
+      return (doc as Post | Tutorial).categories?.map((category) => {
         if (typeof category === 'object') return category.title
         else return category
       })

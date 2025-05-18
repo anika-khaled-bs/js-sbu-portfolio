@@ -105,6 +105,10 @@ export const Archive: Block = {
           label: 'Tech Stacks',
           value: 'tech-stacks',
         },
+        {
+          label: 'Tutorials',
+          value: 'tutorials',
+        },
       ],
     },
     {

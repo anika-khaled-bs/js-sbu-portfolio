@@ -5,7 +5,8 @@ import { collectionDataExtractors } from '../utils/dataExtractors'
 import FeatureCard from './FeatureCard'
 import GridCard from './GridCard'
 import ListCard from './ListCard'
-import { Post } from '@/payload-types'
+import TutorialCard from './TutorialCard' // Import the TutorialCard component
+import { Post, Tutorial } from '@/payload-types'
 import RelatedPostCard from '@/components/PostDetails/PostCard' // Import the component for post cards
 
 /**
@@ -17,6 +18,11 @@ const CollectionCard: React.FC<CollectionCardProps> = (props) => {
   // Special case for posts collection with featuredBlock display type
   if (relationTo === 'posts' && displayType === 'feature') {
     return <RelatedPostCard post={doc as Post} />
+  }
+
+  // Special case for tutorials - we'll use our dedicated tutorial card component
+  if (relationTo === 'tutorials') {
+    return <TutorialCard {...props} />
   }
 
   // Handle different display types with specialized components

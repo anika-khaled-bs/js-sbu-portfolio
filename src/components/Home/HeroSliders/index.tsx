@@ -109,11 +109,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ sliders, className }) => {
           </SwiperSlide>
         ))}
 
-        <div className="swiper-button-prev absolute left-5 z-20 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full cursor-pointer transition-all duration-300">
-          <ChevronLeft className="text-white" size={24} />
+        <div className="swiper-button-prev absolute left-5 z-20 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-primary/80 backdrop-blur-sm hover:bg-primary text-white rounded-full cursor-pointer transition-all duration-300 shadow-md border border-white/20">
+          <ChevronLeft className="text-white w-5 h-5 md:w-6 md:h-6" />
         </div>
-        <div className="swiper-button-next absolute right-5 z-20 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full cursor-pointer transition-all duration-300">
-          <ChevronRight className="text-white" size={24} />
+        <div className="swiper-button-next absolute right-5 z-20 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-primary/80 backdrop-blur-sm hover:bg-primary text-white rounded-full cursor-pointer transition-all duration-300 shadow-md border border-white/20">
+          <ChevronRight className="text-white w-5 h-5 md:w-6 md:h-6" />
         </div>
 
         <div className="swiper-pagination absolute bottom-[5%] top-auto left-0 right-0 z-20 flex justify-center"></div>

@@ -7,6 +7,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { PageHeaderBlock } from '@/blocks/PageHeaderBlock/Component'
+import { SliderBlockComponent } from '@/blocks/SliderBlock/Component'
 import { cn } from '@/utilities/ui'
 
 const blockComponents = {
@@ -15,6 +16,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   pageHeaderBlock: PageHeaderBlock,
+  slider: SliderBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

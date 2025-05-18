@@ -1,13 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { defaultLexicalEditor } from '../../components/RichText/lexicalEditorConfig'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateTestimonial } from './hooks/revalidateTestimonial'
 import { formatClientInfo } from './hooks/formatClientInfo'
@@ -23,6 +16,8 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 /**
  * Testimonials Collection
@@ -73,16 +68,7 @@ export const Testimonials: CollectionConfig = {
       type: 'richText',
       label: 'Testimonial Content',
       required: true,
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
+      editor: defaultLexicalEditor,
       admin: {
         description: 'The testimonial content from your client or customer',
       },

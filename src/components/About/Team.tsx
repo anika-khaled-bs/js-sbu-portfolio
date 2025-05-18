@@ -107,13 +107,13 @@ const TeamComponent = ({ team, className = '' }: TeamProps) => {
   return (
     <section className={`section ${className}`} id="team">
       <div className="container py-16">
-        <div className="mb-12 text-center mx-auto">
+        {/* <div className="mb-12 text-center mx-auto">
           <p className="font-medium text-primary mb-2">Our Team</p>
           <p className="mb-4 text-4xl">The Minds Behind JS SBU</p>
           <p className="text-muted-foreground">
             Meet the talented individuals who make the magic happen at JS SBU.
           </p>
-        </div>
+        </div> */}
         <div className="flex flex-wrap justify-center gap-8">
           {team.map((member) => (
             <TeamCard key={member.id} member={member} />

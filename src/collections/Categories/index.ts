@@ -7,6 +7,7 @@ import { generateCategorySlug } from './hooks/generateCategorySlug'
 import { validateCategoryHierarchy } from './hooks/validateCategoryHierarchy'
 import { buildCategoryBreadcrumbs } from './hooks/buildCategoryBreadcrumbs'
 import { revalidateCategory, revalidateDelete } from './hooks/revalidateCategory'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -15,6 +16,11 @@ export const Categories: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    type: true,
   },
   admin: {
     useAsTitle: 'title',
@@ -43,8 +49,8 @@ export const Categories: CollectionConfig = {
         { label: 'Team', value: 'team' },
         { label: 'Tutorial', value: 'tutorial' },
         { label: 'Skill', value: 'skill' },
+        { label: 'Other', value: 'other' },
       ],
-      defaultValue: 'blog',
       required: true,
       admin: {
         position: 'sidebar',
@@ -75,16 +81,6 @@ export const Categories: CollectionConfig = {
         description: 'Featured image for category pages',
       },
     },
-    // {
-    //   name: 'isHighlighted',
-    //   type: 'checkbox',
-    //   label: 'Highlight in Navigation',
-    //   defaultValue: false,
-    //   admin: {
-    //     description: 'Should this category be highlighted in navigation menus?',
-    //     position: 'sidebar',
-    //   },
-    // },
     {
       name: 'parent',
       type: 'relationship',
@@ -96,5 +92,6 @@ export const Categories: CollectionConfig = {
     },
     ...slugField(),
   ],
+
   timestamps: true,
 }

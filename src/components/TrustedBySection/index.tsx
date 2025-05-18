@@ -15,19 +15,16 @@ const ClientLogoSlider = ({
 }: ClientSliderProps) => {
   return (
     <>
-      <section className="section bg-muted py-16 min-h-[50vh]">
+      <section className="section py-16 min-h-[50vh]">
         <div className="container">
-          <div className="mb-12 text-center">
+          {/* <div className="mb-12 text-center">
             <p className="font-medium text-primary mb-2">{title}</p>
             <p className="text-4xl font-semibold">{subTitle}</p>
-          </div>
+          </div> */}
           <div className="flex flex-wrap justify-center gap-8">
             {clientTestimonials?.map((client) => (
               <div className="w-5/12 md:w-[30%] lg:w-[15%] flex justify-center" key={client.id}>
-                <ClientLogo
-                  name={client?.clientCompany!}
-                  logo={(client.clientLogo as Media).url!}
-                />
+                <ClientLogo name={client?.clientCompany!} logo={client.clientLogo as Media} />
               </div>
             ))}
           </div>

@@ -7,13 +7,12 @@ import React, { cache } from 'react'
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import ContactCTA from '@/components/ContactCTA'
-import ServiceDetails from '@/components/ServiceDetails'
-import { Service } from '@/payload-types'
+import PostDetails from '@/components/PostDetails'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const serviceDetails = await payload.find({
-    collection: 'services',
+  const postDetails = await payload.find({
+    collection: 'posts',
     draft: false,
     limit: 1000,
     pagination: false,
@@ -22,7 +21,7 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = serviceDetails.docs
+  const params = postDetails.docs
     .filter(({ slug }) => slug && typeof slug === 'string' && slug.trim() !== '')
     .map(({ slug }) => {
       return { slug }
@@ -37,43 +36,37 @@ type Args = {
   }>
 }
 
-export default async function serviceDetailsPage({ params }: Args) {
+export default async function PostDetailsPage({ params }: Args) {
   const { slug = '' } = await params
-  const url = '/services/' + slug
+  const url = '/posts/' + slug
 
-  // Fetch current service details
-  const serviceDetails = await queryServiceBySlug({ slug })
+  // Fetch current post details
+  const postDetails = await queryPostBySlug({ slug })
 
-  // Fetch all services for related services component
-
-  if (!serviceDetails) {
+  if (!postDetails) {
     return <PayloadRedirects url={url} />
   }
 
   return (
-    <div className="mt-16">
+    <div className="my-16">
       <PayloadRedirects disableNotFound url={url} />
-      <ServiceDetails
-        service={serviceDetails}
-        allServices={serviceDetails?.relatedServices! as Service[]}
-      />
-      <ContactCTA />
+      <PostDetails post={postDetails} />
     </div>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const service = await queryServiceBySlug({ slug })
+  const post = await queryPostBySlug({ slug })
 
-  return generateMeta({ doc: service })
+  return generateMeta({ doc: post })
 }
 
-const queryServiceBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'services',
+    collection: 'posts',
     limit: 1,
     pagination: false,
     where: {
@@ -81,6 +74,7 @@ const queryServiceBySlug = cache(async ({ slug }: { slug: string }) => {
         equals: slug,
       },
     },
+    depth: 2, // Increase depth to properly resolve relationships
   })
 
   return result.docs?.[0] || null

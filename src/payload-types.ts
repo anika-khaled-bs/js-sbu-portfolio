@@ -207,7 +207,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock)[];
+  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock | SliderBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -248,9 +248,6 @@ export interface Service {
    * Technologies used for this service
    */
   techStacks: (string | TechStack)[];
-  /**
-   * Technologies used for this service
-   */
   categories: (string | Category)[];
   content: {
     root: {
@@ -273,7 +270,7 @@ export interface Service {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         icon?: (string | null) | Media;
         id?: string | null;
       }[]
@@ -350,6 +347,15 @@ export interface TechStack {
   name: string;
   description?: string | null;
   /**
+   * Key features of this technology stack
+   */
+  keyFeatures?:
+    | {
+        featureDetails?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Icon representing this technology (SVG preferred)
    */
   icon?: (string | null) | Media;
@@ -371,7 +377,7 @@ export interface TechStack {
 export interface Category {
   id: string;
   title: string;
-  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
+  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill' | 'other';
   /**
    * Brief description of this category
    */
@@ -467,7 +473,7 @@ export interface Portfolio {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -670,26 +676,50 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  /**
+   * Optional header text for the archive block
+   */
+  header?: string | null;
+  /**
+   * Optional subheader text for the archive block
+   */
+  subheader?: string | null;
+  /**
+   * Optional description for the archive block
+   */
+  description?: string | null;
+  /**
+   * Optional link for the archive block
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
     | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
     | null;
-  displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
+  displayType?: ('default' | 'grid' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -1180,6 +1210,54 @@ export interface PageHeaderBlock {
   blockType: 'pageHeaderBlock';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock".
+ */
+export interface SliderBlock {
+  slides: {
+    image: string | Media;
+    header?: string | null;
+    shortDescription?: string | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: string | Service;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  settings?: {
+    autoplay?: boolean | null;
+    showNavigation?: boolean | null;
+    showPagination?: boolean | null;
+    loop?: boolean | null;
+    contentAlignment?: ('left' | 'center' | 'right') | null;
+    speed?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'slider';
+}
+/**
  * Hero sliders for landing pages and sections
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1536,6 +1614,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pageHeaderBlock?: T | PageHeaderBlockSelect<T>;
+        slider?: T | SliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1593,7 +1672,24 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
+  header?: T;
+  subheader?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   populateBy?: T;
   relationTo?: T;
   displayType?: T;
@@ -1623,6 +1719,48 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock_select".
+ */
+export interface SliderBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        header?: T;
+        shortDescription?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  settings?:
+    | T
+    | {
+        autoplay?: T;
+        showNavigation?: T;
+        showPagination?: T;
+        loop?: T;
+        contentAlignment?: T;
+        speed?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1762,6 +1900,12 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface TechStacksSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  keyFeatures?:
+    | T
+    | {
+        featureDetails?: T;
+        id?: T;
+      };
   icon?: T;
   category?: T;
   featured?: T;

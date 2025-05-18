@@ -19,7 +19,14 @@ const MainContent = ({ portfolio }: PortfolioDetailsProps) => {
       {portfolio.client && (
         <ClientTestimonial testimonialContent={portfolio.client! as Testimonial} />
       )}
-      {portfolio.keyFeatures && <KeyFeaturesList features={portfolio.keyFeatures} />}
+      {portfolio.keyFeatures && (
+        <KeyFeaturesList
+          features={portfolio.keyFeatures.map((feature) => ({
+            ...feature,
+            description: feature.description || '', // Ensure description is always a string
+          }))}
+        />
+      )}
     </div>
   )
 }

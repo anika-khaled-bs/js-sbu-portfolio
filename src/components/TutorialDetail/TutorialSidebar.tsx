@@ -136,7 +136,7 @@ const TutorialSidebar: React.FC<TutorialSidebarProps> = ({
 
               return (
                 <li key={index}>
-                  <Link href={`/post/${slug}`} className="text-primary hover:underline">
+                  <Link href={`/posts/${slug}`} className="text-primary hover:underline">
                     {title}
                   </Link>
                   {post.shortDescription && (

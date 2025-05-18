@@ -1,6 +1,5 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import type { Page } from '@/payload-types'
 
@@ -24,21 +23,23 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
         {showOverlay && <div className="absolute inset-0 bg-black opacity-60"></div>}
       </div>
 
-      <div className="container relative z-10 flex items-center min-h-[50vh]">
-        <div className="">
-          {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
-          {Array.isArray(links) && links.length > 0 && (
-            <ul className="gap-4">
-              {links.map(({ link }, i) => {
-                return (
-                  <li key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-        </div>
+      <div className="container relative z-10 flex flex-col items-center justify-center min-h-[50vh]">
+        {richText && (
+          <div className="max-w-3xl text-center mb-6">
+            <RichText data={richText} enableGutter={false} />
+          </div>
+        )}
+        {Array.isArray(links) && links.length > 0 && (
+          <ul className="gap-4 flex flex-wrap justify-center">
+            {links.map(({ link }, i) => {
+              return (
+                <li key={i}>
+                  <CMSLink {...link} />
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     </div>
   )

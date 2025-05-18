@@ -15,7 +15,7 @@ const ClientLogoSlider = ({
 }: ClientSliderProps) => {
   return (
     <>
-      <section className="section py-16 min-h-[50vh]">
+      <section className="section">
         <div className="container">
           {/* <div className="mb-12 text-center">
             <p className="font-medium text-primary mb-2">{title}</p>

@@ -96,6 +96,13 @@ const RelatedPostCard: React.FC<RelatedPostCardProps> = ({ post }) => {
           <p className="text-sm text-muted-foreground line-clamp-3 mb-5">{shortDescription}</p>
         )}
 
+        {/* Author - new section */}
+        {post.populatedAuthors && post.populatedAuthors.length > 0 && (
+          <div className="flex items-center text-xs text-muted-foreground mb-3">
+            <span>by {post.populatedAuthors.map((author) => author.name).join(', ')}</span>
+          </div>
+        )}
+
         {/* Read more link with animated arrow */}
         <div className="mt-auto">
           <span className="inline-flex items-center text-primary text-sm font-medium group-hover:underline">

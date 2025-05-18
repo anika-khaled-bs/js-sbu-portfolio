@@ -48,10 +48,9 @@ export default async function PostDetailsPage({ params }: Args) {
   }
 
   return (
-    <div className="mt-16">
+    <div className="my-16">
       <PayloadRedirects disableNotFound url={url} />
       <PostDetails post={postDetails} />
-      <ContactCTA />
     </div>
   )
 }

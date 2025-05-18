@@ -1,10 +1,11 @@
-import React from 'react'
+'use client'
+// PostDetails.tsx
+import React, { useState } from 'react'
 import Image from 'next/image'
-import { Post, Media, Category } from '@/payload-types'
+import { Post, Category } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 import RichText from '../RichText'
 import { CalendarDays, Clock, Share2, User, Tag, ChevronLeft } from 'lucide-react'
-import Link from 'next/link'
 import RelatedPosts from './RelatedPosts'
 
 type PostDetailsProps = {
@@ -60,6 +61,14 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }) => {
     const words = textContent.trim().split(/\s+/).length
     const minutes = Math.max(1, Math.ceil(words / 200))
     return `${minutes} min read`
+  }
+
+  // Copy to clipboard function
+  const [copied, setCopied] = useState(false)
+  const handleCopyURL = () => {
+    navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000) // Reset after 2 seconds
   }
 
   return (
@@ -146,14 +155,20 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }) => {
           {/* Share buttons */}
           <div className="mt-10 pt-8 border-t border-border">
             <div className="flex flex-wrap items-center gap-4">
-              <span className="font-medium">Share this article:</span>
-              <div className="flex gap-3">
-                <a
-                  href="#"
+              <span className="font-medium  md:text-xl">Share this article:</span>
+              <div className="flex gap-3 items-center cursor-pointer">
+                <p
                   className="p-2 rounded-full bg-muted hover:bg-muted/70 transition-colors"
+                  onClick={handleCopyURL}
+                  title="Copy link"
                 >
-                  <Share2 size={18} />
-                </a>
+                  <Share2 size={18} className="text-primary" />
+                </p>
+                {copied && (
+                  <span className="text-sm text-primary bg-primary-foreground px-2 py-1 rounded-md animate-in fade-in">
+                    URL copied!
+                  </span>
+                )}
                 {/* Add more social share icons here */}
               </div>
             </div>
@@ -166,7 +181,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }) => {
               {populatedAuthors.map((author) => (
                 <div
                   key={author.id}
-                  className="bg-card rounded-xl p-6 border border-border mb-4 flex flex-col md:flex-row gap-4"
+                  className="bg-card rounded-xl p-6 border border-border mb-4 flex flex-col md:flex-row md:items-center gap-4"
                 >
                   <div className="bg-primary/10 h-16 w-16 rounded-full flex items-center justify-center flex-shrink-0">
                     <User size={24} className="text-primary" />

@@ -6,12 +6,12 @@ import React, { cache } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import PostDetails from '@/components/PostDetails'
+import TutorialDetail from '@/components/TutorialDetail'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const postDetails = await payload.find({
-    collection: 'posts',
+  const tutorialDetails = await payload.find({
+    collection: 'tutorials',
     draft: false,
     limit: 1000,
     pagination: false,
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = postDetails.docs
+  const params = tutorialDetails.docs
     .filter(({ slug }) => slug && typeof slug === 'string' && slug.trim() !== '')
     .map(({ slug }) => {
       return { slug }
@@ -35,37 +35,37 @@ type Args = {
   }>
 }
 
-export default async function PostDetailsPage({ params }: Args) {
+export default async function TutorialDetailsPage({ params }: Args) {
   const { slug = '' } = await params
-  const url = '/posts/' + slug
+  const url = '/tutorial/' + slug // Use /tutorial/ singular to match URL in screenshot
 
-  // Fetch current post details
-  const postDetails = await queryPostBySlug({ slug })
+  // Fetch current tutorial details
+  const tutorial = await queryTutorialBySlug({ slug })
 
-  if (!postDetails) {
+  if (!tutorial) {
     return <PayloadRedirects url={url} />
   }
 
   return (
-    <div className="my-16">
+    <div className="my-24">
       <PayloadRedirects disableNotFound url={url} />
-      <PostDetails post={postDetails} />
+      <TutorialDetail tutorial={tutorial} />
     </div>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
+  const tutorial = await queryTutorialBySlug({ slug })
 
-  return generateMeta({ doc: post })
+  return generateMeta({ doc: tutorial })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryTutorialBySlug = cache(async ({ slug }: { slug: string }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'posts',
+    collection: 'tutorials',
     limit: 1,
     pagination: false,
     where: {

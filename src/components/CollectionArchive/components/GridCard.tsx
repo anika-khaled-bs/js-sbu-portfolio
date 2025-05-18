@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar } from 'lucide-react'
+import { Calendar, Clock, User, CalendarDays } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import { Media, Team } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
@@ -26,6 +26,10 @@ const GridCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
     getClientCompany,
     getClientTitle,
     getUrl,
+    getPublishedDate,
+    getFormattedDate,
+    getReadingTime,
+    getAuthors,
   } = collectionDataExtractors
 
   const title = getTitle(doc, relationTo)
@@ -39,6 +43,12 @@ const GridCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
   const rating = getRating(doc, relationTo)
   const clientCompany = getClientCompany(doc, relationTo)
   const clientTitle = getClientTitle(doc, relationTo)
+
+  // Post-specific fields
+  const publishedDate = getPublishedDate(doc, relationTo)
+  const formattedPublishedDate = getFormattedDate(publishedDate)
+  const readingTime = relationTo === 'posts' ? getReadingTime(doc, relationTo) : undefined
+  const authors = getAuthors(doc, relationTo)
 
   // Special handling for team members
   if (relationTo === 'team') {
@@ -77,6 +87,97 @@ const GridCard: React.FC<CollectionCardProps> = ({ doc, relationTo, className })
           <SocialLinks socialLinks={teamMember.socialLinks} layout="center" className="mt-auto" />
         </div>
       </div>
+    )
+  }
+
+  // Special handling for post grid cards
+  if (relationTo === 'posts') {
+    return (
+      <Link
+        href={url}
+        className={cn(
+          'group flex flex-col h-full overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1',
+          className,
+        )}
+      >
+        <div className="flex-grow flex flex-col">
+          {/* Image Section */}
+          <div className="relative h-48 overflow-hidden">
+            {image && typeof image !== 'string' && (
+              <Image
+                src={(image as Media).url!}
+                alt={title || 'Post image'}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              />
+            )}
+            {!image && (
+              <div className="h-full w-full bg-primary/10 flex items-center justify-center">
+                <span className="text-primary/50">No image</span>
+              </div>
+            )}
+          </div>
+
+          {/* Content Section */}
+          <div className="p-5 flex flex-col flex-grow">
+            {/* Categories */}
+            {categories && categories.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className="inline-flex items-center px-3 py-1 text-xs font-medium bg-primary/10 rounded-full text-primary">
+                  {categories[0]}
+                </span>
+              </div>
+            )}
+
+            {/* Title */}
+            <h3 className="text-lg font-semibold line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+              {title}
+            </h3>
+
+            {/* Description */}
+            {description && (
+              <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{description}</p>
+            )}
+
+            {/* Post metadata */}
+            <div className="mt-auto pt-3 border-t border-border">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                {/* Date */}
+                {formattedPublishedDate && (
+                  <div className="flex items-center">
+                    <CalendarDays size={14} className="mr-1.5" />
+                    <span>{formattedPublishedDate}</span>
+                  </div>
+                )}
+
+                {/* Reading time */}
+                {readingTime && (
+                  <div className="flex items-center">
+                    <Clock size={14} className="mr-1.5" />
+                    <span>{readingTime}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Author info if available */}
+              {authors && authors.length > 0 && (
+                <div className="flex items-center text-xs text-muted-foreground mt-3">
+                  <User size={14} className="mr-2" />
+                  <span>
+                    by{' '}
+                    <span className="font-medium">
+                      {authors
+                        .map((author: any) => (typeof author === 'object' ? author.name : 'Author'))
+                        .join(', ')}
+                    </span>
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
     )
   }
 

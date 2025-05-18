@@ -105,6 +105,10 @@ export const Archive: Block = {
           label: 'Tech Stacks',
           value: 'tech-stacks',
         },
+        {
+          label: 'Tutorials',
+          value: 'tutorials',
+        },
       ],
     },
     {
@@ -144,6 +148,32 @@ export const Archive: Block = {
       hasMany: true,
       label: 'Categories To Show',
       relationTo: 'categories',
+      filterOptions: ({ siblingData }: any) => {
+        if (siblingData?.relationTo) {
+          const collectionToTypeMap: Record<string, string> = {
+            posts: 'blog',
+            services: 'service',
+            portfolio: 'portfolio',
+            team: 'team',
+            'tech-stacks': 'skill',
+            testimonials: 'testimonial',
+            values: 'value',
+            'contact-details': 'contact',
+            tutorials: 'tutorial',
+            // Add more mappings as needed
+          }
+
+          const categoryType = collectionToTypeMap[siblingData.relationTo]
+
+          if (categoryType) {
+            return {
+              type: { equals: categoryType },
+            }
+          }
+        }
+
+        return true // Fallback: don’t filter if we don't know the relation
+      },
     },
     {
       name: 'limit',

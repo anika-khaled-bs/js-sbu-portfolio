@@ -189,7 +189,7 @@ export const Portfolio: CollectionConfig = {
               type: 'relationship',
               relationTo: 'portfolio',
               hasMany: true,
-              max: 3,
+              maxRows: 3,
               admin: {
                 description: 'Other portfolio projects that relate to this one',
                 // condition: (data) => Boolean(data?.id),

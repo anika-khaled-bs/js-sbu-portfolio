@@ -8,6 +8,7 @@ import type {
   Team,
   Service,
   Portfolio,
+  Tutorial,
 } from '@/payload-types'
 
 import configPromise from '@payload-config'
@@ -49,6 +50,7 @@ export const ArchiveBlock: React.FC<
     | Team
     | Service
     | Portfolio
+    | Tutorial
   )[] = []
   const collectionType = relationTo || 'posts'
 
@@ -150,6 +152,24 @@ export const ArchiveBlock: React.FC<
       })
 
       items = fetchedPortfolio.docs
+    } else if (collectionType === 'tutorials') {
+      const fetchedTutorials = await payload.find({
+        collection: 'tutorials',
+        overrideAccess: false,
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
+              },
+            }
+          : {}),
+      })
+
+      items = fetchedTutorials.docs
     }
   } else if (selectedDocs?.length) {
     // Use a more type-safe approach with any casting where needed
@@ -172,6 +192,7 @@ export const ArchiveBlock: React.FC<
       | Team
       | Service
       | Portfolio
+      | Tutorial
     )[]
 
     items = filteredSelectedItems

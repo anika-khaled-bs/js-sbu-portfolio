@@ -15,10 +15,6 @@ const MainContent = ({ portfolio }: PortfolioDetailsProps) => {
         <RichText data={portfolio?.content!} />
       </div>
 
-      {/* Testimonial (if available) */}
-      {portfolio.client && (
-        <ClientTestimonial testimonialContent={portfolio.client! as Testimonial} />
-      )}
       {portfolio.keyFeatures && (
         <KeyFeaturesList
           features={portfolio.keyFeatures.map((feature) => ({
@@ -26,6 +22,11 @@ const MainContent = ({ portfolio }: PortfolioDetailsProps) => {
             description: feature.description || '', // Ensure description is always a string
           }))}
         />
+      )}
+      <br />
+      {/* Testimonial (if available) */}
+      {portfolio.client && (
+        <ClientTestimonial testimonialContent={portfolio.client! as Testimonial} />
       )}
     </div>
   )

@@ -163,7 +163,7 @@ export const Services: CollectionConfig = {
               type: 'relationship',
               relationTo: 'services',
               hasMany: true,
-              max: 3,
+              maxRows: 3,
               admin: {
                 description: 'Other posts that relate to this one',
                 // condition: (data) => Boolean(data?.id),

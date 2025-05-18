@@ -156,7 +156,7 @@ export const FooterComponent: React.FC<{
           {/* Technology Stacks */}
           <div>
             <h5 className="font-semibold mb-3">Technology Stacks</h5>
-            {showAllTechCategories && (
+            {/* {showAllTechCategories && (
               <div className="space-y-3 text-sm">
                 {Object.entries(groupedTechStacks).map(([category, techs]) => (
                   <div key={category} className="text-muted-foreground flex items-center gap-2">
@@ -166,18 +166,18 @@ export const FooterComponent: React.FC<{
                 ))}
               </div>
             )}
-            {!showAllTechCategories && (
-              <ul className="space-y-2 text-sm">
-                {featuredTechStacks?.map((tech, i) => {
-                  if (typeof tech === 'string') return null
-                  return (
-                    <li key={tech.id || i}>
-                      <p className="text-muted-foreground">{tech.name}</p>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
+            {!showAllTechCategories && ( */}
+            <ul className="space-y-2 text-sm">
+              {featuredTechStacks?.map((tech, i) => {
+                if (typeof tech === 'string') return null
+                return (
+                  <li key={tech.id || i}>
+                    <p className="text-muted-foreground">{tech.name}</p>
+                  </li>
+                )
+              })}
+            </ul>
+            {/* )} */}
           </div>
 
           {/* Subscription */}

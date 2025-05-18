@@ -1,106 +1,109 @@
-// import PageTemplate, { generateMetadata } from './[slug]/page'
+// import type { Metadata } from 'next'
 
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import HeroSlider from '@/components/Home/HeroSliders'
-import '@/components/Home/HeroSliders/index.scss'
-import ClientLogoSlider from '@/components/TrustedBySection'
-import FeaturedWorks from '@/components/Home/FeaturedProjects'
-import FeaturedServices from '@/components/Home/ServicesSection'
-import AboutUsComponent from '@/components/Home/AboutUsSection'
-import { Suspense } from 'react'
-import { Loader2 } from 'lucide-react'
-import ContactCTA from '@/components/ContactCTA'
+// import configPromise from '@payload-config'
+// import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
+// import { draftMode } from 'next/headers'
+// import React, { cache } from 'react'
 
-// export default PageTemplate
+// import { generateMeta } from '@/utilities/generateMeta'
 
-// export { generateMetadata }
+// import { PayloadRedirects } from '@/components/PayloadRedirects'
+// import PageClient from './page.client'
+// import { LivePreviewListener } from '@/components/LivePreviewListener'
+// import { RenderHero } from '@/heros/RenderHero'
+// import { RenderBlocks } from '@/blocks/RenderBlocks'
+// import ContactCTA from '@/components/ContactCTA'
 
-// Loading component for sections
-const SectionLoader = ({ height = 'h-[400px]', text = 'Loading content...' }) => (
-  <div
-    className={`${height} w-full flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm`}
-  >
-    <Loader2 className="h-10 w-10 animate-spin text-primary mb-2" />
-    <p className="text-muted-foreground">{text}</p>
-  </div>
-)
+// export async function generateStaticParams() {
+//   const payload = await getPayload({ config: configPromise })
+//   const pages = await payload.find({
+//     collection: 'pages',
+//     draft: false,
+//     limit: 1000,
+//     overrideAccess: false,
+//     pagination: false,
+//     select: {
+//       slug: true,
+//     },
+//   })
 
-export default async function Page() {
-  const payload = await getPayload({ config: configPromise })
+//   const params = pages.docs
+//     ?.filter((doc) => {
+//       return doc.slug === 'home'
+//     })
+//     .map(({ slug }) => {
+//       return { slug }
+//     })
 
-  const heroBannerSliders = await payload.find({
-    collection: 'hero-sliders',
-    depth: 1,
-    limit: 12,
-    overrideAccess: false,
-  })
+//   return params
+// }
 
-  const clientTestimonials = await payload.find({
-    collection: 'testimonials',
-    overrideAccess: false,
-    depth: 2, // Increase depth to properly resolve media relations
-    limit: 6,
-    select: {
-      clientCompany: true,
-      clientLogo: true, // Include clientLogo in the selection
-    },
-    where: {
-      clientLogo: {
-        not_equals: null, // Only fetch testimonials with logos
-      },
-      featured: {
-        equals: true, // Only fetch featured testimonials
-      },
-    },
-  })
+// type Args = {
+//   params: Promise<{
+//     slug?: string
+//   }>
+// }
 
-  const featuredProjects = await payload.find({
-    collection: 'portfolio',
-    overrideAccess: false,
-    depth: 1,
-    limit: 3,
-    where: {
-      isFeatured: {
-        equals: true, // Only fetch featured testimonials
-      },
-    },
-  })
+// export default async function Page({ params: paramsPromise }: Args) {
+//   const { isEnabled: draft } = await draftMode()
+//   const { slug = 'full-stack-development' } = await paramsPromise
+//   const url = '/'
 
-  const services = await payload.find({
-    collection: 'services',
-    overrideAccess: false,
-    depth: 1,
-    limit: 12,
-    where: {
-      isHighlighted: {
-        equals: true, // Only fetch featured testimonials
-      },
-    },
-  })
+//   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
+//     slug,
+//   })
 
-  return (
-    <div>
-      <Suspense fallback={<SectionLoader height="h-[700px]" text="Loading hero content..." />}>
-        <HeroSlider sliders={heroBannerSliders.docs} />
-      </Suspense>
+//   if (!page) {
+//     return <PayloadRedirects url={url} />
+//   }
 
-      <Suspense fallback={<SectionLoader text="Loading trusted partners..." />}>
-        <ClientLogoSlider clientTestimonials={clientTestimonials.docs} />
-      </Suspense>
+//   const { hero, layout, showContactCTA } = page
 
-      <Suspense fallback={<SectionLoader text="Loading our services..." />}>
-        <FeaturedServices services={services.docs} />
-      </Suspense>
+//   return (
+//     <div className="mt-16 overflow-x-hidden">
+//       <article className="">
+//         <PageClient />
+//         {/* Allows redirects for valid pages too */}
+//         <PayloadRedirects disableNotFound url={url} />
 
-      <Suspense fallback={<SectionLoader text="Loading featured projects..." />}>
-        <FeaturedWorks featuredProjects={featuredProjects.docs} />
-      </Suspense>
+//         {draft && <LivePreviewListener />}
 
-      {/* <Suspense fallback={<SectionLoader text="Loading about us section..." />}>
-        <AboutUsComponent />
-      </Suspense> */}
-      <ContactCTA />
-    </div>
-  )
-}
+//         <RenderBlocks blocks={layout} hero={<RenderHero {...hero} />} />
+//         {showContactCTA && <ContactCTA />}
+//       </article>
+//     </div>
+//   )
+// }
+
+// export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+//   const { slug = 'full-stack-development' } = await paramsPromise
+//   const page = await queryPageBySlug({
+//     slug,
+//   })
+
+//   return generateMeta({ doc: page })
+// }
+
+// const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+//   const payload = await getPayload({ config: configPromise })
+
+//   const result = await payload.find({
+//     collection: 'pages',
+//     limit: 1,
+//     pagination: false,
+//     overrideAccess: false,
+//     where: {
+//       slug: {
+//         equals: slug,
+//       },
+//     },
+//   })
+
+//   return result.docs?.[0] || null
+// })
+
+import PageTemplate, { generateMetadata } from './[slug]/page'
+
+export default PageTemplate
+
+export { generateMetadata }

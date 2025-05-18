@@ -1,6 +1,6 @@
 import React from 'react'
 import { ContactCard } from '@/components/ContactCard'
-import { ContactDetail, Value, TechStack, Service, Team } from '@/payload-types'
+import { ContactDetail, Value, TechStack, Service, Team, Post, Tutorial } from '@/payload-types'
 import OurValues from '../About/OurValues'
 import TeamComponent from '../About/Team'
 import ClientLogoSlider from '../TrustedBySection'
@@ -12,6 +12,8 @@ import CollectionCard from './components/CollectionCard'
 import FeaturedServices from '../Home/ServicesSection'
 import { groupBy } from '@/utilities/helpers'
 import ListCard from './components/ListCard'
+import PostCard from '@/components/PostDetails/PostCard'
+import TutorialCard from './components/TutorialCard'
 
 /**
  * Main CollectionArchive component that renders collections of different types
@@ -43,6 +45,42 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
   // Special handling for tech stacks - use our specialized component for all display types
   if (relationTo === 'tech-stacks') {
     return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} />
+  }
+
+  // Special handling for posts collection with featuredBlock display type
+  if (relationTo === 'posts' && displayType === 'feature') {
+    return (
+      <div className={shouldHaveContainer ? 'container' : ''}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {items?.map((item, index) => {
+            if (typeof item !== 'object' || item === null) return null
+            return <PostCard key={index} post={item as Post} className={itemClasses} />
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  // Special handling for tutorials with feature display type - to match post's featured layout
+  if (relationTo === 'tutorials' && displayType === 'feature') {
+    return (
+      <div className={shouldHaveContainer ? 'container' : ''}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {items?.map((item, index) => {
+            if (typeof item !== 'object' || item === null) return null
+            return (
+              <TutorialCard
+                key={index}
+                doc={item as Tutorial}
+                relationTo="tutorials"
+                displayType={displayType}
+                className={itemClasses}
+              />
+            )
+          })}
+        </div>
+      </div>
+    )
   }
 
   // Special handling for team members in list view - group by department category
@@ -87,6 +125,54 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
     )
   }
 
+  // Special handling for tutorials in list view - group by difficulty level
+  if (relationTo === 'tutorials' && displayType === 'list') {
+    // Cast items to Tutorial[] for proper typing
+    const tutorials = items as Tutorial[]
+
+    // Group tutorials by difficulty level
+    const groupedByDifficulty = groupBy(tutorials, (tutorial) => {
+      return tutorial.difficultyLevel || 'Other'
+    })
+
+    // Define the order of difficulty levels
+    const difficultyOrder = ['beginner', 'intermediate', 'advanced', 'Other']
+
+    // Sort levels by the defined order
+    const sortedLevels = Object.keys(groupedByDifficulty).sort(
+      (a, b) => difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b),
+    )
+
+    // Format difficulty level for display (capitalize first letter)
+    const formatDifficultyLevel = (level: string) => {
+      return level.charAt(0).toUpperCase() + level.slice(1)
+    }
+
+    return (
+      <div className={shouldHaveContainer ? 'container' : ''}>
+        {sortedLevels.map((level) => (
+          <div key={level} className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6 text-primary">
+              {formatDifficultyLevel(level)}
+            </h2>
+            <div className={layoutClasses}>
+              {groupedByDifficulty[level]?.map((tutorial, index) => (
+                <div className={itemClasses} key={index}>
+                  <TutorialCard
+                    className="h-full"
+                    doc={tutorial}
+                    relationTo="tutorials"
+                    displayType={displayType}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className={shouldHaveContainer ? 'container' : ''}>
       <div className={layoutClasses}>
@@ -114,7 +200,7 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
                 className="h-full"
                 doc={item as Exclude<typeof item, ContactDetail>}
                 relationTo={itemCollection}
-                showCategories={itemCollection === 'posts'}
+                showCategories={itemCollection === 'posts' || itemCollection === 'tutorials'}
                 displayType={displayType}
               />
             </div>

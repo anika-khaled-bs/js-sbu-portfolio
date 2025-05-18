@@ -85,7 +85,7 @@ export const TeamCard = ({ member }: { member: Partial<Team> }) => {
       </div>
       <p className="text-xl font-semibold mb-1">{member.name}</p>
       <p className="text-primary text-sm mb-2">{member.role}</p>
-      <p className="text-muted-foreground text-sm mb-4">{member.shortBio}</p>
+      <p className="text-muted-foreground text-sm mb-4 line-clamp-5">{member.shortBio}</p>
       <div className="flex justify-center space-x-3">
         {member.socialLinks?.map((social) => (
           <a

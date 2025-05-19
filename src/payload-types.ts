@@ -77,7 +77,6 @@ export interface Config {
     team: Team;
     testimonials: Testimonial;
     portfolio: Portfolio;
-    'hero-sliders': HeroSlider;
     values: Value;
     'contact-details': ContactDetail;
     tutorials: Tutorial;
@@ -102,7 +101,6 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
-    'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
     'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
     tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
@@ -1269,41 +1267,6 @@ export interface SliderBlock {
   blockType: 'slider';
 }
 /**
- * Hero sliders for landing pages and sections
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-sliders".
- */
-export interface HeroSlider {
-  id: string;
-  title: string;
-  subtitle?: string | null;
-  /**
-   * Text to display on the call-to-action button
-   */
-  buttonText?: string | null;
-  /**
-   * URL to navigate to when the button is clicked
-   */
-  buttonUrl?: string | null;
-  /**
-   * Background image for this hero slider (recommended: 1920x1080)
-   */
-  backgroundImage: string | Media;
-  /**
-   * Whether this slider is currently active
-   */
-  active?: boolean | null;
-  /**
-   * Order in which this slider appears (lower numbers appear first)
-   */
-  sortOrder?: number | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tutorials".
  */
@@ -1646,10 +1609,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolio';
         value: string | Portfolio;
-      } | null)
-    | ({
-        relationTo: 'hero-sliders';
-        value: string | HeroSlider;
       } | null)
     | ({
         relationTo: 'values';
@@ -2189,23 +2148,6 @@ export interface PortfolioSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-sliders_select".
- */
-export interface HeroSlidersSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  buttonText?: T;
-  buttonUrl?: T;
-  backgroundImage?: T;
-  active?: T;
-  sortOrder?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -48,7 +48,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Payload Website Template',
+                  text: 'SBU JS | Brain Station 23',
                   version: 1,
                 },
               ],
@@ -667,9 +667,11 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       },
     ],
     meta: {
-      description: 'An open-source website built with Payload and Next.js.',
+      description:
+        'A professional software developmet team specializing in the JavaScript programming languages, offering seamless User Experience.',
+
       image: heroImage.id,
-      title: 'Payload Website Template',
+      title: 'JBU JS | Brain Station 23e',
     },
     title: 'Home',
   }

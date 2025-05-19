@@ -6,7 +6,7 @@ const defaultOpenGraph: Metadata['openGraph'] = {
   description: 'Portal for SBU JS | Brain Station 23',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/js-sbu-logo-500x500.png`,
     },
   ],
   siteName: 'SBU JS | Brain Station 23',

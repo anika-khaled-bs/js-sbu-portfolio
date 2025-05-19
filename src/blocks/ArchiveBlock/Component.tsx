@@ -260,7 +260,7 @@ export const ArchiveBlock: React.FC<
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className={`my-16 ${relationTo === 'tech-stacks' ? 'container' : ''}`} id={`block-${id}`}>
       {hasHeaderContent && (
         <div className={`container mb-8 ${!hasLinks ? 'text-center' : ''}`}>
           <div

@@ -18,7 +18,7 @@ import TutorialCard from './components/TutorialCard'
 /**
  * Main CollectionArchive component that renders collections of different types
  */
-export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayType }) => {
+export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayType, type }) => {
   const layoutClasses = useLayoutClasses(displayType)
   const itemClasses = useItemClasses(displayType)
 
@@ -44,7 +44,7 @@ export const CollectionArchive: React.FC<Props> = ({ items, relationTo, displayT
 
   // Special handling for tech stacks - use our specialized component for all display types
   if (relationTo === 'tech-stacks') {
-    return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} />
+    return <TechStackGrid techStacks={items as TechStack[]} displayType={displayType} type={type} />
   }
 
   // Special handling for posts collection with featuredBlock display type

@@ -22,6 +22,7 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
     id?: string
+    type?: string
   }
 > = async (props) => {
   const {
@@ -37,6 +38,7 @@ export const ArchiveBlock: React.FC<
     subheader,
     description,
     links,
+    type,
   } = props
 
   const limit = limitFromProps || 3
@@ -263,7 +265,7 @@ export const ArchiveBlock: React.FC<
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className={`my-16 ${relationTo === 'tech-stacks' ? 'container' : ''}`} id={`block-${id}`}>
       {hasHeaderContent && (
         <div className={`container mb-8 ${!hasLinks ? 'text-center' : ''}`}>
           <div
@@ -288,6 +290,7 @@ export const ArchiveBlock: React.FC<
         items={items}
         relationTo={collectionType}
         displayType={displayType || 'grid'}
+        type={type}
       />
     </div>
   )

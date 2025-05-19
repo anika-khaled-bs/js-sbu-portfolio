@@ -27,6 +27,7 @@ export type Props = {
   items: CollectionItem[]
   relationTo: string
   displayType: DisplayType
+  type?: string
 }
 
 // Props for the card components

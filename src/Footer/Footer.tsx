@@ -124,7 +124,7 @@ export const FooterComponent: React.FC<{
                     <CMSLink
                       {...link.link}
                       appearance="ghost"
-                      className="text-muted-foreground hover:text-primary text-sm h-0 pl-0"
+                      className="text-muted-foreground hover:text-primary text-sm h-0 px-0"
                     />
                   </li>
                 ))}

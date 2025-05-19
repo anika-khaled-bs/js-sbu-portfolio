@@ -10,7 +10,7 @@ interface ServiceProps {
 const FeaturedServices = ({ services }: ServiceProps) => {
   return (
     <>
-      <section className="section py-16 mb-6">
+      <section className="section pt-4 pb-8 mb-6">
         <div className="container">
           {/* <div className="mb-12 text-center max-w-2xl mx-auto">
             <p className="text-sm font-medium text-primary mb-2">What We Offer</p>

@@ -167,7 +167,7 @@ export default buildConfig({
     Team,
     Testimonials,
     Portfolio,
-    HeroSliders,
+    // HeroSliders,
     Values,
     ContactDetails,
     Tutorials,

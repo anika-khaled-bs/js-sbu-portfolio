@@ -57,7 +57,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout, showContactCTA } = page
+  const { hero, layout, showContactCTA, type } = page
 
   return (
     <div className="overflow-x-hidden">
@@ -68,7 +68,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
         {draft && <LivePreviewListener />}
 
-        <RenderBlocks blocks={layout} hero={<RenderHero {...hero} />} />
+        <RenderBlocks blocks={layout} hero={<RenderHero {...hero} />} type={type} />
         {showContactCTA && <ContactCTA />}
       </article>
     </div>

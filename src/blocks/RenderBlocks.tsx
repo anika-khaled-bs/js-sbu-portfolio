@@ -22,8 +22,9 @@ const blockComponents = {
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
   hero?: React.ReactNode
+  type?: string
 }> = (props) => {
-  const { blocks, hero } = props
+  const { blocks, hero, type } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -40,7 +41,7 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className={cn(blockType !== 'pageHeaderBlock' && 'my-16')} key={index}>
-                  <Block {...block} disableInnerContainer index={index} />
+                  <Block {...block} disableInnerContainer index={index} type={type} />
                 </div>
               )
             }

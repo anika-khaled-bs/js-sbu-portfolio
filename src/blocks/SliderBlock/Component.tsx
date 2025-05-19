@@ -73,7 +73,7 @@ export const SliderBlockComponent: React.FC<Props> = (props) => {
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[50vh] md:h-[70vh]">
+              <div className="relative w-full h-[50vh] md:h-[60vh]">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <MediaBlock resource={image as Media} imgClassName={styles.slideImage} fill />

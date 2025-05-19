@@ -32,7 +32,7 @@ const ClientTestimonial = ({ testimonialContent }: ClientTestimonialProps) => {
     <div>
       <p className="text-xl font-semibold mb-4">Client Testimonial</p>
 
-      <Card className="p-6 bg-white shadow-md rounded-xl">
+      <Card className="p-6 bg-background shadow-md rounded-xl">
         <div className="flex flex-col md:flex-row gap-6">
           {clientImage && (
             <div className="md:w-1/3">

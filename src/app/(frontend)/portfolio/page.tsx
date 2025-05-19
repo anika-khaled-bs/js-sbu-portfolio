@@ -4,7 +4,7 @@ import PageHeader from '@/components/PageHeader'
 import PortfolioList from '@/components/Portfolio/List'
 import { cache, Suspense } from 'react'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60 // Revalidate every minute
 
 const PortfolioPage = async () => {
   const projects = await queryProjects()

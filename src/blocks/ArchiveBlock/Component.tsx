@@ -68,6 +68,7 @@ export const ArchiveBlock: React.FC<
         overrideAccess: false,
         depth: 1,
         limit,
+        sort: '-publishedAt',
         ...(flattenedCategories && flattenedCategories.length > 0
           ? {
               where: {
@@ -122,6 +123,7 @@ export const ArchiveBlock: React.FC<
         overrideAccess: false,
         depth: 1,
         limit,
+        sort: 'displayOrder',
       })
 
       items = fetchedTeam.docs
@@ -158,6 +160,7 @@ export const ArchiveBlock: React.FC<
         overrideAccess: false,
         depth: 1,
         limit,
+        sort: '-publishedDate',
         ...(flattenedCategories && flattenedCategories.length > 0
           ? {
               where: {

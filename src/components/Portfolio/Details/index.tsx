@@ -3,6 +3,7 @@ import PageHeader from '@/components/PageHeader'
 import Info from './Info'
 import MainContent from './Maincontent'
 import { Card } from '@/components/CustomCard'
+import ProjectGallery from './gallery'
 
 interface PortfolioDetailsProps {
   portfolio: Portfolio
@@ -11,6 +12,7 @@ interface PortfolioDetailsProps {
 const PortfolioDetailsComponent = async ({ portfolio }: PortfolioDetailsProps) => {
   return (
     <div className="mt-16">
+      {' '}
       <PageHeader
         title={portfolio.title}
         description={portfolio.shortDescription!}
@@ -20,7 +22,13 @@ const PortfolioDetailsComponent = async ({ portfolio }: PortfolioDetailsProps) =
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <Info portfolio={portfolio} />
           <MainContent portfolio={portfolio} />
-        </div>
+        </div>{' '}
+        {portfolio.gallery && portfolio.gallery.length > 0 && (
+          <>
+            <hr className="mt-16 mb-10" />
+            <ProjectGallery gallery={portfolio.gallery as { image: Media; id: string }[]} />
+          </>
+        )}
         {portfolio.relatedProjects && (
           <>
             <hr className="mt-16" />

@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import PageHeader from '@/components/PageHeader'
 import PortfolioList from '@/components/Portfolio/List'
+import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic' // Force dynamic rendering to get fresh data
 
@@ -23,13 +24,21 @@ const PortfolioPage = async () => {
   })
 
   return (
-    <div className="mt-16">
-      <PageHeader
-        title="Our Portfolio"
-        description="Explore our collection of successful projects that showcase our expertise in creating impactful digital solutions."
-      />
-      <PortfolioList initialData={projects} services={services?.docs!} />
-    </div>
+    <Suspense
+      fallback={
+        <div className="flex justify-center mt-8">
+          <p className="text-muted-foreground">Loading details...</p>
+        </div>
+      }
+    >
+      <div className="mt-16">
+        <PageHeader
+          title="Our Portfolio"
+          description="Explore our collection of successful projects that showcase our expertise in creating impactful digital solutions."
+        />
+        <PortfolioList initialData={projects} services={services?.docs!} />
+      </div>
+    </Suspense>
   )
 }
 

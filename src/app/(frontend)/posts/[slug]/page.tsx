@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React, { cache } from 'react'
+import React, { cache, Suspense } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
@@ -47,10 +47,18 @@ export default async function PostDetailsPage({ params }: Args) {
   }
 
   return (
-    <div className="my-16">
-      <PayloadRedirects disableNotFound url={url} />
-      <PostDetails post={postDetails} />
-    </div>
+    <Suspense
+      fallback={
+        <div className="flex justify-center mt-8">
+          <p className="text-muted-foreground">Loading more projects...</p>
+        </div>
+      }
+    >
+      <div className="my-16">
+        <PayloadRedirects disableNotFound url={url} />
+        <PostDetails post={postDetails} />
+      </div>
+    </Suspense>
   )
 }
 

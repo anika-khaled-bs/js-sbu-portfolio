@@ -70,7 +70,7 @@ export default function RichText(props: Props) {
         {
           // 'container ': enableGutter,
           'max-w-none': !enableGutter,
-          'leading-5 prose md:prose-md dark:prose-invert ': enableProse,
+          'leading-5 prose md:prose-md dark:prose-invert': enableProse,
         },
         className,
       )}

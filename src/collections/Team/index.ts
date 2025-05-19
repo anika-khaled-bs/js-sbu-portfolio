@@ -1,19 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Banner } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateTeam } from './hooks/revalidateTeam'
 import { formatTeamDisplayName } from './hooks/formatTeamDisplayName'
@@ -28,6 +16,9 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
+import { defaultLexicalEditor } from '@/components/RichText/lexicalEditorConfig'
+
+// Create a custom editor for team bios with limited heading sizes
 
 export const Team: CollectionConfig = {
   slug: 'team',
@@ -111,18 +102,7 @@ export const Team: CollectionConfig = {
             {
               name: 'fullBio',
               type: 'richText',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    HorizontalRuleFeature(),
-                  ]
-                },
-              }),
+              editor: defaultLexicalEditor,
               admin: {
                 description: 'Full biography for individual team member page',
               },

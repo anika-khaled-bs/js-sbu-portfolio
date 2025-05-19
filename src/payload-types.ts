@@ -77,9 +77,9 @@ export interface Config {
     team: Team;
     testimonials: Testimonial;
     portfolio: Portfolio;
-    'hero-sliders': HeroSlider;
     values: Value;
     'contact-details': ContactDetail;
+    tutorials: Tutorial;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -101,9 +101,9 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
-    'hero-sliders': HeroSlidersSelect<false> | HeroSlidersSelect<true>;
     values: ValuesSelect<false> | ValuesSelect<true>;
     'contact-details': ContactDetailsSelect<false> | ContactDetailsSelect<true>;
+    tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -207,7 +207,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock)[];
+  layout: (CallToActionBlock | MediaBlock | ArchiveBlock | FormBlock | PageHeaderBlock | SliderBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -248,9 +248,6 @@ export interface Service {
    * Technologies used for this service
    */
   techStacks: (string | TechStack)[];
-  /**
-   * Technologies used for this service
-   */
   categories: (string | Category)[];
   content: {
     root: {
@@ -273,7 +270,7 @@ export interface Service {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         icon?: (string | null) | Media;
         id?: string | null;
       }[]
@@ -350,6 +347,15 @@ export interface TechStack {
   name: string;
   description?: string | null;
   /**
+   * Key features of this technology stack
+   */
+  keyFeatures?:
+    | {
+        featureDetails?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Icon representing this technology (SVG preferred)
    */
   icon?: (string | null) | Media;
@@ -362,7 +368,6 @@ export interface TechStack {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -371,7 +376,7 @@ export interface TechStack {
 export interface Category {
   id: string;
   title: string;
-  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill';
+  type: 'blog' | 'service' | 'portfolio' | 'team' | 'tutorial' | 'skill' | 'other';
   /**
    * Brief description of this category
    */
@@ -467,7 +472,7 @@ export interface Portfolio {
   keyFeatures?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -670,26 +675,60 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  /**
+   * Optional header text for the archive block
+   */
+  header?: string | null;
+  /**
+   * Optional subheader text for the archive block
+   */
+  subheader?: string | null;
+  /**
+   * Optional description for the archive block
+   */
+  description?: string | null;
+  /**
+   * Optional link for the archive block
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?:
-    | ('posts' | 'contact-details' | 'values' | 'testimonials' | 'team' | 'services' | 'portfolio' | 'tech-stacks')
+    | (
+        | 'posts'
+        | 'contact-details'
+        | 'values'
+        | 'testimonials'
+        | 'team'
+        | 'services'
+        | 'portfolio'
+        | 'tech-stacks'
+        | 'tutorials'
+      )
     | null;
-  displayType?: ('default' | 'grid' | 'slider' | 'feature' | 'card' | 'list') | null;
+  displayType?: ('default' | 'grid' | 'feature' | 'card' | 'list') | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -1180,39 +1219,184 @@ export interface PageHeaderBlock {
   blockType: 'pageHeaderBlock';
 }
 /**
- * Hero sliders for landing pages and sections
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-sliders".
+ * via the `definition` "SliderBlock".
  */
-export interface HeroSlider {
+export interface SliderBlock {
+  slides: {
+    image: string | Media;
+    header?: string | null;
+    shortDescription?: string | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: string | Service;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  settings?: {
+    autoplay?: boolean | null;
+    showNavigation?: boolean | null;
+    showPagination?: boolean | null;
+    loop?: boolean | null;
+    contentAlignment?: ('left' | 'center' | 'right') | null;
+    speed?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'slider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials".
+ */
+export interface Tutorial {
   id: string;
   title: string;
-  subtitle?: string | null;
   /**
-   * Text to display on the call-to-action button
+   * Thumbnail image for this tutorial (16:9 ratio recommended)
    */
-  buttonText?: string | null;
+  thumbnailImage: string | Media;
   /**
-   * URL to navigate to when the button is clicked
+   * Featured image for this tutorial
    */
-  buttonUrl?: string | null;
+  featuredImage?: (string | null) | Media;
   /**
-   * Background image for this hero slider (recommended: 1920x1080)
+   * Upload the video file for this tutorial
    */
-  backgroundImage: string | Media;
+  videoFile: string | Media;
   /**
-   * Whether this slider is currently active
+   * Optional: URL to an external video (YouTube, Vimeo, etc.) if not uploading directly
    */
-  active?: boolean | null;
+  externalVideoUrl?: string | null;
   /**
-   * Order in which this slider appears (lower numbers appear first)
+   * Brief summary of the tutorial (shown in listings)
    */
-  sortOrder?: number | null;
+  shortDescription: string;
+  /**
+   * Written tutorial content, can include code snippets, steps, etc.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Prerequisites or requirements for this tutorial
+   */
+  prerequisites?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Additional resources for this tutorial
+   */
+  resources?:
+    | {
+        title: string;
+        url: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL to the code repository (GitHub, GitLab, etc.)
+   */
+  codeRepository?: string | null;
+  /**
+   * URL to a live demo of the tutorial project
+   */
+  demoURL?: string | null;
+  /**
+   * Other tutorials that relate to this one
+   */
+  relatedTutorials?: (string | Tutorial)[] | null;
+  /**
+   * Blog posts that relate to this tutorial
+   */
+  relatedPosts?: (string | Post)[] | null;
+  /**
+   * Categories for this tutorial
+   */
+  categories?: (string | Category)[] | null;
+  /**
+   * Technologies used in this tutorial
+   */
+  techStacks?: (string | TechStack)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Difficulty level of this tutorial
+   */
+  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
+  /**
+   * Estimated duration in minutes
+   */
+  duration?: number | null;
+  /**
+   * Feature this tutorial on the homepage or tutorial index
+   */
+  isFeatured?: boolean | null;
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1427,16 +1611,16 @@ export interface PayloadLockedDocument {
         value: string | Portfolio;
       } | null)
     | ({
-        relationTo: 'hero-sliders';
-        value: string | HeroSlider;
-      } | null)
-    | ({
         relationTo: 'values';
         value: string | Value;
       } | null)
     | ({
         relationTo: 'contact-details';
         value: string | ContactDetail;
+      } | null)
+    | ({
+        relationTo: 'tutorials';
+        value: string | Tutorial;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1536,6 +1720,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pageHeaderBlock?: T | PageHeaderBlockSelect<T>;
+        slider?: T | SliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1593,7 +1778,24 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
+  header?: T;
+  subheader?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   populateBy?: T;
   relationTo?: T;
   displayType?: T;
@@ -1623,6 +1825,48 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock_select".
+ */
+export interface SliderBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        header?: T;
+        shortDescription?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  settings?:
+    | T
+    | {
+        autoplay?: T;
+        showNavigation?: T;
+        showPagination?: T;
+        loop?: T;
+        contentAlignment?: T;
+        speed?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1762,6 +2006,12 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface TechStacksSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  keyFeatures?:
+    | T
+    | {
+        featureDetails?: T;
+        id?: T;
+      };
   icon?: T;
   category?: T;
   featured?: T;
@@ -1769,7 +2019,6 @@ export interface TechStacksSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1902,23 +2151,6 @@ export interface PortfolioSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-sliders_select".
- */
-export interface HeroSlidersSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  buttonText?: T;
-  buttonUrl?: T;
-  backgroundImage?: T;
-  active?: T;
-  sortOrder?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "values_select".
  */
 export interface ValuesSelect<T extends boolean = true> {
@@ -1945,6 +2177,57 @@ export interface ContactDetailsSelect<T extends boolean = true> {
   addressLine2?: T;
   isActive?: T;
   publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials_select".
+ */
+export interface TutorialsSelect<T extends boolean = true> {
+  title?: T;
+  thumbnailImage?: T;
+  featuredImage?: T;
+  videoFile?: T;
+  externalVideoUrl?: T;
+  shortDescription?: T;
+  content?: T;
+  prerequisites?: T;
+  resources?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        description?: T;
+        id?: T;
+      };
+  codeRepository?: T;
+  demoURL?: T;
+  relatedTutorials?: T;
+  relatedPosts?: T;
+  categories?: T;
+  techStacks?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  difficultyLevel?: T;
+  duration?: T;
+  isFeatured?: T;
+  publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2423,10 +2706,6 @@ export interface TaskSchedulePublish {
           value: string | Service;
         } | null)
       | ({
-          relationTo: 'tech-stacks';
-          value: string | TechStack;
-        } | null)
-      | ({
           relationTo: 'team';
           value: string | Team;
         } | null)
@@ -2445,6 +2724,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'contact-details';
           value: string | ContactDetail;
+        } | null)
+      | ({
+          relationTo: 'tutorials';
+          value: string | Tutorial;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

@@ -85,7 +85,7 @@ export const TeamCard = ({ member }: { member: Partial<Team> }) => {
       </div>
       <p className="text-xl font-semibold mb-1">{member.name}</p>
       <p className="text-primary text-sm mb-2">{member.role}</p>
-      <p className="text-muted-foreground text-sm mb-4">{member.shortBio}</p>
+      <p className="text-muted-foreground text-sm mb-4 line-clamp-5">{member.shortBio}</p>
       <div className="flex justify-center space-x-3">
         {member.socialLinks?.map((social) => (
           <a
@@ -104,21 +104,23 @@ export const TeamCard = ({ member }: { member: Partial<Team> }) => {
 }
 
 const TeamComponent = ({ team, className = '' }: TeamProps) => {
-  console.log('🚀 ~ TeamComponent ~ team:', team)
   return (
     <section className={`section ${className}`} id="team">
-      <div className="container py-16">
-        <div className="mb-12 text-center mx-auto">
+      <div className="container py-8">
+        {/* <div className="mb-12 text-center mx-auto">
           <p className="font-medium text-primary mb-2">Our Team</p>
           <p className="mb-4 text-4xl">The Minds Behind JS SBU</p>
           <p className="text-muted-foreground">
             Meet the talented individuals who make the magic happen at JS SBU.
           </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-8">
-          {team.map((member) => (
-            <TeamCard key={member.id} member={member} />
-          ))}
+        </div> */}
+        <div className="relative p-6 rounded-xl bg-background/60 backdrop-blur-sm border border-border shadow-md dark:bg-background/30 dark:backdrop-blur-md">
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-50 pointer-events-none rounded-xl dark:from-primary/10"></div>
+          <div className="flex flex-wrap justify-center gap-8 relative z-10">
+            {team.map((member) => (
+              <TeamCard key={member.id} member={member} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

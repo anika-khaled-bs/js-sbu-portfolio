@@ -1,28 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  AlignFeature,
-  BlocksFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  LinkFeature,
-  UnderlineFeature,
-  BoldFeature,
-  ItalicFeature,
-  SubscriptFeature,
-  SuperscriptFeature,
-  UploadFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Banner } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { defaultLexicalEditor } from '../../components/RichText/lexicalEditorConfig'
 import { revalidateDelete, revalidatePortfolio } from './hooks/revalidatePortfolio'
 import { formatPortfolioTitle } from './hooks/formatPortfolioTitle'
 import { generatePortfolioSlug } from './hooks/generatePortfolioSlug'
@@ -110,27 +91,7 @@ export const Portfolio: CollectionConfig = {
             {
               name: 'content',
               type: 'richText',
-
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    HorizontalRuleFeature(),
-                    AlignFeature(),
-                    LinkFeature(),
-                    UnderlineFeature(),
-                    BoldFeature(),
-                    ItalicFeature(),
-                    SubscriptFeature(),
-                    SuperscriptFeature(),
-                    UploadFeature(),
-                  ]
-                },
-              }),
+              editor: defaultLexicalEditor,
               label: 'Full Description',
               required: true,
             },
@@ -220,7 +181,6 @@ export const Portfolio: CollectionConfig = {
                 {
                   name: 'description',
                   type: 'textarea',
-                  required: true,
                 },
               ],
             },
@@ -229,7 +189,7 @@ export const Portfolio: CollectionConfig = {
               type: 'relationship',
               relationTo: 'portfolio',
               hasMany: true,
-              max: 3,
+              maxRows: 3,
               admin: {
                 description: 'Other portfolio projects that relate to this one',
                 // condition: (data) => Boolean(data?.id),

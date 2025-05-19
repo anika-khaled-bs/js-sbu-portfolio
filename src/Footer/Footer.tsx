@@ -43,9 +43,9 @@ export const FooterComponent: React.FC<{
   return (
     <footer className="bg-muted pt-12 pb-8">
       <Gutter className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Logo and Description */}
-          <div>
+          <div className="lg:col-span-4">
             <Link href="/" className="mb-4 flex items-center gap-3">
               {logo && typeof logo === 'object' && (
                 <Image
@@ -115,7 +115,7 @@ export const FooterComponent: React.FC<{
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h5 className="font-semibold mb-3">Quick Links</h5>
             {quickLinks?.length! > 0 && (
               <ul className="space-y-2">
@@ -123,7 +123,8 @@ export const FooterComponent: React.FC<{
                   <li key={i}>
                     <CMSLink
                       {...link.link}
-                      className="text-muted-foreground hover:text-primary text-sm"
+                      appearance="ghost"
+                      className="text-muted-foreground hover:text-primary text-sm h-0 px-0"
                     />
                   </li>
                 ))}
@@ -132,7 +133,7 @@ export const FooterComponent: React.FC<{
           </div>
 
           {/* Popular Services */}
-          <div>
+          <div className="lg:col-span-3">
             <h5 className="font-semibold mb-3">Popular Services</h5>
             {serviceCategories?.length! > 0 && (
               <ul className="space-y-2">
@@ -153,35 +154,8 @@ export const FooterComponent: React.FC<{
             )}
           </div>
 
-          {/* Technology Stacks */}
-          <div>
-            <h5 className="font-semibold mb-3">Technology Stacks</h5>
-            {showAllTechCategories && (
-              <div className="space-y-3 text-sm">
-                {Object.entries(groupedTechStacks).map(([category, techs]) => (
-                  <div key={category} className="text-muted-foreground flex items-center gap-2">
-                    <h6 className="font-medium capitalize">{category.replace('-', '/')}:</h6>
-                    <p className="">{techs.map((t) => t.name).join(', ')}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            {!showAllTechCategories && (
-              <ul className="space-y-2 text-sm">
-                {featuredTechStacks?.map((tech, i) => {
-                  if (typeof tech === 'string') return null
-                  return (
-                    <li key={tech.id || i}>
-                      <p className="text-muted-foreground">{tech.name}</p>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-
           {/* Subscription */}
-          <div>
+          <div className="lg:col-span-3">
             {subscription && (
               <div>
                 <h5 className="font-semibold mb-2">

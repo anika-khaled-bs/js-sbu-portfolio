@@ -22,9 +22,11 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = serviceDetails.docs.map(({ slug }) => {
-    return { slug }
-  })
+  const params = serviceDetails.docs
+    .filter(({ slug }) => slug && typeof slug === 'string' && slug.trim() !== '')
+    .map(({ slug }) => {
+      return { slug }
+    })
 
   return params
 }
@@ -42,7 +44,6 @@ export default async function serviceDetailsPage({ params }: Args) {
   // Fetch current service details
   const serviceDetails = await queryServiceBySlug({ slug })
 
-  console.log('🚀 ~ serviceDetailsPage ~ serviceDetails:', serviceDetails)
   // Fetch all services for related services component
 
   if (!serviceDetails) {

@@ -8,29 +8,37 @@ import type {
   Team,
   Service,
   Portfolio,
+  Tutorial,
 } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import RichText from '@/components/RichText'
+import Link from 'next/link'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
     id?: string
+    type?: string
   }
 > = async (props) => {
   const {
     id,
     categories,
-    introContent,
+    // introContent,
     limit: limitFromProps,
     populateBy,
     relationTo,
     displayType,
     selectedDocs,
+    header,
+    subheader,
+    description,
+    links,
+    type,
   } = props
 
   const limit = limitFromProps || 3
@@ -44,6 +52,7 @@ export const ArchiveBlock: React.FC<
     | Team
     | Service
     | Portfolio
+    | Tutorial
   )[] = []
   const collectionType = relationTo || 'posts'
 
@@ -61,6 +70,7 @@ export const ArchiveBlock: React.FC<
         overrideAccess: false,
         depth: 1,
         limit,
+        sort: '-publishedAt',
         ...(flattenedCategories && flattenedCategories.length > 0
           ? {
               where: {
@@ -115,6 +125,7 @@ export const ArchiveBlock: React.FC<
         overrideAccess: false,
         depth: 1,
         limit,
+        sort: 'displayOrder',
       })
 
       items = fetchedTeam.docs
@@ -145,6 +156,25 @@ export const ArchiveBlock: React.FC<
       })
 
       items = fetchedPortfolio.docs
+    } else if (collectionType === 'tutorials') {
+      const fetchedTutorials = await payload.find({
+        collection: 'tutorials',
+        overrideAccess: false,
+        depth: 1,
+        limit,
+        sort: '-publishedDate',
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
+              },
+            }
+          : {}),
+      })
+
+      items = fetchedTutorials.docs
     }
   } else if (selectedDocs?.length) {
     // Use a more type-safe approach with any casting where needed
@@ -167,22 +197,100 @@ export const ArchiveBlock: React.FC<
       | Team
       | Service
       | Portfolio
+      | Tutorial
     )[]
 
     items = filteredSelectedItems
   }
 
+  const hasHeaderContent = header || subheader || description
+
+  const hasLinks = links && links.length > 0
+
+  const renderLink = () => {
+    if (!hasLinks) return null
+
+    const singleLink = links[0]
+
+    if (!singleLink) return null
+
+    // Handle standard linkGroup format
+    if (singleLink.link.type === 'custom' && singleLink.link.url) {
+      return (
+        <Link
+          href={singleLink.link.url}
+          target={singleLink.link.newTab ? '_blank' : undefined}
+          className="inline-block px-4 py-2 mt-4 text-sm font-medium transition-colors bg-primary text-white rounded hover:bg-primary/90"
+        >
+          {singleLink.link.label || 'Learn More'}
+        </Link>
+      )
+    }
+
+    // Handle reference links
+    if (
+      singleLink.link.type === 'reference' &&
+      singleLink.link.reference?.value &&
+      singleLink.link.reference?.relationTo
+    ) {
+      const { value, relationTo } = singleLink.link.reference
+      const href = `/${relationTo === 'pages' ? '' : `${relationTo}/`}${
+        typeof value === 'object' ? value.slug : value
+      }`
+
+      return (
+        <Link
+          href={href}
+          target={singleLink.link.newTab ? '_blank' : undefined}
+          className="inline-block px-4 py-2 mt-4 text-sm font-medium transition-colors bg-primary text-white rounded hover:bg-primary/90"
+        >
+          {singleLink.link.label || 'Learn More'}
+        </Link>
+      )
+    }
+
+    // Handle custom URL format as fallback
+    if (singleLink.link.label && singleLink.link.url) {
+      return (
+        <Link
+          href={singleLink.link.url}
+          className="inline-block px-4 py-2 mt-4 text-sm font-medium transition-colors bg-primary text-white rounded hover:bg-primary/90"
+        >
+          {singleLink.link.label}
+        </Link>
+      )
+    }
+
+    return null
+  }
+
   return (
-    <div className="my-16" id={`block-${id}`}>
-      {introContent && (
-        <div className="container">
-          <RichText className="max-w-[48rem]" data={introContent} enableGutter={false} />
+    <div className={`my-16 ${relationTo === 'tech-stacks' ? 'container' : ''}`} id={`block-${id}`}>
+      {hasHeaderContent && (
+        <div className={`container mb-8 ${!hasLinks ? 'text-center' : ''}`}>
+          <div
+            className={`${
+              hasLinks
+                ? 'flex flex-col md:flex-row justify-between items-start md:items-center gap-8'
+                : ''
+            }`}
+          >
+            <div
+              className={`${hasLinks ? 'md:max-w-[70%]' : 'mx-auto max-w-prose'} flex flex-col gap-3`}
+            >
+              {header && <h3 className="text-sm font-medium text-primary">{header}</h3>}
+              {subheader && <h2 className="text-4xl mb-2">{subheader}</h2>}
+              {description && <p className="text-muted-foreground">{description}</p>}
+            </div>
+            {hasLinks && <div className="mt-4 md:mt-0 md:ml-auto">{renderLink()}</div>}
+          </div>
         </div>
       )}
       <CollectionArchive
         items={items}
         relationTo={collectionType}
         displayType={displayType || 'grid'}
+        type={type}
       />
     </div>
   )

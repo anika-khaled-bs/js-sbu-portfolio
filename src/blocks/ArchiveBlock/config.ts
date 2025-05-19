@@ -1,24 +1,7 @@
 import type { Block } from 'payload'
 
-import {
-  AlignFeature,
-  BlocksFeature,
-  BoldFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  ItalicFeature,
-  lexicalEditor,
-  LinkFeature,
-  SubscriptFeature,
-  SuperscriptFeature,
-  UnderlineFeature,
-  UploadFeature,
-} from '@payloadcms/richtext-lexical'
-import { MediaBlock } from '../MediaBlock/config'
-import { Banner } from '../Banner/config'
-import { Code } from '../Code/config'
+import { defaultLexicalEditor } from '@/components/RichText/lexicalEditorConfig'
+import { linkGroup } from '@/fields/linkGroup'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -28,31 +11,45 @@ export const Archive: Block = {
     singular: 'Archive',
   },
   fields: [
+    // {
+    //   name: 'introContent',
+    //   type: 'richText',
+    //   editor: defaultLexicalEditor,
+    //   label: 'Intro Content',
+    // },
     {
-      name: 'introContent',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
-            BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            HorizontalRuleFeature(),
-            AlignFeature(),
-            LinkFeature(),
-            UnderlineFeature(),
-            BoldFeature(),
-            ItalicFeature(),
-            SubscriptFeature(),
-            SuperscriptFeature(),
-            UploadFeature(),
-          ]
-        },
-      }),
-      label: 'Intro Content',
+      name: 'header',
+      type: 'text',
+      label: 'Header',
+      admin: {
+        description: 'Optional header text for the archive block',
+      },
     },
+    {
+      name: 'subheader',
+      type: 'text',
+      label: 'Subheader',
+      admin: {
+        description: 'Optional subheader text for the archive block',
+      },
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Description',
+      admin: {
+        description: 'Optional description for the archive block',
+      },
+    },
+    linkGroup({
+      overrides: {
+        label: 'Link',
+        maxRows: 1,
+        admin: {
+          description: 'Optional link for the archive block',
+        },
+      },
+    }),
     {
       name: 'populateBy',
       type: 'select',
@@ -108,6 +105,10 @@ export const Archive: Block = {
           label: 'Tech Stacks',
           value: 'tech-stacks',
         },
+        {
+          label: 'Tutorials',
+          value: 'tutorials',
+        },
       ],
     },
     {
@@ -123,10 +124,6 @@ export const Archive: Block = {
         {
           label: 'Grid',
           value: 'grid',
-        },
-        {
-          label: 'Slider',
-          value: 'slider',
         },
         {
           label: 'Feature Block',
@@ -151,6 +148,32 @@ export const Archive: Block = {
       hasMany: true,
       label: 'Categories To Show',
       relationTo: 'categories',
+      filterOptions: ({ siblingData }: any) => {
+        if (siblingData?.relationTo) {
+          const collectionToTypeMap: Record<string, string> = {
+            posts: 'blog',
+            services: 'service',
+            portfolio: 'portfolio',
+            team: 'team',
+            'tech-stacks': 'skill',
+            testimonials: 'testimonial',
+            values: 'value',
+            'contact-details': 'contact',
+            tutorials: 'tutorial',
+            // Add more mappings as needed
+          }
+
+          const categoryType = collectionToTypeMap[siblingData.relationTo]
+
+          if (categoryType) {
+            return {
+              type: { equals: categoryType },
+            }
+          }
+        }
+
+        return true // Fallback: don’t filter if we don't know the relation
+      },
     },
     {
       name: 'limit',

@@ -2,26 +2,13 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import PageHeader from '@/components/PageHeader'
 import PortfolioList from '@/components/Portfolio/List'
-import { Suspense } from 'react'
-
-export const dynamic = 'force-dynamic' // Force dynamic rendering to get fresh data
+import { cache, Suspense } from 'react'
 
 const PortfolioPage = async () => {
   const payload = await getPayload({ config: configPromise })
 
-  const projects = await payload.find({
-    collection: 'portfolio',
-    overrideAccess: false,
-    depth: 1,
-    limit: 3, // Using a higher limit for initial load
-    page: 1,
-  })
-
-  const services = await payload.find({
-    collection: 'services',
-    overrideAccess: false,
-    limit: 100, // Fetch all services for filtering
-  })
+  const projects = await queryProjects()
+  const services = await queryServices()
 
   return (
     <Suspense
@@ -36,10 +23,36 @@ const PortfolioPage = async () => {
           title="Our Portfolio"
           description="Explore our collection of successful projects that showcase our expertise in creating impactful digital solutions."
         />
-        <PortfolioList initialData={projects} services={services?.docs!} />
+        <PortfolioList initialData={projects!} services={services!} />
       </div>
     </Suspense>
   )
 }
 
 export default PortfolioPage
+
+const queryProjects = cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+
+  const projects = await payload.find({
+    collection: 'portfolio',
+    overrideAccess: false,
+    depth: 1,
+    limit: 3, // Using a higher limit for initial load
+    page: 1,
+  })
+
+  return projects || null
+})
+
+const queryServices = cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+
+  const services = await payload.find({
+    collection: 'services',
+    overrideAccess: false,
+    limit: 100, // Fetch all services for filtering
+  })
+
+  return services.docs || null
+})

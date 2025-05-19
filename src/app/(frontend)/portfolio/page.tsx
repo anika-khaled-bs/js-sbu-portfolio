@@ -4,9 +4,9 @@ import PageHeader from '@/components/PageHeader'
 import PortfolioList from '@/components/Portfolio/List'
 import { cache, Suspense } from 'react'
 
-const PortfolioPage = async () => {
-  const payload = await getPayload({ config: configPromise })
+export const dynamic = 'force-dynamic'
 
+const PortfolioPage = async () => {
   const projects = await queryProjects()
   const services = await queryServices()
 

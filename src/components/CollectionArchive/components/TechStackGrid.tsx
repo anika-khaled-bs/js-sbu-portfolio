@@ -15,7 +15,6 @@ type TechStackGridProps = {
  * A specialized component for displaying tech stacks with their key features
  */
 const TechStackGrid: React.FC<TechStackGridProps> = ({ techStacks, displayType, type }) => {
-  console.log('🚀 ~ techStacks:', techStacks)
   // For default display, use a simple card layout
   return (
     <div className="container relative p-6 rounded-xl bg-background/60 backdrop-blur-sm border border-border shadow-md dark:bg-background/30 dark:backdrop-blur-md">

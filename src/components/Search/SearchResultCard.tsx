@@ -83,6 +83,20 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result }) =>
                 </span>
               ) : null,
             )}
+          {
+            <span className="inline-flex items-center px-2.5 py-1 text-xs bg-primary/10 rounded-full text-primary font-medium">
+              <Tag className="h-3 w-3 mr-1" />
+              {result.doc?.relationTo === 'portfolio'
+                ? 'Portfolio'
+                : result.relationTo === 'services'
+                  ? 'Service'
+                  : result.relationTo === 'posts'
+                    ? 'Blog'
+                    : result.relationTo === 'tutorials'
+                      ? 'Tutorial'
+                      : 'Other'}
+            </span>
+          }
         </div>
 
         {/* Content Section */}

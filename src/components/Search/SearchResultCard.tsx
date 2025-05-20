@@ -88,11 +88,11 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result }) =>
               <Tag className="h-3 w-3 mr-1" />
               {result.doc?.relationTo === 'portfolio'
                 ? 'Portfolio'
-                : result.relationTo === 'services'
+                : result.doc?.relationTo === 'services'
                   ? 'Service'
-                  : result.relationTo === 'posts'
+                  : result.doc?.relationTo === 'posts'
                     ? 'Blog'
-                    : result.relationTo === 'tutorials'
+                    : result.doc?.relationTo === 'tutorials'
                       ? 'Tutorial'
                       : 'Other'}
             </span>
@@ -101,7 +101,7 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result }) =>
 
         {/* Content Section */}
         <p className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">
-          {result.title}
+          {result.title} - {result.relationTo}
         </p>
 
         {result.shortDescription && (

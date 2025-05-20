@@ -1451,11 +1451,28 @@ export interface Search {
   id: string;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
+  doc:
+    | {
+        relationTo: 'posts';
+        value: string | Post;
+      }
+    | {
+        relationTo: 'services';
+        value: string | Service;
+      }
+    | {
+        relationTo: 'portfolio';
+        value: string | Portfolio;
+      }
+    | {
+        relationTo: 'tutorials';
+        value: string | Tutorial;
+      };
   slug?: string | null;
+  shortDescription?: string | null;
+  thumbnailImage?: (string | null) | Media;
+  featuredImage?: (string | null) | Media;
+  heroImage?: (string | null) | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -2406,6 +2423,10 @@ export interface SearchSelect<T extends boolean = true> {
   priority?: T;
   doc?: T;
   slug?: T;
+  shortDescription?: T;
+  thumbnailImage?: T;
+  featuredImage?: T;
+  heroImage?: T;
   meta?:
     | T
     | {

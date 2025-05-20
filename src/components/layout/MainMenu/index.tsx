@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, SearchIcon, X } from 'lucide-react'
 import { Logo } from '@/components/Logo/Logo'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { Header, Media } from '@/payload-types'
@@ -44,9 +44,15 @@ export const MainMenu: React.FC<MainMenuProps> = ({ data }) => {
             />
           </div>
 
-          <div className="flex items-center gap-4">
+          <div
+            className="flex items-center gap-5
+          "
+          >
             {/* Theme Selector */}
-
+            <Link href="/search">
+              <span className="sr-only">Search</span>
+              <SearchIcon className="w-5 text-primary" />
+            </Link>
             <ThemeSelector />
 
             {/* Mobile menu button */}

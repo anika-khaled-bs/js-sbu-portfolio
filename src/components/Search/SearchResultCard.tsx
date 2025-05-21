@@ -52,14 +52,16 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result }) =>
       <div className="px-6 py-4 flex-grow flex flex-col">
         {/* Screenshot/Image Section */}
         {image ? (
-          <div className="relative aspect-[4/3] overflow-hidden mb-6 rounded-md">
-            <MediaComponent
-              resource={image}
-              fill
-              alt={result.title}
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative aspect-[4/3] mb-6 rounded-md group-hover:shadow-lg overflow-hidden">
+            <div className="absolute inset-0 w-full h-full">
+              <MediaComponent
+                resource={image}
+                fill
+                alt={result.title}
+                imgClassName="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
         ) : (
           <div className="relative aspect-[4/3] overflow-hidden mb-6 rounded-md bg-slate-200 flex items-center justify-center group-hover:bg-slate-300 transition-colors duration-300">

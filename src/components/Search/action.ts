@@ -39,7 +39,6 @@ export const fetchSearchResults = async (page = 1, limit = 3, query?: string) =>
       ],
     }
   }
-  console.log('🚀 ~ fetchSearchResults ~ query:', query)
 
   const results = await payload.find(searchParams)
   return results

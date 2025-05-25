@@ -33,3 +33,16 @@
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
   z-index: 5;
 }
+
+/* Custom pagination styles */
+.sliderContainer :global(.swiper-pagination-bullet) {
+  background-color: #ffffff; /* Change this to your desired color for inactive bullets */
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+}
+
+.sliderContainer :global(.swiper-pagination-bullet-active) {
+  background-color: hsl(var(--primary)); /* Change this to your desired color for active bullets */
+  opacity: 0.6;
+}

@@ -14,6 +14,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import 'swiper/css/effect-fade' // Add CSS for fade effect
 import { Media, SliderBlock } from '@/payload-types'
 
 type Props = SliderBlock & {
@@ -49,7 +50,7 @@ export const SliderBlockComponent: React.FC<Props> = (props) => {
   return (
     <div className={cn(styles.sliderContainer, className)}>
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Navigation, Pagination, Autoplay, EffectFade]}
         spaceBetween={0}
         slidesPerView={1}
         navigation={
@@ -65,6 +66,9 @@ export const SliderBlockComponent: React.FC<Props> = (props) => {
         speed={speed}
         loop={loop}
         className="w-full"
+        parallax={true}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
       >
         {slides.map((slide, index) => {
           const { image, header, shortDescription, links } = slide

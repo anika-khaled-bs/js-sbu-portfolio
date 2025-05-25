@@ -30,6 +30,11 @@ export const Portfolio: CollectionConfig = {
     title: true,
     slug: true,
     category: true,
+    shortDescription: true,
+    publishedAt: true,
+    logo: true,
+    completionDate: true,
+    projectURL: true,
     meta: {
       image: true,
       description: true,

@@ -30,6 +30,7 @@ export const Services: CollectionConfig = {
     title: true,
     slug: true,
     category: true,
+    shortDescription: true,
     meta: {
       image: true,
       description: true,

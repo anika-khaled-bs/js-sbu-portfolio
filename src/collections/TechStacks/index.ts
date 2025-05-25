@@ -19,6 +19,7 @@ export const TechStacks: CollectionConfig = {
     name: true,
     description: true,
     icon: true,
+    keyFeatures: true,
     // Selective field population for performance
   },
   admin: {

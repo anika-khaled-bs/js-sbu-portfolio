@@ -20,6 +20,7 @@ export const Values: CollectionConfig = {
   defaultPopulate: {
     title: true,
     slug: true,
+    shortDescription: true,
     meta: {
       image: true,
       description: true,

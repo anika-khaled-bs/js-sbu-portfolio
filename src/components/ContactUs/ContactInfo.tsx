@@ -29,10 +29,13 @@ const ContactInfoComponent = ({ contactInfo, className }: ContactInfoProps) => {
         <div className={cn('bg-card p-6 rounded-lg text-center border', className)}>
           <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
             <Phone size={24} />
-          </div>
+          </div>{' '}
           <h3 className="text-xl font-semibold mb-2">Call Us</h3>
           <p className="text-muted-foreground mb-2">{time}</p>
-          <a href="tel:+11234567890" className="text-primary hover:underline">
+          <a
+            href={`tel:${phone?.startsWith('+88') ? phone : phone ? `+88${phone}` : ''}`}
+            className="text-primary hover:underline"
+          >
             {phone}
           </a>
         </div>

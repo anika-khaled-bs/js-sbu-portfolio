@@ -808,6 +808,15 @@ export interface Post {
      */
     image?: (string | null) | Media;
     description?: string | null;
+    /**
+     * Add SEO keywords for this post (max 10)
+     */
+    keywords?:
+      | {
+          keyword: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
@@ -1477,6 +1486,12 @@ export interface Search {
     title?: string | null;
     description?: string | null;
     image?: (string | null) | Media;
+    keywords?:
+      | {
+          keyword?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   categories?:
     | {
@@ -1905,6 +1920,12 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        keywords?:
+          | T
+          | {
+              keyword?: T;
+              id?: T;
+            };
       };
   publishedAt?: T;
   authors?: T;
@@ -2433,6 +2454,12 @@ export interface SearchSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+        keywords?:
+          | T
+          | {
+              keyword?: T;
+              id?: T;
+            };
       };
   categories?:
     | T

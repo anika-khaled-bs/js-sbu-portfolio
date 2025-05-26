@@ -1,7 +1,7 @@
 'use server'
 
-import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 
 export const fetchSearchResults = async (page = 1, limit = 3, query?: string) => {
   const payload = await getPayload({ config: configPromise })
@@ -30,6 +30,13 @@ export const fetchSearchResults = async (page = 1, limit = 3, query?: string) =>
           },
         },
         {
+          meta: {
+            keywords: {
+              in: [query], // Match if query is in keywords array
+            },
+          },
+        },
+        {
           categories: {
             title: {
               like: query,
@@ -41,5 +48,7 @@ export const fetchSearchResults = async (page = 1, limit = 3, query?: string) =>
   }
 
   const results = await payload.find(searchParams)
+  console.log('🚀 ~ fetchSearchResults ~ searchParams:', searchParams)
+  console.log('🚀 ~ fetchSearchResults ~ results:', results)
   return results
 }

@@ -1,35 +1,35 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
+import { migrations } from './migrations' // import migrations
 
-import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
+import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories/index'
+import { ContactDetails } from './collections/ContactDetails'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
-import { Users } from './collections/Users'
-import { Services } from './collections/Services'
-import { TechStacks } from './collections/TechStacks'
-import { Team } from './collections/Team'
-import { Testimonials } from './collections/Testimonials'
 import { Portfolio } from './collections/Portfolio'
-import { HeroSliders } from './collections/HeroSliders'
-import { ContactDetails } from './collections/ContactDetails'
+import { Posts } from './collections/Posts'
+import { Services } from './collections/Services'
+import { Team } from './collections/Team'
+import { TechStacks } from './collections/TechStacks'
+import { Testimonials } from './collections/Testimonials'
+import { Users } from './collections/Users'
 
+import { defaultLexical } from '@/fields/defaultLexical'
+import { Values } from './collections/Values'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Values } from './collections/Values'
 
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
-import { v2 as cloudinary } from 'cloudinary'
-import type { HandleUpload, HandleDelete } from '@payloadcms/plugin-cloud-storage/types'
+import type { HandleDelete, HandleUpload } from '@payloadcms/plugin-cloud-storage/types'
 import type { UploadApiResponse } from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary'
 import { Tutorials } from './collections/Tutorials'
 
 const filename = fileURLToPath(import.meta.url)
@@ -150,10 +150,11 @@ export default buildConfig({
     },
   },
   // This config helps us configure global or default features that the other editors can inherit
-  editor: defaultLexical,
-  // database-adapter-config-start
+  editor: defaultLexical, // database-adapter-config-start
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
+    // Include migrations in production
+    prodMigrations: migrations,
   }),
   // database-adapter-config-end
   collections: [

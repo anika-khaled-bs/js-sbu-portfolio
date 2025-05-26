@@ -2,10 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { defaultLexicalEditor } from '../../components/RichText/lexicalEditorConfig'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
-import { defaultLexicalEditor } from '../../components/RichText/lexicalEditorConfig'
 
+import { slugField } from '@/fields/slug'
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -13,7 +14,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/fields/slug'
 import { populateAuthors } from './hooks/populateAuthors'
 
 export const Posts: CollectionConfig<'posts'> = {
@@ -37,8 +37,10 @@ export const Posts: CollectionConfig<'posts'> = {
     publishedAt: true,
     authors: true,
     meta: {
+      title: true,
       image: true,
       description: true,
+      keywords: true,
     },
   },
   admin: {
@@ -148,8 +150,27 @@ export const Posts: CollectionConfig<'posts'> = {
             MetaImageField({
               relationTo: 'media',
             }),
-
             MetaDescriptionField({}),
+            {
+              name: 'keywords',
+              type: 'array',
+              label: 'SEO Keywords',
+              minRows: 0,
+              maxRows: 10,
+              admin: {
+                description: 'Add SEO keywords for this post (max 10)',
+              },
+              fields: [
+                {
+                  name: 'keyword',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    placeholder: 'Enter a keyword or key phrase',
+                  },
+                },
+              ],
+            },
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

@@ -69,6 +69,21 @@ export const searchFields: Field[] = [
         type: 'upload',
         relationTo: 'media',
       },
+      {
+        name: 'keywords',
+        type: 'array',
+        label: 'SEO Keywords',
+        fields: [
+          {
+            type: 'text',
+            name: 'keyword',
+            label: 'Keyword',
+          },
+        ],
+        admin: {
+          readOnly: true,
+        },
+      },
     ],
   },
   {

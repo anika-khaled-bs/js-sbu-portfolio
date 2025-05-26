@@ -9,6 +9,12 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   previousDoc,
   req: { payload, context },
 }) => {
+  // Skip revalidation if we're in a migration
+  if (context && context.fromMigration) {
+    payload.logger.info('Skipping revalidation because operation is from migration')
+    return
+  }
+
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
       const path = `/posts/${doc.slug}`

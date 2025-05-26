@@ -29,11 +29,10 @@ export const fetchSearchResults = async (page = 1, limit = 3, query?: string) =>
             like: query,
           },
         },
+
         {
-          meta: {
-            keywords: {
-              in: [query], // Match if query is in keywords array
-            },
+          'meta.keywords.keyword': {
+            like: query,
           },
         },
         {

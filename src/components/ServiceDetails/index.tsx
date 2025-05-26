@@ -1,13 +1,13 @@
-import React from 'react'
+import { Portfolio, Service } from '@/payload-types'
 import Image from 'next/image'
-import { Media, Portfolio, Service } from '@/payload-types'
+import React from 'react'
 
-import { TechStackList } from './TechStackList'
 import { KeyFeaturesList } from './KeyFeaturesList'
-import { ServiceHeader } from './ServiceHeader'
-import { ServiceContent } from './ServiceContent'
-import { RelatedServices } from './RelatedServices'
 import { RelatedProjects } from './RelatedProjects'
+import { RelatedServices } from './RelatedServices'
+import { ServiceContent } from './ServiceContent'
+import { ServiceHeader } from './ServiceHeader'
+import { TechStackList } from './TechStackList'
 
 type ServiceDetailsProps = {
   service: Service
@@ -51,7 +51,7 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({ service, allServices = 
               priority
             />
             {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="absolute inset-0 bg-black/60"></div>
           </>
         ) : (
           <div className="absolute inset-0 bg-primary"></div>

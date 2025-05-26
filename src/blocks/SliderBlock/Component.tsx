@@ -1,21 +1,21 @@
 'use client'
 
-import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules'
-import { cn } from '@/utilities/ui'
-import { Button } from '@/components/ui/button'
 import { Media as MediaBlock } from '@/components/Media'
-import Link from 'next/link'
-import styles from './styles.module.css'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/utilities/ui'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import React from 'react'
+import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import styles from './styles.module.css'
 
 // Import Swiper styles
+import { Media, SliderBlock } from '@/payload-types'
 import 'swiper/css'
+import 'swiper/css/effect-fade' // Add CSS for fade effect
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import 'swiper/css/effect-fade' // Add CSS for fade effect
-import { Media, SliderBlock } from '@/payload-types'
 
 type Props = SliderBlock & {
   className?: string
@@ -77,7 +77,7 @@ export const SliderBlockComponent: React.FC<Props> = (props) => {
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[50vh] md:h-[60vh]">
+              <div className="relative w-full h-[50vh] md:h-[80vh]">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <MediaBlock resource={image as Media} imgClassName={styles.slideImage} fill />

@@ -215,6 +215,16 @@ export interface Page {
      */
     image?: (string | null) | Media;
     description?: string | null;
+    /**
+     * Add SEO keywords for this page (max 10)
+     */
+    keywords?:
+      | {
+          keyword: string;
+          id?: string | null;
+        }[]
+      | null;
+
   };
   publishedAt?: string | null;
   /**

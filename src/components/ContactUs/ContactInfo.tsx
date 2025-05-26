@@ -20,7 +20,7 @@ const ContactInfoComponent = ({ contactInfo, className }: ContactInfoProps) => {
           </div>
           <h3 className="text-xl font-semibold mb-2">Email Us</h3>
           <p className="text-muted-foreground mb-2">For general inquiries:</p>
-          <a href="mailto:info@aurastudio.com" className="text-primary hover:underline">
+          <a href={`mailto:${email}`} className="text-primary hover:underline">
             {email}
           </a>
         </div>
